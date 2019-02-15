@@ -1,3 +1,14 @@
+## Manually added ##
+####################
+
+# Compiled source
+*.o
+*.so
+
+
+## Automatically generated ##
+#############################
+
 # History files
 .Rhistory
 .Rapp.history
@@ -35,3 +46,4 @@ vignettes/*.pdf
 # Shiny token, see https://shiny.rstudio.com/articles/shinyapps.html
 rsconnect/
 .Rproj.user
+
