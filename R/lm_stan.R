@@ -23,11 +23,11 @@ lm_stan <- function(x, y, ...) {
 #' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
 #' @return An object of class `stanfit` returned by `rstan::sampling`
 #' @examples
-#' sum(1:10)
-#'
-#' \dontrun{
 #' df <- data.frame(a = rnorm(10), b = rnorm(10))
 #' fit <- lm_stan_formula(b ~ a, data = df)
+#' print(fit)
+#'
+#' \dontrun{
 #'
 #' }
 #'

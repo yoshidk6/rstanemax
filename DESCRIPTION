@@ -12,6 +12,9 @@ Imports: rstan (>= 2.18.2), rstantools (>= 1.5.1)
 LinkingTo: StanHeaders (>= 2.18.1), rstan (>= 2.18.2), BH (>= 1.69.0-1), Rcpp (>= 1.0.0), RcppEigen (>= 0.3.3.5.0)
 SystemRequirements: GNU make
 NeedsCompilation: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
