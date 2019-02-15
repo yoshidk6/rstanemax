@@ -28,19 +28,13 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
                                        returnType = c("matrix", "dataframe", "tibble")){
 
   if(is.null(newdata)) {
-    min.newdata <- min(object$standata$exposure)
-    min.nozero.newdata <- min(object$standata$exposure[object$standata$exposure>0])
-    max.newdata <- max(object$standata$exposure)
-
-    seq.normal.scale <- seq(min.newdata, max.newdata, length.out = 1000)
-    seq.log.scale <- seq(min.nozero.newdata, max.newdata, length.out = 1000)
-
-    newdata <- dplyr::tibble(exposure = sort(c(seq.normal.scale, seq.log.scale)))
+    newdata <- data.frame(exposure = object$standata$exposure,
+                          response = object$standata$response)
   } else {
     if(is.vector(newdata)) newdata <- tibble(exposure = newdata)
   }
 
-  pred.response <- pp_internal(object$stanfit, newdata)
+  pred.response <- pp_calc(object$stanfit, newdata)
 
   if(returnType[[1]] == "matrix") {
     return(matrix(pred.response$response, ncol = nrow(newdata), byrow = TRUE))
@@ -58,7 +52,7 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 # Calculate posterior prediction from stanfit object and exposure data
 #
 # df <- pp_internal(fit$stanfit, data.frame(exposure = fit$standata$exposure))
-pp_internal <- function(stanfit, data.pp){
+pp_calc <- function(stanfit, data.pp){
 
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
@@ -72,7 +66,7 @@ pp_internal <- function(stanfit, data.pp){
   out <-
     df %>%
     dplyr::mutate(respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
-                  response= rnorm(respHat, sigma)) %>%
+                  response= rnorm(respHat, respHat, sigma)) %>%
     dplyr::select(mcmcid, exposure, dplyr::everything())
 
 }

@@ -33,7 +33,8 @@ Add explanations
 }
 \examples{
 \dontrun{
-
+a <- posterior_predict.stanemax(fit)
+a <- posterior_predict.stanemax(fit, returnType = "dataframe")
 }
 
 }
