@@ -8,14 +8,15 @@
 #
 # modelframe <- lm(formula = b ~ a, data = data, method = "model.frame")
 
-
-
-# Use .onLoad() to compile stan models
-# See https://github.com/facebook/prophet/blob/master/R/R/zzz.R
-# Or https://github.com/stan-dev/rstanarm/blob/master/R/stanmodels.R
-
-
-stan_emax <- function(formula, data, priors = NULL){
+#' Bayesian Emax model fit with Stan
+#'
+#' @export
+#' @param formula a symbolic description of variables for Emax model fit.
+#' @param data an optional data frame containing the variables in the model.
+#' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
+#' @return An object of class `stanfit` returned by `rstan::sampling`
+#'
+stan_emax <- function(formula, data, priors = NULL, ...){
   call <- match.call(expand.dots = TRUE)
   mf <- match.call(expand.dots = FALSE)
 
