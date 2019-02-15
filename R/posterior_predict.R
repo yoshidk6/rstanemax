@@ -20,8 +20,6 @@
 #' The return object also contains exposure and parameter values used for calculation.
 #' @examples
 #' \dontrun{
-#' a <- posterior_predict.stanemax(fit)
-#' a <- posterior_predict.stanemax(fit, returnType = "dataframe")
 #' }
 #'
 posterior_predict.stanemax <- function(object, newdata = NULL,
@@ -50,8 +48,6 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
 
 # Calculate posterior prediction from stanfit object and exposure data
-#
-# df <- pp_internal(fit$stanfit, data.frame(exposure = fit$standata$exposure))
 pp_calc <- function(stanfit, data.pp){
 
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
