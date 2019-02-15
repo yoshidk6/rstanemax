@@ -43,7 +43,13 @@ stan_emax <- function(formula, data, priors = NULL, ...){
 
   X <- X[,2]
 
-  standata <- list(exposure = X, response = Y, N = length(Y))
+  standata <- list(exposure = X,
+                   response = Y,
+                   N = length(Y),
+                   hill_fix = 1,
+                   e0_fix = 0,
+                   hill_fix_value = 1,
+                   e0_fix_value = 0)
   out <- stan_emax_run(stanmodels$mod_emax_e0, standata = standata, ...)
 }
 

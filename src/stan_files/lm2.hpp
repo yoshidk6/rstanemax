@@ -20,7 +20,7 @@
 
 #include <stan/model/model_header.hpp>
 
-namespace model_lm_namespace {
+namespace model_lm2_namespace {
 
 using std::istream;
 using std::string;
@@ -35,25 +35,25 @@ static int current_statement_begin__;
 
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
-    reader.add_event(0, 0, "start", "model_lm");
-    reader.add_event(17, 15, "end", "model_lm");
+    reader.add_event(0, 0, "start", "model_lm2");
+    reader.add_event(17, 15, "end", "model_lm2");
     return reader;
 }
 
 #include <meta_header.hpp>
- class model_lm : public prob_grad {
+ class model_lm2 : public prob_grad {
 private:
     int N;
     vector_d x;
     vector_d y;
 public:
-    model_lm(stan::io::var_context& context__,
+    model_lm2(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
         : prob_grad(0) {
         ctor_body(context__, 0, pstream__);
     }
 
-    model_lm(stan::io::var_context& context__,
+    model_lm2(stan::io::var_context& context__,
         unsigned int random_seed__,
         std::ostream* pstream__ = 0)
         : prob_grad(0) {
@@ -71,7 +71,7 @@ public:
 
         current_statement_begin__ = -1;
 
-        static const char* function__ = "model_lm_namespace::model_lm";
+        static const char* function__ = "model_lm2_namespace::model_lm2";
         (void) function__;  // dummy to suppress unused var warning
         size_t pos__;
         (void) pos__;  // dummy to suppress unused var warning
@@ -137,7 +137,7 @@ public:
         }
     }
 
-    ~model_lm() { }
+    ~model_lm2() { }
 
 
     void transform_inits(const stan::io::var_context& context__,
@@ -312,7 +312,7 @@ public:
 
         vars__.resize(0);
         stan::io::reader<local_scalar_t__> in__(params_r__,params_i__);
-        static const char* function__ = "model_lm_namespace::write_array";
+        static const char* function__ = "model_lm2_namespace::write_array";
         (void) function__;  // dummy to suppress unused var warning
         // read-transform, write parameters
         double intercept = in__.scalar_constrain();
@@ -373,7 +373,7 @@ public:
     }
 
     static std::string model_name() {
-        return "model_lm";
+        return "model_lm2";
     }
 
 
@@ -428,7 +428,7 @@ public:
 
 }
 
-typedef model_lm_namespace::model_lm stan_model;
+typedef model_lm2_namespace::model_lm2 stan_model;
 
 
 #endif

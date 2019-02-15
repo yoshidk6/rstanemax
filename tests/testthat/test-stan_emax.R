@@ -27,7 +27,11 @@ test.standata <-
   with(test.data,
   list(exposure = exposure,
        response = response,
-       N = length(response)))
+       N = length(response),
+       hill_fix = 1,
+       e0_fix = 0,
+       hill_fix_value = 1,
+       e0_fix_value = 0))
 
 set.seed(123)
 

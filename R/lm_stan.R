@@ -10,7 +10,7 @@
 #'
 lm_stan <- function(x, y, ...) {
   standata <- list(x = x, y = y, N = length(y))
-  out <- rstan::sampling(stanmodels$lm, data = standata, ...)
+  out <- rstan::sampling(stanmodels$lm2, data = standata, ...)
   return(out)
 }
 
@@ -49,5 +49,5 @@ lm_stan_formula <- function(formula, data, ...){
   X <- X[,2]
 
   standata <- list(x = X, y = Y, N = length(Y))
-  out <- rstan::sampling(stanmodels$lm, data = standata, ...)
+  out <- rstan::sampling(stanmodels$lm2, data = standata, ...)
 }
