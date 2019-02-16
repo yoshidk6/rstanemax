@@ -53,7 +53,10 @@ stan_emax <- function(formula, data,
 
   X <- X[,2]
 
-  standata <- create_standata(X, Y, gamma.fix, e0.fix)
+  standata <-
+    create_standata(X, Y, gamma.fix, e0.fix) %>%
+    set_prior(priors)
+
   out <- stan_emax_run(stanmodels$emax, standata = standata, ...)
 }
 
@@ -94,21 +97,56 @@ create_standata <- function(X, Y, gamma.fix = 1, e0.fix = NULL){
   if(!is.null(gamma.fix) && !is.na(gamma.fix)){
     if(!is.numeric(gamma.fix)) stop("gamma.fix must be NULL or numeric")
 
-    out$gamma_fix_flg <- 0
+    out$gamma_fix_flg <- 1
     out$gamma_fix_value <- gamma.fix
   } else {
-    out$gamma_fix_flg <- 1
+    out$gamma_fix_flg <- 0
   }
 
   if(!is.null(e0.fix) && !is.na(e0.fix)){
     if(!is.numeric(e0.fix)) stop("e0.fix must be NULL or numeric")
 
-    out$e0_fix_flg <- 0
+    out$e0_fix_flg <- 1
     out$e0_fix_value <-  e0.fix
   } else {
-    out$e0_fix_flg <- 1
+    out$e0_fix_flg <- 0
   }
 
   return(out)
 }
 
+
+
+set_prior <- function(standata, priors = NULL){
+
+  # EC50
+  standata$prior_ec50_mu  <- median(standata$exposure)
+  standata$prior_ec50_sig <- median(standata$exposure) * 2
+
+  # Emax
+  delta <- max(standata$response) - min(standata$response)
+  slope <- lm(response ~ exposure, data = standata) %>% coef() %>% .[[2]]
+
+  if(slope > 0){
+    standata$prior_emax_mu <- delta
+  } else {
+    standata$prior_emax_mu <- - delta
+  }
+  standata$prior_emax_sig <- delta
+
+  # E0
+  resp.low.exp <- standata$response[standata$exposure < quantile(standata$response, 0.25)]
+  standata$prior_e0_mu <- median(resp.low.exp)
+  standata$prior_e0_sig <- median(resp.low.exp) * 2
+
+  # Gamma
+  standata$prior_gamma_mu  <- 0
+  standata$prior_gamma_sig <- 5
+
+  # Sigma
+  standata$prior_sigma_mu  <- 0
+  standata$prior_sigma_sig <- sd(standata$response)
+
+
+  return(standata)
+}

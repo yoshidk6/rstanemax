@@ -3,11 +3,25 @@ data{
   vector<lower = 0>[N] exposure;
   vector[N] response;
 
+  // Fixed parameters
   int<lower=0,upper=1> gamma_fix_flg;
   int<lower=0,upper=1> e0_fix_flg;
   real<lower=0> gamma_fix_value;
   real e0_fix_value;
 
+  // priors
+  //// mu
+  real prior_emax_mu;
+  real<lower=0> prior_ec50_mu;
+  real<lower=0> prior_gamma_mu;
+  real prior_e0_mu;
+  real<lower=0> prior_sigma_mu;
+  //// sigma
+  real<lower=0> prior_emax_sig;
+  real<lower=0> prior_ec50_sig;
+  real<lower=0> prior_gamma_sig;
+  real<lower=0> prior_e0_sig;
+  real<lower=0> prior_sigma_sig;
 }
 
 parameters{
@@ -37,11 +51,10 @@ transformed parameters{
 model{
   response ~ normal(respHat, sigma);
 
-  ec50 ~ normal(0, 1000);
-  e0_par ~ normal(0, 10);
-  gamma_par  ~ normal(0, 10);
-
-  sigma  ~ cauchy(0, 10);
+  emax       ~ normal(prior_emax_mu,  prior_emax_sig);
+  ec50       ~ normal(prior_ec50_mu,  prior_ec50_sig);
+  gamma_par  ~ normal(prior_gamma_mu, prior_gamma_sig);
+  e0_par     ~ normal(prior_e0_mu,    prior_e0_sig);
+  sigma      ~ normal(prior_sigma_mu, prior_sigma_sig);
 }
-
 
