@@ -46,9 +46,9 @@ private:
     int N;
     vector_d exposure;
     vector_d response;
-    int hill_fix;
-    int e0_fix;
-    double hill_fix_value;
+    int gamma_fix_flg;
+    int e0_fix_flg;
+    double gamma_fix_value;
     double e0_fix_value;
 public:
     model_emax(stan::io::var_context& context__,
@@ -115,23 +115,23 @@ public:
                 response[i_vec__] = vals_r__[pos__++];
             }
             current_statement_begin__ = 6;
-            context__.validate_dims("data initialization", "hill_fix", "int", context__.to_vec());
-            hill_fix = int(0);
-            vals_i__ = context__.vals_i("hill_fix");
+            context__.validate_dims("data initialization", "gamma_fix_flg", "int", context__.to_vec());
+            gamma_fix_flg = int(0);
+            vals_i__ = context__.vals_i("gamma_fix_flg");
             pos__ = 0;
-            hill_fix = vals_i__[pos__++];
+            gamma_fix_flg = vals_i__[pos__++];
             current_statement_begin__ = 7;
-            context__.validate_dims("data initialization", "e0_fix", "int", context__.to_vec());
-            e0_fix = int(0);
-            vals_i__ = context__.vals_i("e0_fix");
+            context__.validate_dims("data initialization", "e0_fix_flg", "int", context__.to_vec());
+            e0_fix_flg = int(0);
+            vals_i__ = context__.vals_i("e0_fix_flg");
             pos__ = 0;
-            e0_fix = vals_i__[pos__++];
+            e0_fix_flg = vals_i__[pos__++];
             current_statement_begin__ = 8;
-            context__.validate_dims("data initialization", "hill_fix_value", "double", context__.to_vec());
-            hill_fix_value = double(0);
-            vals_r__ = context__.vals_r("hill_fix_value");
+            context__.validate_dims("data initialization", "gamma_fix_value", "double", context__.to_vec());
+            gamma_fix_value = double(0);
+            vals_r__ = context__.vals_r("gamma_fix_value");
             pos__ = 0;
-            hill_fix_value = vals_r__[pos__++];
+            gamma_fix_value = vals_r__[pos__++];
             current_statement_begin__ = 9;
             context__.validate_dims("data initialization", "e0_fix_value", "double", context__.to_vec());
             e0_fix_value = double(0);
@@ -146,13 +146,13 @@ public:
             check_greater_or_equal(function__,"exposure",exposure,0);
             current_statement_begin__ = 4;
             current_statement_begin__ = 6;
-            check_greater_or_equal(function__,"hill_fix",hill_fix,0);
-            check_less_or_equal(function__,"hill_fix",hill_fix,1);
+            check_greater_or_equal(function__,"gamma_fix_flg",gamma_fix_flg,0);
+            check_less_or_equal(function__,"gamma_fix_flg",gamma_fix_flg,1);
             current_statement_begin__ = 7;
-            check_greater_or_equal(function__,"e0_fix",e0_fix,0);
-            check_less_or_equal(function__,"e0_fix",e0_fix,1);
+            check_greater_or_equal(function__,"e0_fix_flg",e0_fix_flg,0);
+            check_less_or_equal(function__,"e0_fix_flg",e0_fix_flg,1);
             current_statement_begin__ = 8;
-            check_greater_or_equal(function__,"hill_fix_value",hill_fix_value,0);
+            check_greater_or_equal(function__,"gamma_fix_value",gamma_fix_value,0);
             current_statement_begin__ = 9;
             // initialize data variables
 
@@ -167,11 +167,11 @@ public:
             current_statement_begin__ = 15;
             ++num_params_r__;
             current_statement_begin__ = 16;
-            validate_non_negative_index("e0_par", "(1 - e0_fix)", (1 - e0_fix));
-            num_params_r__ += (1 - e0_fix);
+            validate_non_negative_index("e0_par", "(1 - e0_fix_flg)", (1 - e0_fix_flg));
+            num_params_r__ += (1 - e0_fix_flg);
             current_statement_begin__ = 17;
-            validate_non_negative_index("gamma_par", "(1 - hill_fix)", (1 - hill_fix));
-            num_params_r__ += (1 - hill_fix);
+            validate_non_negative_index("gamma_par", "(1 - gamma_fix_flg)", (1 - gamma_fix_flg));
+            num_params_r__ += (1 - gamma_fix_flg);
             current_statement_begin__ = 19;
             ++num_params_r__;
         } catch (const std::exception& e) {
@@ -224,12 +224,12 @@ public:
             throw std::runtime_error("variable e0_par missing");
         vals_r__ = context__.vals_r("e0_par");
         pos__ = 0U;
-        validate_non_negative_index("e0_par", "(1 - e0_fix)", (1 - e0_fix));
-        context__.validate_dims("initialization", "e0_par", "double", context__.to_vec((1 - e0_fix)));
-        std::vector<double> e0_par((1 - e0_fix),double(0));
-        for (int i0__ = 0U; i0__ < (1 - e0_fix); ++i0__)
+        validate_non_negative_index("e0_par", "(1 - e0_fix_flg)", (1 - e0_fix_flg));
+        context__.validate_dims("initialization", "e0_par", "double", context__.to_vec((1 - e0_fix_flg)));
+        std::vector<double> e0_par((1 - e0_fix_flg),double(0));
+        for (int i0__ = 0U; i0__ < (1 - e0_fix_flg); ++i0__)
             e0_par[i0__] = vals_r__[pos__++];
-        for (int i0__ = 0U; i0__ < (1 - e0_fix); ++i0__)
+        for (int i0__ = 0U; i0__ < (1 - e0_fix_flg); ++i0__)
             try {
             writer__.scalar_unconstrain(e0_par[i0__]);
         } catch (const std::exception& e) { 
@@ -240,12 +240,12 @@ public:
             throw std::runtime_error("variable gamma_par missing");
         vals_r__ = context__.vals_r("gamma_par");
         pos__ = 0U;
-        validate_non_negative_index("gamma_par", "(1 - hill_fix)", (1 - hill_fix));
-        context__.validate_dims("initialization", "gamma_par", "double", context__.to_vec((1 - hill_fix)));
-        std::vector<double> gamma_par((1 - hill_fix),double(0));
-        for (int i0__ = 0U; i0__ < (1 - hill_fix); ++i0__)
+        validate_non_negative_index("gamma_par", "(1 - gamma_fix_flg)", (1 - gamma_fix_flg));
+        context__.validate_dims("initialization", "gamma_par", "double", context__.to_vec((1 - gamma_fix_flg)));
+        std::vector<double> gamma_par((1 - gamma_fix_flg),double(0));
+        for (int i0__ = 0U; i0__ < (1 - gamma_fix_flg); ++i0__)
             gamma_par[i0__] = vals_r__[pos__++];
-        for (int i0__ = 0U; i0__ < (1 - hill_fix); ++i0__)
+        for (int i0__ = 0U; i0__ < (1 - gamma_fix_flg); ++i0__)
             try {
             writer__.scalar_lb_unconstrain(0,gamma_par[i0__]);
         } catch (const std::exception& e) { 
@@ -313,7 +313,7 @@ public:
                 ec50 = in__.scalar_lb_constrain(0);
 
             vector<local_scalar_t__> e0_par;
-            size_t dim_e0_par_0__ = (1 - e0_fix);
+            size_t dim_e0_par_0__ = (1 - e0_fix_flg);
             e0_par.reserve(dim_e0_par_0__);
             for (size_t k_0__ = 0; k_0__ < dim_e0_par_0__; ++k_0__) {
                 if (jacobian__)
@@ -323,7 +323,7 @@ public:
             }
 
             vector<local_scalar_t__> gamma_par;
-            size_t dim_gamma_par_0__ = (1 - hill_fix);
+            size_t dim_gamma_par_0__ = (1 - gamma_fix_flg);
             gamma_par.reserve(dim_gamma_par_0__);
             for (size_t k_0__ = 0; k_0__ < dim_gamma_par_0__; ++k_0__) {
                 if (jacobian__)
@@ -370,9 +370,9 @@ public:
 
 
             current_statement_begin__ = 29;
-            stan::math::assign(gamma, (hill_fix ? stan::math::promote_scalar<local_scalar_t__>(hill_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par,1,"gamma_par",1)) ));
+            stan::math::assign(gamma, (gamma_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(gamma_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par,1,"gamma_par",1)) ));
             current_statement_begin__ = 30;
-            stan::math::assign(e0, (e0_fix ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(e0_par,1,"e0_par",1)) ));
+            stan::math::assign(e0, (e0_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(e0_par,1,"e0_par",1)) ));
             current_statement_begin__ = 32;
             for (int i = 1; i <= N; ++i) {
                 current_statement_begin__ = 32;
@@ -475,10 +475,10 @@ public:
         dims__.resize(0);
         dimss__.push_back(dims__);
         dims__.resize(0);
-        dims__.push_back((1 - e0_fix));
+        dims__.push_back((1 - e0_fix_flg));
         dimss__.push_back(dims__);
         dims__.resize(0);
-        dims__.push_back((1 - hill_fix));
+        dims__.push_back((1 - gamma_fix_flg));
         dimss__.push_back(dims__);
         dims__.resize(0);
         dimss__.push_back(dims__);
@@ -512,22 +512,22 @@ public:
         double emax = in__.scalar_constrain();
         double ec50 = in__.scalar_lb_constrain(0);
         vector<double> e0_par;
-        size_t dim_e0_par_0__ = (1 - e0_fix);
+        size_t dim_e0_par_0__ = (1 - e0_fix_flg);
         for (size_t k_0__ = 0; k_0__ < dim_e0_par_0__; ++k_0__) {
             e0_par.push_back(in__.scalar_constrain());
         }
         vector<double> gamma_par;
-        size_t dim_gamma_par_0__ = (1 - hill_fix);
+        size_t dim_gamma_par_0__ = (1 - gamma_fix_flg);
         for (size_t k_0__ = 0; k_0__ < dim_gamma_par_0__; ++k_0__) {
             gamma_par.push_back(in__.scalar_lb_constrain(0));
         }
         double sigma = in__.scalar_lb_constrain(0);
         vars__.push_back(emax);
         vars__.push_back(ec50);
-            for (int k_0__ = 0; k_0__ < (1 - e0_fix); ++k_0__) {
+            for (int k_0__ = 0; k_0__ < (1 - e0_fix_flg); ++k_0__) {
             vars__.push_back(e0_par[k_0__]);
             }
-            for (int k_0__ = 0; k_0__ < (1 - hill_fix); ++k_0__) {
+            for (int k_0__ = 0; k_0__ < (1 - gamma_fix_flg); ++k_0__) {
             vars__.push_back(gamma_par[k_0__]);
             }
         vars__.push_back(sigma);
@@ -570,9 +570,9 @@ public:
 
 
             current_statement_begin__ = 29;
-            stan::math::assign(gamma, (hill_fix ? stan::math::promote_scalar<local_scalar_t__>(hill_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par,1,"gamma_par",1)) ));
+            stan::math::assign(gamma, (gamma_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(gamma_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par,1,"gamma_par",1)) ));
             current_statement_begin__ = 30;
-            stan::math::assign(e0, (e0_fix ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(e0_par,1,"e0_par",1)) ));
+            stan::math::assign(e0, (e0_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(e0_par,1,"e0_par",1)) ));
             current_statement_begin__ = 32;
             for (int i = 1; i <= N; ++i) {
                 current_statement_begin__ = 32;
@@ -649,12 +649,12 @@ public:
         param_name_stream__.str(std::string());
         param_name_stream__ << "ec50";
         param_names__.push_back(param_name_stream__.str());
-        for (int k_0__ = 1; k_0__ <= (1 - e0_fix); ++k_0__) {
+        for (int k_0__ = 1; k_0__ <= (1 - e0_fix_flg); ++k_0__) {
             param_name_stream__.str(std::string());
             param_name_stream__ << "e0_par" << '.' << k_0__;
             param_names__.push_back(param_name_stream__.str());
         }
-        for (int k_0__ = 1; k_0__ <= (1 - hill_fix); ++k_0__) {
+        for (int k_0__ = 1; k_0__ <= (1 - gamma_fix_flg); ++k_0__) {
             param_name_stream__.str(std::string());
             param_name_stream__ << "gamma_par" << '.' << k_0__;
             param_names__.push_back(param_name_stream__.str());
@@ -699,12 +699,12 @@ public:
         param_name_stream__.str(std::string());
         param_name_stream__ << "ec50";
         param_names__.push_back(param_name_stream__.str());
-        for (int k_0__ = 1; k_0__ <= (1 - e0_fix); ++k_0__) {
+        for (int k_0__ = 1; k_0__ <= (1 - e0_fix_flg); ++k_0__) {
             param_name_stream__.str(std::string());
             param_name_stream__ << "e0_par" << '.' << k_0__;
             param_names__.push_back(param_name_stream__.str());
         }
-        for (int k_0__ = 1; k_0__ <= (1 - hill_fix); ++k_0__) {
+        for (int k_0__ = 1; k_0__ <= (1 - gamma_fix_flg); ++k_0__) {
             param_name_stream__.str(std::string());
             param_name_stream__ << "gamma_par" << '.' << k_0__;
             param_names__.push_back(param_name_stream__.str());

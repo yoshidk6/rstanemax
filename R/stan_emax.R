@@ -5,6 +5,14 @@
 #' @export
 #' @param formula a symbolic description of variables for Emax model fit.
 #' @param data an optional data frame containing the variables in the model.
+#' @param gamma.fix a numeric or NULL to specify gamma (Hill coefficient) in the sigmoidal Emax model.
+#' If NULL, gamma will be estimated from the data.
+#' If numeric, gamma is fixed at the number provided.
+#' Default = 1 (normal Emax model).
+#' @param e0.fix a numeric or NULL to specify E0 in the Emax model.
+#' If NULL, E0 will be estimated from the data.
+#' If numeric, E0 is fixed at the number provided.
+#' Default = NULL (estimate from the data).
 #' @param priors a list specifying priors of parameters.
 #' Not implemented yet.
 #' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
@@ -23,7 +31,9 @@
 #'
 #' }
 #'
-stan_emax <- function(formula, data, priors = NULL, ...){
+stan_emax <- function(formula, data,
+                      gamma.fix = 1, e0.fix = NULL,
+                      priors = NULL, ...){
   # Parse formula and put together stan data object
   # Actual run is in `stan_emax_run` function
 
@@ -43,13 +53,7 @@ stan_emax <- function(formula, data, priors = NULL, ...){
 
   X <- X[,2]
 
-  standata <- list(exposure = X,
-                   response = Y,
-                   N = length(Y),
-                   hill_fix = 1,
-                   e0_fix = 0,
-                   hill_fix_value = 1,
-                   e0_fix_value = 0)
+  standata <- create_standata(X, Y, gamma.fix, e0.fix)
   out <- stan_emax_run(stanmodels$emax, standata = standata, ...)
 }
 
@@ -77,5 +81,34 @@ stan_emax_run <- function(stanmodel, standata, ...){
 }
 
 
+create_standata <- function(X, Y, gamma.fix = 1, e0.fix = NULL){
 
+  out <- list(exposure = X,
+              response = Y,
+              N = length(Y),
+              gamma_fix_flg = 1,
+              gamma_fix_value = 1,
+              e0_fix_flg = 0,
+              e0_fix_value = 0)
+
+  if(!is.null(gamma.fix) && !is.na(gamma.fix)){
+    if(!is.numeric(gamma.fix)) stop("gamma.fix must be NULL or numeric")
+
+    out$gamma_fix_flg <- 0
+    out$gamma_fix_value <- gamma.fix
+  } else {
+    out$gamma_fix_flg <- 1
+  }
+
+  if(!is.null(e0.fix) && !is.na(e0.fix)){
+    if(!is.numeric(e0.fix)) stop("e0.fix must be NULL or numeric")
+
+    out$e0_fix_flg <- 0
+    out$e0_fix_value <-  e0.fix
+  } else {
+    out$e0_fix_flg <- 1
+  }
+
+  return(out)
+}
 

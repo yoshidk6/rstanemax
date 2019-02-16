@@ -28,9 +28,9 @@ test.standata <-
   list(exposure = exposure,
        response = response,
        N = length(response),
-       hill_fix = 1,
-       e0_fix = 0,
-       hill_fix_value = 1,
+       gamma_fix_flg = 1,
+       gamma_fix_value = 1,
+       e0_fix_flg = 0,
        e0_fix_value = 0))
 
 set.seed(123)
@@ -48,6 +48,21 @@ test_that("check formula elements", {
                "Only one response variable is allowed")
   expect_error(stan_emax(response ~ dose + exposure, test.data),
                "Only one exposure variable is allowed")
+})
+
+tdata1 <- create_standata(1, 1, gamma.fix = 2, e0.fix = 2)
+tdata2 <- create_standata(1, 1, gamma.fix = NULL, e0.fix = NULL)
+
+test_that("create standata", {
+  expect_equal(tdata1$gamma_fix_flg, 0)
+  expect_equal(tdata1$gamma_fix_value, 2)
+  expect_equal(tdata2$gamma_fix_flg, 1)
+  expect_is(tdata2$gamma_fix_value, "numeric")
+
+  expect_equal(tdata1$e0_fix_flg, 0)
+  expect_equal(tdata1$e0_fix_value, 2)
+  expect_equal(tdata2$e0_fix_flg, 1)
+  expect_is(tdata2$e0_fix_value, "numeric")
 })
 
 test_that("emax model run", {

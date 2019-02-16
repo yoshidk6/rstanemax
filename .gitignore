@@ -1,6 +1,6 @@
 ## Manually added ##
 ####################
-
+*.DS_Store
 # Compiled source
 *.o
 *.so
