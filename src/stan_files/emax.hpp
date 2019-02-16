@@ -20,7 +20,7 @@
 
 #include <stan/model/model_header.hpp>
 
-namespace model_mod_emax_e0_namespace {
+namespace model_emax_namespace {
 
 using std::istream;
 using std::string;
@@ -35,13 +35,13 @@ static int current_statement_begin__;
 
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
-    reader.add_event(0, 0, "start", "model_mod_emax_e0");
-    reader.add_event(45, 43, "end", "model_mod_emax_e0");
+    reader.add_event(0, 0, "start", "model_emax");
+    reader.add_event(48, 46, "end", "model_emax");
     return reader;
 }
 
 #include <meta_header.hpp>
- class model_mod_emax_e0 : public prob_grad {
+ class model_emax : public prob_grad {
 private:
     int N;
     vector_d exposure;
@@ -51,13 +51,13 @@ private:
     double hill_fix_value;
     double e0_fix_value;
 public:
-    model_mod_emax_e0(stan::io::var_context& context__,
+    model_emax(stan::io::var_context& context__,
         std::ostream* pstream__ = 0)
         : prob_grad(0) {
         ctor_body(context__, 0, pstream__);
     }
 
-    model_mod_emax_e0(stan::io::var_context& context__,
+    model_emax(stan::io::var_context& context__,
         unsigned int random_seed__,
         std::ostream* pstream__ = 0)
         : prob_grad(0) {
@@ -75,7 +75,7 @@ public:
 
         current_statement_begin__ = -1;
 
-        static const char* function__ = "model_mod_emax_e0_namespace::model_mod_emax_e0";
+        static const char* function__ = "model_emax_namespace::model_emax";
         (void) function__;  // dummy to suppress unused var warning
         size_t pos__;
         (void) pos__;  // dummy to suppress unused var warning
@@ -167,9 +167,11 @@ public:
             current_statement_begin__ = 15;
             ++num_params_r__;
             current_statement_begin__ = 16;
-            ++num_params_r__;
+            validate_non_negative_index("e0_par", "(1 - e0_fix)", (1 - e0_fix));
+            num_params_r__ += (1 - e0_fix);
             current_statement_begin__ = 17;
-            ++num_params_r__;
+            validate_non_negative_index("gamma_par", "(1 - hill_fix)", (1 - hill_fix));
+            num_params_r__ += (1 - hill_fix);
             current_statement_begin__ = 19;
             ++num_params_r__;
         } catch (const std::exception& e) {
@@ -179,7 +181,7 @@ public:
         }
     }
 
-    ~model_mod_emax_e0() { }
+    ~model_emax() { }
 
 
     void transform_inits(const stan::io::var_context& context__,
@@ -218,28 +220,34 @@ public:
             throw std::runtime_error(std::string("Error transforming variable ec50: ") + e.what());
         }
 
-        if (!(context__.contains_r("e0")))
-            throw std::runtime_error("variable e0 missing");
-        vals_r__ = context__.vals_r("e0");
+        if (!(context__.contains_r("e0_par")))
+            throw std::runtime_error("variable e0_par missing");
+        vals_r__ = context__.vals_r("e0_par");
         pos__ = 0U;
-        context__.validate_dims("initialization", "e0", "double", context__.to_vec());
-        double e0(0);
-        e0 = vals_r__[pos__++];
-        try {
-            writer__.scalar_unconstrain(e0);
+        validate_non_negative_index("e0_par", "(1 - e0_fix)", (1 - e0_fix));
+        context__.validate_dims("initialization", "e0_par", "double", context__.to_vec((1 - e0_fix)));
+        std::vector<double> e0_par((1 - e0_fix),double(0));
+        for (int i0__ = 0U; i0__ < (1 - e0_fix); ++i0__)
+            e0_par[i0__] = vals_r__[pos__++];
+        for (int i0__ = 0U; i0__ < (1 - e0_fix); ++i0__)
+            try {
+            writer__.scalar_unconstrain(e0_par[i0__]);
         } catch (const std::exception& e) { 
-            throw std::runtime_error(std::string("Error transforming variable e0: ") + e.what());
+            throw std::runtime_error(std::string("Error transforming variable e0_par: ") + e.what());
         }
 
         if (!(context__.contains_r("gamma_par")))
             throw std::runtime_error("variable gamma_par missing");
         vals_r__ = context__.vals_r("gamma_par");
         pos__ = 0U;
-        context__.validate_dims("initialization", "gamma_par", "double", context__.to_vec());
-        double gamma_par(0);
-        gamma_par = vals_r__[pos__++];
-        try {
-            writer__.scalar_lb_unconstrain(0,gamma_par);
+        validate_non_negative_index("gamma_par", "(1 - hill_fix)", (1 - hill_fix));
+        context__.validate_dims("initialization", "gamma_par", "double", context__.to_vec((1 - hill_fix)));
+        std::vector<double> gamma_par((1 - hill_fix),double(0));
+        for (int i0__ = 0U; i0__ < (1 - hill_fix); ++i0__)
+            gamma_par[i0__] = vals_r__[pos__++];
+        for (int i0__ = 0U; i0__ < (1 - hill_fix); ++i0__)
+            try {
+            writer__.scalar_lb_unconstrain(0,gamma_par[i0__]);
         } catch (const std::exception& e) { 
             throw std::runtime_error(std::string("Error transforming variable gamma_par: ") + e.what());
         }
@@ -304,19 +312,25 @@ public:
             else
                 ec50 = in__.scalar_lb_constrain(0);
 
-            local_scalar_t__ e0;
-            (void) e0;  // dummy to suppress unused var warning
-            if (jacobian__)
-                e0 = in__.scalar_constrain(lp__);
-            else
-                e0 = in__.scalar_constrain();
+            vector<local_scalar_t__> e0_par;
+            size_t dim_e0_par_0__ = (1 - e0_fix);
+            e0_par.reserve(dim_e0_par_0__);
+            for (size_t k_0__ = 0; k_0__ < dim_e0_par_0__; ++k_0__) {
+                if (jacobian__)
+                    e0_par.push_back(in__.scalar_constrain(lp__));
+                else
+                    e0_par.push_back(in__.scalar_constrain());
+            }
 
-            local_scalar_t__ gamma_par;
-            (void) gamma_par;  // dummy to suppress unused var warning
-            if (jacobian__)
-                gamma_par = in__.scalar_lb_constrain(0,lp__);
-            else
-                gamma_par = in__.scalar_lb_constrain(0);
+            vector<local_scalar_t__> gamma_par;
+            size_t dim_gamma_par_0__ = (1 - hill_fix);
+            gamma_par.reserve(dim_gamma_par_0__);
+            for (size_t k_0__ = 0; k_0__ < dim_gamma_par_0__; ++k_0__) {
+                if (jacobian__)
+                    gamma_par.push_back(in__.scalar_lb_constrain(0,lp__));
+                else
+                    gamma_par.push_back(in__.scalar_lb_constrain(0));
+            }
 
             local_scalar_t__ sigma;
             (void) sigma;  // dummy to suppress unused var warning
@@ -347,19 +361,27 @@ public:
 
             stan::math::initialize(gamma, DUMMY_VAR__);
             stan::math::fill(gamma,DUMMY_VAR__);
+            current_statement_begin__ = 27;
+            local_scalar_t__ e0;
+            (void) e0;  // dummy to suppress unused var warning
+
+            stan::math::initialize(e0, DUMMY_VAR__);
+            stan::math::fill(e0,DUMMY_VAR__);
 
 
-            current_statement_begin__ = 28;
-            stan::math::assign(gamma, (hill_fix ? stan::math::promote_scalar<local_scalar_t__>(hill_fix_value) : stan::math::promote_scalar<local_scalar_t__>(gamma_par) ));
+            current_statement_begin__ = 29;
+            stan::math::assign(gamma, (hill_fix ? stan::math::promote_scalar<local_scalar_t__>(hill_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par,1,"gamma_par",1)) ));
             current_statement_begin__ = 30;
+            stan::math::assign(e0, (e0_fix ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(e0_par,1,"e0_par",1)) ));
+            current_statement_begin__ = 32;
             for (int i = 1; i <= N; ++i) {
-                current_statement_begin__ = 30;
+                current_statement_begin__ = 32;
                 stan::model::assign(exposure_exp, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             pow(get_base1(exposure,i,"exposure",1),gamma), 
                             "assigning variable exposure_exp");
             }
-            current_statement_begin__ = 32;
+            current_statement_begin__ = 34;
             stan::math::assign(respHat, add(e0,elt_divide(multiply(emax,exposure_exp),add(pow(ec50,gamma),exposure_exp))));
 
             // validate transformed parameters
@@ -382,22 +404,30 @@ public:
                 msg__ << "Undefined transformed parameter: gamma";
                 throw std::runtime_error(msg__.str());
             }
+            if (stan::math::is_uninitialized(e0)) {
+                std::stringstream msg__;
+                msg__ << "Undefined transformed parameter: e0";
+                throw std::runtime_error(msg__.str());
+            }
 
             const char* function__ = "validate transformed params";
             (void) function__;  // dummy to suppress unused var warning
             current_statement_begin__ = 23;
             current_statement_begin__ = 24;
             current_statement_begin__ = 26;
+            current_statement_begin__ = 27;
 
             // model body
 
-            current_statement_begin__ = 36;
-            lp_accum__.add(normal_log<propto__>(response, respHat, sigma));
-            current_statement_begin__ = 37;
-            lp_accum__.add(normal_log<propto__>(e0, 0, 10));
             current_statement_begin__ = 38;
+            lp_accum__.add(normal_log<propto__>(response, respHat, sigma));
+            current_statement_begin__ = 40;
             lp_accum__.add(normal_log<propto__>(ec50, 0, 1000));
             current_statement_begin__ = 41;
+            lp_accum__.add(normal_log<propto__>(e0_par, 0, 10));
+            current_statement_begin__ = 42;
+            lp_accum__.add(normal_log<propto__>(gamma_par, 0, 10));
+            current_statement_begin__ = 44;
             lp_accum__.add(cauchy_log<propto__>(sigma, 0, 10));
 
         } catch (const std::exception& e) {
@@ -427,12 +457,13 @@ public:
         names__.resize(0);
         names__.push_back("emax");
         names__.push_back("ec50");
-        names__.push_back("e0");
+        names__.push_back("e0_par");
         names__.push_back("gamma_par");
         names__.push_back("sigma");
         names__.push_back("respHat");
         names__.push_back("exposure_exp");
         names__.push_back("gamma");
+        names__.push_back("e0");
     }
 
 
@@ -444,8 +475,10 @@ public:
         dims__.resize(0);
         dimss__.push_back(dims__);
         dims__.resize(0);
+        dims__.push_back((1 - e0_fix));
         dimss__.push_back(dims__);
         dims__.resize(0);
+        dims__.push_back((1 - hill_fix));
         dimss__.push_back(dims__);
         dims__.resize(0);
         dimss__.push_back(dims__);
@@ -454,6 +487,8 @@ public:
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(N);
+        dimss__.push_back(dims__);
+        dims__.resize(0);
         dimss__.push_back(dims__);
         dims__.resize(0);
         dimss__.push_back(dims__);
@@ -471,18 +506,30 @@ public:
 
         vars__.resize(0);
         stan::io::reader<local_scalar_t__> in__(params_r__,params_i__);
-        static const char* function__ = "model_mod_emax_e0_namespace::write_array";
+        static const char* function__ = "model_emax_namespace::write_array";
         (void) function__;  // dummy to suppress unused var warning
         // read-transform, write parameters
         double emax = in__.scalar_constrain();
         double ec50 = in__.scalar_lb_constrain(0);
-        double e0 = in__.scalar_constrain();
-        double gamma_par = in__.scalar_lb_constrain(0);
+        vector<double> e0_par;
+        size_t dim_e0_par_0__ = (1 - e0_fix);
+        for (size_t k_0__ = 0; k_0__ < dim_e0_par_0__; ++k_0__) {
+            e0_par.push_back(in__.scalar_constrain());
+        }
+        vector<double> gamma_par;
+        size_t dim_gamma_par_0__ = (1 - hill_fix);
+        for (size_t k_0__ = 0; k_0__ < dim_gamma_par_0__; ++k_0__) {
+            gamma_par.push_back(in__.scalar_lb_constrain(0));
+        }
         double sigma = in__.scalar_lb_constrain(0);
         vars__.push_back(emax);
         vars__.push_back(ec50);
-        vars__.push_back(e0);
-        vars__.push_back(gamma_par);
+            for (int k_0__ = 0; k_0__ < (1 - e0_fix); ++k_0__) {
+            vars__.push_back(e0_par[k_0__]);
+            }
+            for (int k_0__ = 0; k_0__ < (1 - hill_fix); ++k_0__) {
+            vars__.push_back(gamma_par[k_0__]);
+            }
         vars__.push_back(sigma);
 
         // declare and define transformed parameters
@@ -514,25 +561,34 @@ public:
 
             stan::math::initialize(gamma, DUMMY_VAR__);
             stan::math::fill(gamma,DUMMY_VAR__);
+            current_statement_begin__ = 27;
+            local_scalar_t__ e0;
+            (void) e0;  // dummy to suppress unused var warning
+
+            stan::math::initialize(e0, DUMMY_VAR__);
+            stan::math::fill(e0,DUMMY_VAR__);
 
 
-            current_statement_begin__ = 28;
-            stan::math::assign(gamma, (hill_fix ? stan::math::promote_scalar<local_scalar_t__>(hill_fix_value) : stan::math::promote_scalar<local_scalar_t__>(gamma_par) ));
+            current_statement_begin__ = 29;
+            stan::math::assign(gamma, (hill_fix ? stan::math::promote_scalar<local_scalar_t__>(hill_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par,1,"gamma_par",1)) ));
             current_statement_begin__ = 30;
+            stan::math::assign(e0, (e0_fix ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(e0_par,1,"e0_par",1)) ));
+            current_statement_begin__ = 32;
             for (int i = 1; i <= N; ++i) {
-                current_statement_begin__ = 30;
+                current_statement_begin__ = 32;
                 stan::model::assign(exposure_exp, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             pow(get_base1(exposure,i,"exposure",1),gamma), 
                             "assigning variable exposure_exp");
             }
-            current_statement_begin__ = 32;
+            current_statement_begin__ = 34;
             stan::math::assign(respHat, add(e0,elt_divide(multiply(emax,exposure_exp),add(pow(ec50,gamma),exposure_exp))));
 
             // validate transformed parameters
             current_statement_begin__ = 23;
             current_statement_begin__ = 24;
             current_statement_begin__ = 26;
+            current_statement_begin__ = 27;
 
             // write transformed parameters
             if (include_tparams__) {
@@ -543,6 +599,7 @@ public:
             vars__.push_back(exposure_exp[k_0__]);
             }
         vars__.push_back(gamma);
+        vars__.push_back(e0);
             }
             if (!include_gqs__) return;
             // declare and define generated quantities
@@ -578,7 +635,7 @@ public:
     }
 
     static std::string model_name() {
-        return "model_mod_emax_e0";
+        return "model_emax";
     }
 
 
@@ -592,12 +649,16 @@ public:
         param_name_stream__.str(std::string());
         param_name_stream__ << "ec50";
         param_names__.push_back(param_name_stream__.str());
-        param_name_stream__.str(std::string());
-        param_name_stream__ << "e0";
-        param_names__.push_back(param_name_stream__.str());
-        param_name_stream__.str(std::string());
-        param_name_stream__ << "gamma_par";
-        param_names__.push_back(param_name_stream__.str());
+        for (int k_0__ = 1; k_0__ <= (1 - e0_fix); ++k_0__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "e0_par" << '.' << k_0__;
+            param_names__.push_back(param_name_stream__.str());
+        }
+        for (int k_0__ = 1; k_0__ <= (1 - hill_fix); ++k_0__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "gamma_par" << '.' << k_0__;
+            param_names__.push_back(param_name_stream__.str());
+        }
         param_name_stream__.str(std::string());
         param_name_stream__ << "sigma";
         param_names__.push_back(param_name_stream__.str());
@@ -617,6 +678,9 @@ public:
             }
             param_name_stream__.str(std::string());
             param_name_stream__ << "gamma";
+            param_names__.push_back(param_name_stream__.str());
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "e0";
             param_names__.push_back(param_name_stream__.str());
         }
 
@@ -635,12 +699,16 @@ public:
         param_name_stream__.str(std::string());
         param_name_stream__ << "ec50";
         param_names__.push_back(param_name_stream__.str());
-        param_name_stream__.str(std::string());
-        param_name_stream__ << "e0";
-        param_names__.push_back(param_name_stream__.str());
-        param_name_stream__.str(std::string());
-        param_name_stream__ << "gamma_par";
-        param_names__.push_back(param_name_stream__.str());
+        for (int k_0__ = 1; k_0__ <= (1 - e0_fix); ++k_0__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "e0_par" << '.' << k_0__;
+            param_names__.push_back(param_name_stream__.str());
+        }
+        for (int k_0__ = 1; k_0__ <= (1 - hill_fix); ++k_0__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "gamma_par" << '.' << k_0__;
+            param_names__.push_back(param_name_stream__.str());
+        }
         param_name_stream__.str(std::string());
         param_name_stream__ << "sigma";
         param_names__.push_back(param_name_stream__.str());
@@ -661,6 +729,9 @@ public:
             param_name_stream__.str(std::string());
             param_name_stream__ << "gamma";
             param_names__.push_back(param_name_stream__.str());
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "e0";
+            param_names__.push_back(param_name_stream__.str());
         }
 
 
@@ -671,7 +742,7 @@ public:
 
 }
 
-typedef model_mod_emax_e0_namespace::model_mod_emax_e0 stan_model;
+typedef model_emax_namespace::model_emax stan_model;
 
 
 #endif

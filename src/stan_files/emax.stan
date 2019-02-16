@@ -13,7 +13,7 @@ data{
 parameters{
   real emax;
   real<lower = 0> ec50;
-  real e0;
+  real e0_par[1-e0_fix];
   real<lower = 0> gamma_par[1-hill_fix];
 
   real<lower = 0> sigma;
@@ -24,8 +24,10 @@ transformed parameters{
   vector[N] exposure_exp;
 
   real gamma;
+  real e0;
 
   gamma = hill_fix ? hill_fix_value : gamma_par[1];
+  e0    = e0_fix   ? e0_fix_value   : e0_par[1];
 
   for(i in 1:N) exposure_exp[i] = exposure[i]^gamma;
 
@@ -34,9 +36,10 @@ transformed parameters{
 
 model{
   response ~ normal(respHat, sigma);
-  e0 ~ normal(0, 10);
+  
   ec50 ~ normal(0, 1000);
-  // gamma  ~ normal(0, 10);
+  e0_par ~ normal(0, 10);
+  gamma_par  ~ normal(0, 10);
 
   sigma  ~ cauchy(0, 10);
 }

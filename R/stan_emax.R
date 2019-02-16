@@ -50,7 +50,7 @@ stan_emax <- function(formula, data, priors = NULL, ...){
                    e0_fix = 0,
                    hill_fix_value = 1,
                    e0_fix_value = 0)
-  out <- stan_emax_run(stanmodels$mod_emax_e0, standata = standata, ...)
+  out <- stan_emax_run(stanmodels$emax, standata = standata, ...)
 }
 
 

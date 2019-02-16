@@ -32,10 +32,10 @@ data <-
             exposure   = exposure))
 
 stanfit <-
-  rstan::sampling(stanmodels$mod_emax_e0,
+  rstan::sampling(stanmodels$emax,
            data = data)
 
-param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
+param.extract <- c("emax", "ec50", "e0", "gamma", "sigma")
 
 print(stanfit, pars = param.extract)
 
