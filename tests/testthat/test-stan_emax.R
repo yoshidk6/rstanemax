@@ -67,7 +67,7 @@ test_that("create standata", {
   expect_is(tdata2$e0_fix_value, "numeric")
 })
 
-coef.stan <- rstan::summary(test.fit$stanfit, pars = c("e0","emax","ec50"))$summary[,1]
+coef.stan <- rstan::summary(test.fit$stanfit, pars = c("e0","emax","ec50"))$summary[,6]
 coef.nls  <- coef(test.fit.nls)
 
 test_that("emax model run", {
