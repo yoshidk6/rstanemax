@@ -8,7 +8,7 @@
 \usage{
 \method{print}{stanemax}(object)
 
-\method{plot}{stanemax}(object)
+\method{plot}{stanemax}(object, show.ci = TRUE, show.pi = FALSE)
 }
 \description{
 Methods for stanemax objects

@@ -2,7 +2,11 @@
 #'
 #' Add explanations
 #'
-#' @export
+#' Run \code{vignette("emaxmodel", package = "rstanemax")} to see
+#' how you can use the posterior prediction for plotting estimated Emax curve.
+#'
+#' @export posterior_predict
+#' @name posterior_predict
 #' @param object a `stanemax` class object
 #' @param newdata an optional data frame with a column named `exposure` or a numeric vector
 #' @param returnType an optional string specifying the type of return object.
@@ -29,7 +33,7 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
     newdata <- data.frame(exposure = object$standata$exposure,
                           response = object$standata$response)
   } else {
-    if(is.vector(newdata)) newdata <- tibble(exposure = newdata)
+    if(is.vector(newdata)) newdata <- dplyr::tibble(exposure = newdata)
   }
 
   pred.response <- pp_calc(object$stanfit, newdata)
@@ -69,7 +73,22 @@ pp_calc <- function(stanfit, data.pp){
 
 
 
+#' @rdname posterior_predict
+#'
+posterior_predict_quantile <- function(object, newdata = NULL){
 
+  pp.raw <- posterior_predict.stanemax(object, newdata, returnType = c("tibble"))
+
+  pp.quantile <-
+    pp.raw %>%
+    dplyr::group_by(exposure) %>%
+    dplyr::summarize(respHat025 = quantile(respHat, probs = 0.025),
+                     respHat500 = quantile(respHat, probs = 0.5),
+                     respHat975 = quantile(respHat, probs = 0.975),
+                     response025 = quantile(response, probs = 0.025),
+                     response500 = quantile(response, probs = 0.5),
+                     response975 = quantile(response, probs = 0.975))
+}
 
 
 

@@ -5,7 +5,8 @@
 \alias{stan_emax_run}
 \title{Bayesian Emax model fit with Stan}
 \usage{
-stan_emax(formula, data, priors = NULL, ...)
+stan_emax(formula, data, gamma.fix = 1, e0.fix = NULL, priors = NULL,
+  ...)
 
 stan_emax_run(stanmodel, standata, ...)
 }
@@ -13,6 +14,16 @@ stan_emax_run(stanmodel, standata, ...)
 \item{formula}{a symbolic description of variables for Emax model fit.}
 
 \item{data}{an optional data frame containing the variables in the model.}
+
+\item{gamma.fix}{a numeric or NULL to specify gamma (Hill coefficient) in the sigmoidal Emax model.
+If NULL, gamma will be estimated from the data.
+If numeric, gamma is fixed at the number provided.
+Default = 1 (normal Emax model).}
+
+\item{e0.fix}{a numeric or NULL to specify E0 in the Emax model.
+If NULL, E0 will be estimated from the data.
+If numeric, E0 is fixed at the number provided.
+Default = NULL (estimate from the data).}
 
 \item{priors}{a list specifying priors of parameters.
 Not implemented yet.}
