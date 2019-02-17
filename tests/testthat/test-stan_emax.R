@@ -13,7 +13,7 @@ dose.exposure <-
   mutate(exposure = dose / clearance * exp(rnorm(dose, 0, logsd.exposure)))
 
 e0   <- 10
-emax <- 100
+emax <- 90
 ec50 <- 100
 sd.response <- 10
 
@@ -82,7 +82,7 @@ context("posterior_predict.R")
 test.pp.matrix <- posterior_predict.stanemax(test.fit)
 test.pp.df     <- posterior_predict.stanemax(test.fit, returnType = "dataframe")
 
-test_that("emax model run", {
+test_that("posterior prediction with original data", {
   expect_is(test.pp.matrix, "matrix")
   expect_is(test.pp.df, "data.frame")
 
@@ -90,9 +90,23 @@ test_that("emax model run", {
   expect_equal(nrow(test.pp.df), 15000)
 
   expect_equal(mean(test.pp.matrix[,1]),  10,  tolerance = 2)
-  expect_equal(mean(test.pp.matrix[,30]), 100, tolerance = 20)
+  expect_equal(mean(test.pp.matrix[,30]), 100, tolerance = 15)
 })
 
+newdata.vec <- c(0, rstan::summary(test.fit$stanfit, pars = c("ec50"))$summary[,6])
+newdata.df  <- data.frame(exposure = newdata.vec)
+test.pp.nd.v <-
+  posterior_predict.stanemax(test.fit, newdata = newdata.vec) %>%
+  apply(2, FUN = median)
+test.pp.nd.df <-
+  posterior_predict.stanemax(test.fit, newdata = newdata.df) %>%
+  apply(2, FUN = median)
+
+
+test_that("posterior prediction with new data", {
+  expect_equal(test.pp.nd.v,   c(10, 55),  tolerance = 5)
+  expect_equal(test.pp.nd.df,  c(10, 55),  tolerance = 5)
+})
 
 
 

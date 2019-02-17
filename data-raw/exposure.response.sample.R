@@ -14,7 +14,7 @@ dose.exposure <-
 # ggplot2::qplot(dose, exposure, data = dose.exposure)
 
 e0   <- 10
-emax <- 100
+emax <- 90
 ec50 <- 100
 sd.response <- 20
 
