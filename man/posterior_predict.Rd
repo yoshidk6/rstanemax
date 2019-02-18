@@ -35,6 +35,10 @@ The return object also contains exposure and parameter values used for calculati
 \description{
 Add explanations
 }
+\details{
+Run \code{vignette("emaxmodel", package = "rstanemax")} to see
+how you can use the posterior prediction for plotting estimated Emax curve.
+}
 \examples{
 \dontrun{
 }

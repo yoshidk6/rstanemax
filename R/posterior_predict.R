@@ -5,6 +5,7 @@
 #' Run \code{vignette("emaxmodel", package = "rstanemax")} to see
 #' how you can use the posterior prediction for plotting estimated Emax curve.
 #'
+#' @export
 #' @export posterior_predict
 #' @name posterior_predict
 #' @param object a `stanemax` class object
@@ -74,6 +75,7 @@ pp_calc <- function(stanfit, data.pp){
 
 
 #' @rdname posterior_predict
+#' @export
 #'
 posterior_predict_quantile <- function(object, newdata = NULL){
 
