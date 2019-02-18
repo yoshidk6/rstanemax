@@ -135,9 +135,9 @@ set_prior <- function(standata, priors = NULL){
   standata$prior_emax_sig <- delta
 
   # E0
-  resp.low.exp <- standata$response[standata$exposure < quantile(standata$response, 0.25)]
+  resp.low.exp <- standata$response[standata$exposure <= quantile(standata$exposure, 0.25)]
   standata$prior_e0_mu <- median(resp.low.exp)
-  standata$prior_e0_sig <- median(resp.low.exp) * 2
+  standata$prior_e0_sig <- abs(median(resp.low.exp)) * 2
 
   # Gamma
   standata$prior_gamma_mu  <- 0
