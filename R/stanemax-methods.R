@@ -7,7 +7,7 @@ NULL
 
 #' @rdname stanemax-methods
 #' @export
-print.stanemax <- function(object) {
+print.stanemax <- function(object, ...) {
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
   print(object$stanfit, pars = param.extract)
@@ -16,7 +16,12 @@ print.stanemax <- function(object) {
 
 #' @rdname stanemax-methods
 #' @export
-plot.stanemax <- function(object, show.ci = TRUE, show.pi = FALSE) {
+#' @param object An object of class `stanemax`
+#' @param show.ci An logical specifying if the output figure include
+#' credible interval of posterior prediction. Default TRUE.
+#' @param show.pi An logical specifying if the output figure include
+#' prediction interval. Default FALSE.
+plot.stanemax <- function(object, show.ci = TRUE, show.pi = FALSE, ...) {
 
   obs  <- data.frame(exposure = object$standata$exposure,
                      response = object$standata$response)

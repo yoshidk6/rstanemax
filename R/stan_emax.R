@@ -19,15 +19,10 @@
 #' @return An object of class `stanemax`
 #' @examples
 #' data(exposure.response.sample)
-#' ggplot2::qplot(exposure, response, data = exposure.response.sample)
-#'
-#' df <- data.frame(a = rnorm(10), b = rnorm(10))
-#' fit <- lm_stan_formula(b ~ a, data = df)
+#' fit <- stan_emax(response ~ exposure, data = exposure.response.sample)
 #' print(fit)
 #'
 #' \dontrun{
-#' data(exposure.response.sample)
-#' fit <- stan_emax(response ~ exposure, data = exposure.response.sample)
 #'
 #' }
 #'
@@ -45,8 +40,8 @@ stan_emax <- function(formula, data,
   modelframe <- suppressWarnings(eval(mf, parent.frame()))
 
   mt <- attr(modelframe, "terms")
-  Y <- model.response(modelframe)
-  X <- model.matrix(mt, modelframe)
+  Y <- stats::model.response(modelframe)
+  X <- stats::model.matrix(mt, modelframe)
 
   if(NCOL(Y) != 1) stop("Only one response variable is allowed")
   if(NCOL(X) != 2) stop("Only one exposure variable is allowed")
@@ -61,16 +56,12 @@ stan_emax <- function(formula, data,
 }
 
 
-#' Run Emax model
-#'
-#' Add explanations
-#'
-#' @rdname stan_emax
-#' @param stanmodel a Stan model object.
-#' @param standata a data file for model fit
-#' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
-#' @return An object of class `stanfit` returned by `rstan::sampling`
-#'
+# Run Emax model
+# @param stanmodel a Stan model object.
+# @param standata a data file for model fit
+# @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
+# @return An object of class `stanemax`
+#
 stan_emax_run <- function(stanmodel, standata, ...){
   # Run stan model and prepare `stanemax` object
 
@@ -120,12 +111,13 @@ create_standata <- function(X, Y, gamma.fix = 1, e0.fix = NULL){
 set_prior <- function(standata, priors = NULL){
 
   # EC50
-  standata$prior_ec50_mu  <- median(standata$exposure)
-  standata$prior_ec50_sig <- median(standata$exposure) * 2
+  standata$prior_ec50_mu  <- stats::median(standata$exposure)
+  standata$prior_ec50_sig <- stats::median(standata$exposure) * 2
 
   # Emax
   delta <- max(standata$response) - min(standata$response)
-  slope <- lm(response ~ exposure, data = standata) %>% coef() %>% .[[2]]
+  coeflm <- stats::lm(response ~ exposure, data = standata) %>% stats::coef()
+  slope <- coeflm[[2]]
 
   if(slope > 0){
     standata$prior_emax_mu <- delta
@@ -135,8 +127,8 @@ set_prior <- function(standata, priors = NULL){
   standata$prior_emax_sig <- delta
 
   # E0
-  resp.low.exp <- standata$response[standata$exposure <= quantile(standata$exposure, 0.25)]
-  standata$prior_e0_mu <- median(resp.low.exp)
+  resp.low.exp <- standata$response[standata$exposure <= stats::quantile(standata$exposure, 0.25)]
+  standata$prior_e0_mu <- stats::median(resp.low.exp)
   standata$prior_e0_sig <- abs(median(resp.low.exp)) * 2
 
   # Gamma
@@ -145,7 +137,7 @@ set_prior <- function(standata, priors = NULL){
 
   # Sigma
   standata$prior_sigma_mu  <- 0
-  standata$prior_sigma_sig <- sd(standata$response)
+  standata$prior_sigma_sig <- stats::sd(standata$response)
 
 
   return(standata)

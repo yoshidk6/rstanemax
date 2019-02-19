@@ -2,13 +2,10 @@
 % Please edit documentation in R/stan_emax.R
 \name{stan_emax}
 \alias{stan_emax}
-\alias{stan_emax_run}
 \title{Bayesian Emax model fit with Stan}
 \usage{
 stan_emax(formula, data, gamma.fix = 1, e0.fix = NULL, priors = NULL,
   ...)
-
-stan_emax_run(stanmodel, standata, ...)
 }
 \arguments{
 \item{formula}{a symbolic description of variables for Emax model fit.}
@@ -29,34 +26,19 @@ Default = NULL (estimate from the data).}
 Not implemented yet.}
 
 \item{...}{Arguments passed to `rstan::sampling` (e.g. iter, chains).}
-
-\item{stanmodel}{a Stan model object.}
-
-\item{standata}{a data file for model fit}
-
-\item{...}{Arguments passed to `rstan::sampling` (e.g. iter, chains).}
 }
 \value{
 An object of class `stanemax`
-
-An object of class `stanfit` returned by `rstan::sampling`
 }
 \description{
-Add explanations
-
 Add explanations
 }
 \examples{
 data(exposure.response.sample)
-ggplot2::qplot(exposure, response, data = exposure.response.sample)
-
-df <- data.frame(a = rnorm(10), b = rnorm(10))
-fit <- lm_stan_formula(b ~ a, data = df)
+fit <- stan_emax(response ~ exposure, data = exposure.response.sample)
 print(fit)
 
 \dontrun{
-data(exposure.response.sample)
-fit <- stan_emax(response ~ exposure, data = exposure.response.sample)
 
 }
 

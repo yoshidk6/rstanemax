@@ -3,14 +3,15 @@ Version: 0.0.0.9000
 Title: What the Package Does (One Line, Title Case)
 Description: What the package does (one paragraph).
 Authors@R: person("Kenta", "Yoshida", , "first.last@example.com", c("aut", "cre"))
-License: GPL (>=3)
 Encoding: UTF-8
+License: GPL-3 | file LICENSE
 LazyData: true
 ByteCompile: true
 Depends: R (>= 3.4.0), methods,Rcpp (>= 1.0.0)
 Imports: 
   rstan (>= 2.18.2), 
   rstantools (>= 1.5.1), 
+  magrittr (>= 1.5), 
   dplyr (>= 0.8.0), 
   tidyr (>= 0.8.0), 
   ggplot2 (>= 2.2.1)

@@ -23,12 +23,10 @@
 #' response include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 #'
 #' The return object also contains exposure and parameter values used for calculation.
-#' @examples
-#' \dontrun{
-#' }
 #'
 posterior_predict.stanemax <- function(object, newdata = NULL,
-                                       returnType = c("matrix", "dataframe", "tibble")){
+                                       returnType = c("matrix", "dataframe", "tibble"),
+                                       ...){
 
   if(is.null(newdata)) {
     newdata <- data.frame(exposure = object$standata$exposure,
@@ -67,7 +65,7 @@ pp_calc <- function(stanfit, data.pp){
   out <-
     df %>%
     dplyr::mutate(respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
-                  response= rnorm(respHat, respHat, sigma)) %>%
+                  response= stats::rnorm(respHat, respHat, sigma)) %>%
     dplyr::select(mcmcid, exposure, dplyr::everything())
 
 }

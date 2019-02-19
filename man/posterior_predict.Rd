@@ -7,7 +7,7 @@
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
 \method{posterior_predict}{stanemax}(object, newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"))
+  returnType = c("matrix", "dataframe", "tibble"), ...)
 
 posterior_predict_quantile(object, newdata = NULL)
 }
@@ -38,9 +38,4 @@ Add explanations
 \details{
 Run \code{vignette("emaxmodel", package = "rstanemax")} to see
 how you can use the posterior prediction for plotting estimated Emax curve.
-}
-\examples{
-\dontrun{
-}
-
 }
