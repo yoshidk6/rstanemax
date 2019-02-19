@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r warning=FALSE}
+```{r message=FALSE}
 library(rstanemax)
 library(dplyr)
 library(ggplot2)
@@ -89,7 +89,56 @@ ggplot(resp.pred.quantile, aes(exposure, respHat500)) +
 
 
 
-# Fix parameter values of E0 and/or gamma (Hill coefficient) 
+# Fix parameter values in Emax model
+
+You can fix parameter values in Emax model  for E0 and/or gamma (Hill coefficient).
+see `help(rstanemax::stan_emax)` for the details.
+The default is to fix gamma at 1 and to estimate E0 from data.
+
+Below is the example of estimating gamma from data.
+
+```{r, results="hide"}
+data(exposure.response.sample)
+
+fit.emax.sigmoidal <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL)
+```
+
+```{r}
+fit.emax.sigmoidal
+```
+
+You can compare the difference of posterior predictions between two models (in this case they are very close to each other):
+
+```{r fig.width = 6, fig.height = 4}
+
+exposure_pred <- seq(min(exposure.response.sample$exposure),
+                     max(exposure.response.sample$exposure),
+                     length.out = 100)
+
+pred1 <- 
+  posterior_predict_quantile(fit.emax, exposure_pred) %>% 
+  mutate(model = "Emax")
+pred2 <- 
+  posterior_predict_quantile(fit.emax.sigmoidal, exposure_pred) %>% 
+  mutate(model = "Sigmoidal Emax")
+
+pred <- bind_rows(pred1, pred2)
+
+
+ggplot(pred, aes(exposure, respHat500, color = model, fill = model)) +
+  geom_line() + 
+  geom_ribbon(aes(ymin=respHat025, ymax=respHat975), alpha = .3) +
+  geom_ribbon(aes(ymin=response025, ymax=response975), alpha = .1, color = NA) +
+  geom_point(data=exposure.response.sample, aes(exposure, response), 
+             color = "black", fill = NA, size=2) +
+  labs(y = "response")
+
+
+
+ 
+```
+
+
 
 
 
