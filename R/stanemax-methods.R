@@ -7,10 +7,10 @@ NULL
 
 #' @rdname stanemax-methods
 #' @export
-print.stanemax <- function(object, ...) {
+print.stanemax <- function(x, ...) {
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
-  print(object$stanfit, pars = param.extract)
+  print(x$stanfit, pars = param.extract)
 }
 
 
@@ -21,22 +21,23 @@ print.stanemax <- function(object, ...) {
 #' credible interval of posterior prediction. Default TRUE.
 #' @param show.pi An logical specifying if the output figure include
 #' prediction interval. Default FALSE.
-plot.stanemax <- function(object, show.ci = TRUE, show.pi = FALSE, ...) {
+#' @param ... Additional arguments passed to methods.
+plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
 
-  obs  <- data.frame(exposure = object$standata$exposure,
-                     response = object$standata$response)
-  newdata <- create_new_data(object$standata)
-  pred <- posterior_predict.stanemax(object, newdata = newdata, returnType = "tibble")
+  obs  <- data.frame(exposure = x$standata$exposure,
+                     response = x$standata$response)
+  newdata <- create_new_data(x$standata)
+  pred <- posterior_predict.stanemax(x, newdata = newdata, returnType = "tibble")
 
   pred.quantile <-
     pred %>%
     dplyr::group_by(exposure) %>%
-    dplyr::summarize(rH025 = quantile(respHat, probs = 0.025),
-                     rH500 = quantile(respHat, probs = 0.5),
-                     rH975 = quantile(respHat, probs = 0.975),
-                     re025 = quantile(response, probs = 0.025),
-                     re500 = quantile(response, probs = 0.5),
-                     re975 = quantile(response, probs = 0.975))
+    dplyr::summarize(rH025 = stats::quantile(respHat, probs = 0.025),
+                     rH500 = stats::quantile(respHat, probs = 0.5),
+                     rH975 = stats::quantile(respHat, probs = 0.975),
+                     re025 = stats::quantile(response, probs = 0.025),
+                     re500 = stats::quantile(response, probs = 0.5),
+                     re975 = stats::quantile(response, probs = 0.975))
   obs
   g <-
     ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, rH500)) +

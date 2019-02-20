@@ -8,9 +8,10 @@
 #' @export
 #' @export posterior_predict
 #' @name posterior_predict
-#' @param object a `stanemax` class object
-#' @param newdata an optional data frame with a column named `exposure` or a numeric vector
-#' @param returnType an optional string specifying the type of return object.
+#' @param object A `stanemax` class object
+#' @param newdata An optional data frame with a column named `exposure` or a numeric vector
+#' @param returnType An optional string specifying the type of return object.
+#' @param ... Additional rguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
 #' The default is a matrix containing predicted response.
 #' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
