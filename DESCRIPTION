@@ -1,8 +1,8 @@
 Package: rstanemax
 Version: 0.0.0.9000
-Title: What the Package Does (One Line, Title Case)
+Title: Emax model analysis with Stan
 Description: What the package does (one paragraph).
-Authors@R: person("Kenta", "Yoshida", , "first.last@example.com", c("aut", "cre"))
+Authors@R: person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"))
 Encoding: UTF-8
 License: GPL-3 | file LICENSE
 LazyData: true

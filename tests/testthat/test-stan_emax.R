@@ -79,6 +79,11 @@ test_that("emax model run", {
 ##########
 context("posterior_predict.R")
 
+test_that("returnType specification", {
+  expect_error(posterior_predict.stanemax(test.fit, returnType = "tabble"),
+               "'arg' should be one of \"matrix\", \"dataframe\", \"tibble\"")
+})
+
 test.pp.matrix <- posterior_predict.stanemax(test.fit)
 test.pp.df     <- posterior_predict.stanemax(test.fit, returnType = "dataframe")
 

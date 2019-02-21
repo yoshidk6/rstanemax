@@ -29,6 +29,8 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
                                        returnType = c("matrix", "dataframe", "tibble"),
                                        ...){
 
+  returnType <- match.arg(returnType)
+
   if(is.null(newdata)) {
     newdata <- data.frame(exposure = object$standata$exposure,
                           response = object$standata$response)
@@ -38,15 +40,13 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
   pred.response <- pp_calc(object$stanfit, newdata)
 
-  if(returnType[[1]] == "matrix") {
+  if(returnType == "matrix") {
     return(matrix(pred.response$response, ncol = nrow(newdata), byrow = TRUE))
   } else if(returnType == "dataframe") {
     return(as.data.frame(pred.response))
   } else if(returnType == "tibble") {
     return(dplyr::as_tibble(pred.response))
-  } else {
-    stop('returnType must be either "matrix", "dataframe", or "tibble"')
-    }
+  }
 
 }
 
