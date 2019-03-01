@@ -36,7 +36,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_emax");
-    reader.add_event(61, 59, "end", "model_emax");
+    reader.add_event(66, 64, "end", "model_emax");
     return reader;
 }
 
@@ -554,6 +554,7 @@ public:
         names__.push_back("exposure_exp");
         names__.push_back("gamma");
         names__.push_back("e0");
+        names__.push_back("log_lik");
     }
 
 
@@ -581,6 +582,9 @@ public:
         dims__.resize(0);
         dimss__.push_back(dims__);
         dims__.resize(0);
+        dimss__.push_back(dims__);
+        dims__.resize(0);
+        dims__.push_back(N);
         dimss__.push_back(dims__);
     }
 
@@ -693,12 +697,32 @@ public:
             }
             if (!include_gqs__) return;
             // declare and define generated quantities
+            current_statement_begin__ = 62;
+            validate_non_negative_index("log_lik", "N", N);
+            Eigen::Matrix<local_scalar_t__,Eigen::Dynamic,1>  log_lik(static_cast<Eigen::VectorXd::Index>(N));
+            (void) log_lik;  // dummy to suppress unused var warning
+
+            stan::math::initialize(log_lik, DUMMY_VAR__);
+            stan::math::fill(log_lik,DUMMY_VAR__);
 
 
+            current_statement_begin__ = 63;
+            for (int n = 1; n <= N; ++n) {
+                current_statement_begin__ = 63;
+                stan::model::assign(log_lik, 
+                            stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
+                            normal_log(get_base1(response,n,"response",1),get_base1(respHat,n,"respHat",1),sigma), 
+                            "assigning variable log_lik");
+            }
 
             // validate generated quantities
+            current_statement_begin__ = 62;
 
             // write generated quantities
+            for (int k_0__ = 0; k_0__ < N; ++k_0__) {
+            vars__.push_back(log_lik[k_0__]);
+            }
+
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
             // Next line prevents compiler griping about no return
@@ -776,6 +800,11 @@ public:
 
 
         if (!include_gqs__) return;
+        for (int k_0__ = 1; k_0__ <= N; ++k_0__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "log_lik" << '.' << k_0__;
+            param_names__.push_back(param_name_stream__.str());
+        }
     }
 
 
@@ -826,6 +855,11 @@ public:
 
 
         if (!include_gqs__) return;
+        for (int k_0__ = 1; k_0__ <= N; ++k_0__) {
+            param_name_stream__.str(std::string());
+            param_name_stream__ << "log_lik" << '.' << k_0__;
+            param_names__.push_back(param_name_stream__.str());
+        }
     }
 
 }; // model

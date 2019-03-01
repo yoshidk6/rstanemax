@@ -52,6 +52,7 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
 
 # Calculate posterior prediction from stanfit object and exposure data
+## data.pp is a data frame with column named `exposure`
 pp_calc <- function(stanfit, data.pp){
 
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")

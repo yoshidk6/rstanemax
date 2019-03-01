@@ -58,3 +58,7 @@ model{
   sigma      ~ normal(prior_sigma_mu, prior_sigma_sig);
 }
 
+generated quantities {
+  vector[N] log_lik;
+  for (n in 1:N) log_lik[n] = normal_lpdf(response[n]| respHat[n], sigma);
+}
