@@ -6,7 +6,7 @@
 This Small package is intended to fill a niche gap of performing simple sigmoidal Emax model fit using Stan, without the need of writing Stan model code.
 
 Obviously the most important tool that serves similar (and much much more general) purposes is __rstanarm__ package ([link](https://mc-stan.org/users/interfaces/rstanarm)). One small gap it has is nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with `SS` prefixes ([link](http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer)). 
-Unfortunately (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions.
+Unfortunately the (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions.
 It also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects. 
 
 I hope this package will allow for easier implementation of Emax model in Bayesian framework and enable routine use of the framework in pharmacokinetic/pharmacodynamic analysis.

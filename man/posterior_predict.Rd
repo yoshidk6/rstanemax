@@ -12,11 +12,13 @@
 posterior_predict_quantile(object, newdata = NULL)
 }
 \arguments{
-\item{object}{a `stanemax` class object}
+\item{object}{A `stanemax` class object}
 
-\item{newdata}{an optional data frame with a column named `exposure` or a numeric vector}
+\item{newdata}{An optional data frame with a column named `exposure` or a numeric vector}
 
-\item{returnType}{an optional string specifying the type of return object.}
+\item{returnType}{An optional string specifying the type of return object.}
+
+\item{...}{Additional rguments passed to methods.}
 }
 \value{
 An object that contain predicted response with posterior distribution of parameters.
