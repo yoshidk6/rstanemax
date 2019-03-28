@@ -16,7 +16,7 @@ print.stanemax <- function(x, ...) {
 
 #' @rdname stanemax-methods
 #' @export
-#' @param object An object of class `stanemax`
+#' @param x An object of class `stanemax`
 #' @param show.ci An logical specifying if the output figure include
 #' credible interval of posterior prediction. Default TRUE.
 #' @param show.pi An logical specifying if the output figure include

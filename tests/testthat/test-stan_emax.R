@@ -72,7 +72,7 @@ coef.nls  <- coef(test.fit.nls)
 
 test_that("emax model run", {
   expect_is(test.fit, "stanemax")
-  expect_equal(dim(test.fit$stanfit), c(250, 2, 67))
+  expect_equal(dim(test.fit$stanfit), c(250, 2, 97))
   expect_equal(coef.stan/coef.nls, c(e0=1, emax=1, ec50=1), tolerance = 0.1)
 })
 

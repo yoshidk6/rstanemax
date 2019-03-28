@@ -31,11 +31,23 @@ See [this blog post](http://yoshidk6.hatenablog.com/entry/2019/02/19/061100) (wr
 
 # Getting started
 
+[This GitHub pages](https://github.com/UUPharmacometrics/xpose) contains function references and vignette.
+
+
 ## Load __rstanemax__
 ```
 library(rstanemax)
 ```
 
+## Run model with a sample dataset
+
+```
+data(exposure.response.sample)
+
+fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample)
+
+fit.emax
+```
 
 
 

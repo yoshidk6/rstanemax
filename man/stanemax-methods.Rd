@@ -11,6 +11,8 @@
 \method{plot}{stanemax}(x, show.ci = TRUE, show.pi = FALSE, ...)
 }
 \arguments{
+\item{x}{An object of class `stanemax`}
+
 \item{...}{Additional arguments passed to methods.}
 
 \item{show.ci}{An logical specifying if the output figure include
@@ -18,8 +20,6 @@ credible interval of posterior prediction. Default TRUE.}
 
 \item{show.pi}{An logical specifying if the output figure include
 prediction interval. Default FALSE.}
-
-\item{object}{An object of class `stanemax`}
 }
 \description{
 Methods for stanemax objects

@@ -84,12 +84,12 @@ posterior_predict_quantile <- function(object, newdata = NULL){
   pp.quantile <-
     pp.raw %>%
     dplyr::group_by(exposure) %>%
-    dplyr::summarize(respHat025 = quantile(respHat, probs = 0.025),
-                     respHat500 = quantile(respHat, probs = 0.5),
-                     respHat975 = quantile(respHat, probs = 0.975),
-                     response025 = quantile(response, probs = 0.025),
-                     response500 = quantile(response, probs = 0.5),
-                     response975 = quantile(response, probs = 0.975))
+    dplyr::summarize(respHat025 = stats::quantile(respHat, probs = 0.025),
+                     respHat500 = stats::quantile(respHat, probs = 0.5),
+                     respHat975 = stats::quantile(respHat, probs = 0.975),
+                     response025 = stats::quantile(response, probs = 0.025),
+                     response500 = stats::quantile(response, probs = 0.5),
+                     response975 = stats::quantile(response, probs = 0.975))
 }
 
 

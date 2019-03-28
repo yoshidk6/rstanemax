@@ -1,7 +1,7 @@
 Package: rstanemax
 Version: 0.0.0.9001
 Title: Emax model analysis with Stan
-Description: Perform sigmoidal Emax model fit using Stan without writing Stan model code
+Description: Perform sigmoidal Emax model fit using Stan without writing Stan model code.
 Authors@R: person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"))
 Encoding: UTF-8
 License: GPL-3 | file LICENSE
@@ -27,5 +27,7 @@ RoxygenNote: 6.1.1
 Suggests: 
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    spelling
 VignetteBuilder: knitr
+Language: en-US
