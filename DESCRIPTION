@@ -1,8 +1,10 @@
 Package: rstanemax
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Title: Emax model analysis with Stan
 Description: Perform sigmoidal Emax model fit using Stan without writing Stan model code.
-Authors@R: person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"))
+Authors@R: person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"), 
+      comment = c(ORCID = "0000-0003-4967-3831")
+    )
 Encoding: UTF-8
 License: GPL-3 | file LICENSE
 LazyData: true
@@ -31,3 +33,5 @@ Suggests:
     spelling
 VignetteBuilder: knitr
 Language: en-US
+URL: https://github.com/yoshidk6/rstanemax
+BugReports: https://github.com/yoshidk6/rstanemax/issues

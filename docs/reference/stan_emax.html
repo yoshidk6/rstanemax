@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
       </span>
     </div>
 
@@ -93,7 +93,12 @@
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/yoshidk6/rstanemax">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -107,7 +112,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Bayesian Emax model fit with Stan</h1>
-    
+    <small class="dont-index">Source: <a href='https://github.com/yoshidk6/rstanemax/blob/master/R/stan_emax.R'><code>R/stan_emax.R</code></a></small>
     <div class="hidden name"><code>stan_emax.Rd</code></div>
     </div>
 
@@ -184,9 +189,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.921 seconds (Warm-up)
-#&gt; Chain 1:                0.424 seconds (Sampling)
-#&gt; Chain 1:                1.345 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.732 seconds (Warm-up)
+#&gt; Chain 1:                0.483 seconds (Sampling)
+#&gt; Chain 1:                1.215 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 2).
@@ -209,9 +214,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.573 seconds (Warm-up)
-#&gt; Chain 2:                0.429 seconds (Sampling)
-#&gt; Chain 2:                1.002 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.579 seconds (Warm-up)
+#&gt; Chain 2:                0.308 seconds (Sampling)
+#&gt; Chain 2:                0.887 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 3).
@@ -234,9 +239,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.541 seconds (Warm-up)
-#&gt; Chain 3:                0.379 seconds (Sampling)
-#&gt; Chain 3:                0.92 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.465 seconds (Warm-up)
+#&gt; Chain 3:                0.299 seconds (Sampling)
+#&gt; Chain 3:                0.764 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 4).
@@ -259,9 +264,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.525 seconds (Warm-up)
-#&gt; Chain 4:                0.373 seconds (Sampling)
-#&gt; Chain 4:                0.898 seconds (Total)
+#&gt; Chain 4:  Elapsed Time: 0.444 seconds (Warm-up)
+#&gt; Chain 4:                0.322 seconds (Sampling)
+#&gt; Chain 4:                0.766 seconds (Total)
 #&gt; Chain 4: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Inference for Stan model: emax.
 #&gt; 4 chains, each with iter=2000; warmup=1000; thin=1; 
 #&gt; post-warmup draws per chain=1000, total post-warmup draws=4000.
@@ -273,7 +278,7 @@ Not implemented yet.</p></td>
 #&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN
 #&gt; sigma  20.01    0.02  1.27 17.67  19.14  19.94  20.83  22.71  2961    1
 #&gt; 
-#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 10:52:34 2019.
+#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 14:10:00 2019.
 #&gt; For each parameter, n_eff is a crude measure of effective sample size,
 #&gt; and Rhat is the potential scale reduction factor on split chains (at 
 #&gt; convergence, Rhat=1).</div><div class='input'>

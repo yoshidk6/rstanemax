@@ -27,7 +27,7 @@ This vignette provide an overview of the workflow of Emax model analysis using t
 
 # Typical workflow
 
-## Model run with `stan_emax` function
+## Model run with `stan_emax()` function
 
 `stan_emax` is the main function of this package to perfrom Emax model analysis on the data.
 This function requires minimum two input arguments - `formula` and `data`.
@@ -43,7 +43,7 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample)
 fit.emax
 ```
 
-`plot` function shows the estimated Emax model curve with 95% credible intervals of parameters.
+`plot()` function shows the estimated Emax model curve with 95% credible intervals of parameters.
 
 ```{r, fig.show='hold'}
 plot(fit.emax)
@@ -57,10 +57,10 @@ class(fit.emax$stanfit)
 
 ## Prediction of response with new exposure data
 
-`posterior_predict` function allows users to predict the response using new exposure data.
+`posterior_predict()` function allows users to predict the response using new exposure data.
 If `newdata` is not provided, the function returns the prediction on the exposures in original data.
 The default output is a matrix of posterior predictions, but you can also specify "dataframe" or "tibble" that contain posterior predictions in a long format.
-see `help(rstanemax::posterior_predict)` for the description of two predictions, `respHat` and `response`.
+See help of `rstanemax::posterior_predict()` for the description of two predictions, `respHat` and `response`.
 
 ```{r}
 response.pred <- posterior_predict(fit.emax, newdata = c(0, 100, 1000), returnType = "tibble")
@@ -68,7 +68,7 @@ response.pred <- posterior_predict(fit.emax, newdata = c(0, 100, 1000), returnTy
 response.pred %>% select(mcmcid, exposure, respHat, response)
 ```
 
-You can also get quantiles of predictions with `posterior_predict_quantile` function.
+You can also get quantiles of predictions with `posterior_predict_quantile()` function.
 Currently this function only export 95% credible intervals of mean response and 95% prediction intervals of individual responses.
 
 ```{r}
@@ -92,7 +92,7 @@ ggplot(resp.pred.quantile, aes(exposure, respHat500)) +
 # Fix parameter values in Emax model
 
 You can fix parameter values in Emax model  for E0 and/or gamma (Hill coefficient).
-see `help(rstanemax::stan_emax)` for the details.
+See help of `stan_emax()` for the details.
 The default is to fix gamma at 1 and to estimate E0 from data.
 
 Below is the example of estimating gamma from data.

@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
       </span>
     </div>
 
@@ -58,7 +58,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/yoshidk6/rstanemax">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -75,7 +82,7 @@
             
             <h4 class="date">2019-03-28</h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/yoshidk6/rstanemax/blob/master/vignettes/emaxmodel.Rmd"><code>vignettes/emaxmodel.Rmd</code></a></small>
       <div class="hidden name"><code>emaxmodel.Rmd</code></div>
 
     </div>
@@ -91,7 +98,7 @@
 <a href="#typical-workflow" class="anchor"></a>Typical workflow</h1>
 <div id="model-run-with-stan_emax-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#model-run-with-stan_emax-function" class="anchor"></a>Model run with <code>stan_emax</code> function</h2>
+<a href="#model-run-with-stan_emax-function" class="anchor"></a>Model run with <code><a href="../reference/stan_emax.html">stan_emax()</a></code> function</h2>
 <p><code>stan_emax</code> is the main function of this package to perfrom Emax model analysis on the data. This function requires minimum two input arguments - <code>formula</code> and <code>data</code>. In the <code>formula</code> argument, you will specify which columns of <code>data</code> will be used as exposure and response data, in a format similar to <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">stats::lm()</a></code> function, e.g. <code>response ~ exposure</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(exposure.response.sample)
 
@@ -102,17 +109,17 @@ fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/st
 <span class="co">#&gt; post-warmup draws per chain=1000, total post-warmup draws=4000.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat</span>
-<span class="co">#&gt; emax  106.95    0.10  5.25 96.80 103.45 106.98 110.48 117.46  2604    1</span>
-<span class="co">#&gt; e0      6.50    0.08  3.95 -1.20   3.86   6.52   9.15  14.18  2414    1</span>
-<span class="co">#&gt; ec50   99.34    0.38 19.51 66.92  85.59  97.48 110.62 143.76  2659    1</span>
+<span class="co">#&gt; emax  106.90    0.10  5.20 96.80 103.34 107.02 110.35 117.05  2780    1</span>
+<span class="co">#&gt; e0      6.70    0.07  3.98 -1.17   4.07   6.78   9.33  14.49  2854    1</span>
+<span class="co">#&gt; ec50  100.24    0.43 20.28 66.93  85.71  97.79 112.08 146.88  2257    1</span>
 <span class="co">#&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN</span>
-<span class="co">#&gt; sigma  20.06    0.03  1.33 17.56  19.15  19.99  20.89  22.83  2377    1</span>
+<span class="co">#&gt; sigma  20.02    0.02  1.35 17.64  19.11  19.91  20.87  22.90  3421    1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 10:52:48 2019.</span>
+<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 14:10:11 2019.</span>
 <span class="co">#&gt; For each parameter, n_eff is a crude measure of effective sample size,</span>
 <span class="co">#&gt; and Rhat is the potential scale reduction factor on split chains (at </span>
 <span class="co">#&gt; convergence, Rhat=1).</span></code></pre></div>
-<p><code>plot</code> function shows the estimated Emax model curve with 95% credible intervals of parameters.</p>
+<p><code><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot()</a></code> function shows the estimated Emax model curve with 95% credible intervals of parameters.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(fit.emax)</code></pre></div>
 <p><img src="emaxmodel_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
 <p>Raw output from <code>rstan</code> is stored in the output variable, and you can access it with <code>$stanfit</code>.</p>
@@ -124,35 +131,35 @@ fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/st
 <div id="prediction-of-response-with-new-exposure-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prediction-of-response-with-new-exposure-data" class="anchor"></a>Prediction of response with new exposure data</h2>
-<p><code>posterior_predict</code> function allows users to predict the response using new exposure data. If <code>newdata</code> is not provided, the function returns the prediction on the exposures in original data. The default output is a matrix of posterior predictions, but you can also specify “dataframe” or “tibble” that contain posterior predictions in a long format. see <code><a href="https://www.rdocumentation.org/packages/utils/topics/help">help(rstanemax::posterior_predict)</a></code> for the description of two predictions, <code>respHat</code> and <code>response</code>.</p>
+<p><code><a href="../reference/posterior_predict.html">posterior_predict()</a></code> function allows users to predict the response using new exposure data. If <code>newdata</code> is not provided, the function returns the prediction on the exposures in original data. The default output is a matrix of posterior predictions, but you can also specify “dataframe” or “tibble” that contain posterior predictions in a long format. See help of <code><a href="../reference/posterior_predict.html">rstanemax::posterior_predict()</a></code> for the description of two predictions, <code>respHat</code> and <code>response</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">response.pred &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">1000</span>), <span class="dt">returnType =</span> <span class="st">"tibble"</span>)
 
 response.pred <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(mcmcid, exposure, respHat, response)
 <span class="co">#&gt; # A tibble: 12,000 x 4</span>
 <span class="co">#&gt;    mcmcid exposure respHat response</span>
 <span class="co">#&gt;     &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1      1        0   4.18     12.3 </span>
-<span class="co">#&gt;  2      1      100  53.9      43.9 </span>
-<span class="co">#&gt;  3      1     1000 102.      117.  </span>
-<span class="co">#&gt;  4      2        0   4.11     15.7 </span>
-<span class="co">#&gt;  5      2      100  62.7      25.9 </span>
-<span class="co">#&gt;  6      2     1000 101.      110.  </span>
-<span class="co">#&gt;  7      3        0   1.89     15.2 </span>
-<span class="co">#&gt;  8      3      100  60.3      45.4 </span>
-<span class="co">#&gt;  9      3     1000 105.      113.  </span>
-<span class="co">#&gt; 10      4        0   0.993     1.33</span>
+<span class="co">#&gt;  1      1        0   11.3     42.6 </span>
+<span class="co">#&gt;  2      1      100   61.9     66.9 </span>
+<span class="co">#&gt;  3      1     1000   99.4     97.6 </span>
+<span class="co">#&gt;  4      2        0    1.52     3.37</span>
+<span class="co">#&gt;  5      2      100   54.4     70.4 </span>
+<span class="co">#&gt;  6      2     1000   99.8     94.7 </span>
+<span class="co">#&gt;  7      3        0   11.6    -13.2 </span>
+<span class="co">#&gt;  8      3      100   63.0     41.6 </span>
+<span class="co">#&gt;  9      3     1000  107.      99.9 </span>
+<span class="co">#&gt; 10      4        0   11.3     40.0 </span>
 <span class="co">#&gt; # ... with 11,990 more rows</span></code></pre></div>
-<p>You can also get quantiles of predictions with <code>posterior_predict_quantile</code> function. Currently this function only export 95% credible intervals of mean response and 95% prediction intervals of individual responses.</p>
+<p>You can also get quantiles of predictions with <code><a href="../reference/posterior_predict.html">posterior_predict_quantile()</a></code> function. Currently this function only export 95% credible intervals of mean response and 95% prediction intervals of individual responses.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resp.pred.quantile &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">0</span>, <span class="dv">1000</span>, <span class="dt">by =</span> <span class="dv">250</span>))
 resp.pred.quantile
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   exposure respHat025 respHat500 respHat975 response025 response500</span>
 <span class="co">#&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        0      -1.20       6.52       14.2       -35.1        6.70</span>
-<span class="co">#&gt; 2      250      78.0       83.3        88.2        43.6       83.4 </span>
-<span class="co">#&gt; 3      500      90.8       95.8       101.         55.5       96.0 </span>
-<span class="co">#&gt; 4      750      95.4      101.        106.         60.5      101.  </span>
-<span class="co">#&gt; 5     1000      97.7      104.        110.         63.5      104.  </span>
+<span class="co">#&gt; 1        0      -1.17       6.78       14.5       -32.3        6.57</span>
+<span class="co">#&gt; 2      250      78.0       83.3        88.2        44.9       83.9 </span>
+<span class="co">#&gt; 3      500      91.0       95.8       101.         55.3       95.6 </span>
+<span class="co">#&gt; 4      750      95.7      101.        106.         61.7      101.  </span>
+<span class="co">#&gt; 5     1000      98.1      104.        110.         64.2      103.  </span>
 <span class="co">#&gt; # ... with 1 more variable: response975 &lt;dbl&gt;</span></code></pre></div>
 <p>This is particularly useful when you want to plot the estimated Emax curve.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(resp.pred.quantile, <span class="kw">aes</span>(exposure, respHat500)) <span class="op">+</span>
@@ -166,7 +173,7 @@ resp.pred.quantile
 <div id="fix-parameter-values-in-emax-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#fix-parameter-values-in-emax-model" class="anchor"></a>Fix parameter values in Emax model</h1>
-<p>You can fix parameter values in Emax model for E0 and/or gamma (Hill coefficient). see <code><a href="https://www.rdocumentation.org/packages/utils/topics/help">help(rstanemax::stan_emax)</a></code> for the details. The default is to fix gamma at 1 and to estimate E0 from data.</p>
+<p>You can fix parameter values in Emax model for E0 and/or gamma (Hill coefficient). See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details. The default is to fix gamma at 1 and to estimate E0 from data.</p>
 <p>Below is the example of estimating gamma from data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(exposure.response.sample)
 
@@ -177,13 +184,13 @@ fit.emax.sigmoidal &lt;-<span class="st"> </span><span class="kw"><a href="../re
 <span class="co">#&gt; post-warmup draws per chain=1000, total post-warmup draws=4000.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat</span>
-<span class="co">#&gt; emax  108.43    0.36 11.08 90.32 100.97 107.16 114.16 135.73   948    1</span>
-<span class="co">#&gt; e0      6.92    0.11  4.52 -1.96   3.85   6.94  10.01  15.58  1822    1</span>
-<span class="co">#&gt; ec50  108.40    1.15 35.23 66.47  86.82 100.58 119.91 205.23   932    1</span>
-<span class="co">#&gt; gamma   1.02    0.01  0.22  0.63   0.86   1.00   1.15   1.50  1445    1</span>
-<span class="co">#&gt; sigma  20.14    0.03  1.33 17.75  19.18  20.07  21.01  22.87  2546    1</span>
+<span class="co">#&gt; emax  108.40    0.34 11.02 91.57 100.97 106.77 114.00 134.28  1059 1.00</span>
+<span class="co">#&gt; e0      6.79    0.09  4.38 -2.16   3.88   6.92   9.82  14.99  2276 1.00</span>
+<span class="co">#&gt; ec50  108.48    1.27 39.77 67.27  85.16  99.68 120.43 204.53   982 1.01</span>
+<span class="co">#&gt; gamma   1.01    0.01  0.21  0.63   0.86   1.00   1.14   1.48  1549 1.00</span>
+<span class="co">#&gt; sigma  20.17    0.03  1.34 17.79  19.24  20.09  20.98  23.07  2226 1.00</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 10:53:01 2019.</span>
+<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 14:10:22 2019.</span>
 <span class="co">#&gt; For each parameter, n_eff is a crude measure of effective sample size,</span>
 <span class="co">#&gt; and Rhat is the potential scale reduction factor on split chains (at </span>
 <span class="co">#&gt; convergence, Rhat=1).</span></code></pre></div>
@@ -221,7 +228,7 @@ pred &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(pred1, pred
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#typical-workflow">Typical workflow</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#model-run-with-stan_emax-function">Model run with <code>stan_emax</code> function</a></li>
+<li><a href="#model-run-with-stan_emax-function">Model run with <code><a href="--/reference/stan_emax-html">stan_emax()</a></code> function</a></li>
       <li><a href="#prediction-of-response-with-new-exposure-data">Prediction of response with new exposure data</a></li>
       </ul>
 </li>
