@@ -108,7 +108,52 @@ create_standata <- function(X, Y, gamma.fix = 1, e0.fix = NULL){
 
 
 
+
+
+# Maybe separate a file for prior setting
+
+
+# Cleaner to create some S3 class to contain all prior information?
+# Check building tidy tools materials
+
+# Write test for cases where any of list items have != 2 elements
+# Make sure there is no coding error in passing `priors` into standata
+
+# priors = list(ec50 = c(10, 10))
+
+# How should we assign distribution type?
+# Maybe another list item like `priors$sigmadist`?
+
 set_prior <- function(standata, priors = NULL){
+  standata <- set_prior_auto(standata)
+
+  if(!is.null(priors$ec50)){
+    standata$prior_ec50_mu  <- priors$ec50[[1]]
+    standata$prior_ec50_sig <- priors$ec50[[2]]
+  }
+  if(!is.null(priors$emax)){
+    standata$prior_emax_mu  <- priors$emax[[1]]
+    standata$prior_emax_sig <- priors$emax[[2]]
+  }
+  if(!is.null(priors$e0)){
+    standata$prior_e0_mu  <- priors$e0[[1]]
+    standata$prior_e0_sig <- priors$e0[[2]]
+  }
+  if(!is.null(priors$gamma)){
+    standata$prior_gamma_mu  <- priors$gamma[[1]]
+    standata$prior_gamma_sig <- priors$gamma[[2]]
+  }
+  if(!is.null(priors$sigma)){
+    standata$prior_sigma_mu  <- priors$sigma[[1]]
+    standata$prior_sigma_sig <- priors$sigma[[2]]
+  }
+
+
+}
+
+
+
+set_prior_auto <- function(standata){
 
   # EC50
   standata$prior_ec50_mu  <- stats::median(standata$exposure)
