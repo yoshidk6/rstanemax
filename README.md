@@ -8,9 +8,9 @@ This small package performs simple sigmoidal Emax model fit using Stan, without 
 __rstanarm__ package ([link](https://mc-stan.org/users/interfaces/rstanarm)) is a very flexible, general purpose tool to perform various Bayesian modeling with formula notations, such as generalized mixed effect models or joint models.
 One small gap it has is nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with `SS` prefixes ([link](http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer)). 
 Unfortunately the (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions.
-The package also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects. 
+The __rstanarm__ package also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects. 
 
-I hope this __rstanemax__ package will allow for easier implementation of Emax model in Bayesian framework and enable routine use of the framework in the pharmacokinetic/pharmacodynamic field.
+I hope this __rstanemax__ package will fill the niche gap, allow for easier implementation of Emax model in Bayesian framework, and enable routine uses in the pharmacokinetic/pharmacodynamic field.
 
 
 # Installation
@@ -30,9 +30,9 @@ devtools::install_github("yoshidk6/rstanemax")
 See [this blog post](http://yoshidk6.hatenablog.com/entry/2019/02/19/061100) (written in Japanese) if the above process doesn't work. 
 
 
-# Getting started
+# How to use
 
-[This GitHub pages](https://github.com/yoshidk6/rstanemax) contains function references and vignette.
+[This GitHub pages](https://yoshidk6.github.io/rstanemax) contains function references and vignette.
 
 
 ## Load __rstanemax__
