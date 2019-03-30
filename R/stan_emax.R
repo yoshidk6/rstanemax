@@ -1,6 +1,6 @@
 #' Bayesian Emax model fit with Stan
 #'
-#' Add explanations
+#' Run sigmoidal Emax model fit with formula notation
 #'
 #' @export
 #' @param formula a symbolic description of variables for Emax model fit.
@@ -13,8 +13,10 @@
 #' If NULL, E0 will be estimated from the data.
 #' If numeric, E0 is fixed at the number provided.
 #' Default = NULL (estimate from the data).
-#' @param priors a list specifying priors of parameters.
-#' Not implemented yet.
+#' @param priors a named list specifying priors of parameters (ec50, emax, e0, gamma, sigma).
+#' Each list item should be length 2 numeric vector, one corresponding to mean and
+#' another corresponding to standard deviation.
+#' Currently only supports normal distribution for priors.
 #' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
 #' @return An object of class `stanemax`
 #' @examples
@@ -23,6 +25,11 @@
 #' print(fit)
 #'
 #' \dontrun{
+#' # Set priors manually
+#' fit <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+#'                  priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
+#'                                gamma = c(0, 3), sigma = c(0, 30)))
+#' )
 #'
 #' }
 #'
@@ -110,80 +117,3 @@ create_standata <- function(X, Y, gamma.fix = 1, e0.fix = NULL){
 
 
 
-# Maybe separate a file for prior setting
-
-
-# Cleaner to create some S3 class to contain all prior information?
-# Check building tidy tools materials
-
-# Write test for cases where any of list items have != 2 elements
-# Make sure there is no coding error in passing `priors` into standata
-
-# priors = list(ec50 = c(10, 10))
-
-# How should we assign distribution type?
-# Maybe another list item like `priors$sigmadist`?
-
-set_prior <- function(standata, priors = NULL){
-  standata <- set_prior_auto(standata)
-
-  if(!is.null(priors$ec50)){
-    standata$prior_ec50_mu  <- priors$ec50[[1]]
-    standata$prior_ec50_sig <- priors$ec50[[2]]
-  }
-  if(!is.null(priors$emax)){
-    standata$prior_emax_mu  <- priors$emax[[1]]
-    standata$prior_emax_sig <- priors$emax[[2]]
-  }
-  if(!is.null(priors$e0)){
-    standata$prior_e0_mu  <- priors$e0[[1]]
-    standata$prior_e0_sig <- priors$e0[[2]]
-  }
-  if(!is.null(priors$gamma)){
-    standata$prior_gamma_mu  <- priors$gamma[[1]]
-    standata$prior_gamma_sig <- priors$gamma[[2]]
-  }
-  if(!is.null(priors$sigma)){
-    standata$prior_sigma_mu  <- priors$sigma[[1]]
-    standata$prior_sigma_sig <- priors$sigma[[2]]
-  }
-
-
-}
-
-
-
-set_prior_auto <- function(standata){
-
-  # EC50
-  standata$prior_ec50_mu  <- stats::median(standata$exposure)
-  standata$prior_ec50_sig <- stats::median(standata$exposure) * 2
-
-  # Emax
-  delta <- max(standata$response) - min(standata$response)
-  coeflm <- stats::lm(response ~ exposure, data = standata) %>% stats::coef()
-  slope <- coeflm[[2]]
-
-  if(slope > 0){
-    standata$prior_emax_mu <- delta
-  } else {
-    standata$prior_emax_mu <- - delta
-  }
-  standata$prior_emax_sig <- delta
-
-  # E0
-  resp.low.exp <- standata$response[standata$exposure <= stats::quantile(standata$exposure, 0.25)]
-  standata$prior_e0_mu <- stats::median(resp.low.exp)
-  standata$prior_e0_sig <- abs(stats::median(resp.low.exp)) * 2
-
-  # Gamma
-  standata$prior_gamma_mu  <- 0
-  standata$prior_gamma_sig <- 5
-
-  # Sigma
-  standata$prior_sigma_mu  <- 0
-  standata$prior_sigma_sig <- stats::sd(standata$response)
-
-
-  return(standata)
-}

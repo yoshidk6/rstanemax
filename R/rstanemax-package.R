@@ -1,7 +1,7 @@
 #' The 'rstanemax' package.
-#' 
-#' @description A DESCRIPTION OF THE PACKAGE
-#' 
+#'
+#' @description Perform sigmoidal Emax model fit using Stan without writing Stan model code.
+#'
 #' @docType package
 #' @name rstanemax-package
 #' @aliases rstanemax
@@ -10,8 +10,8 @@
 #' @import Rcpp
 #' @import rstantools
 #' @importFrom rstan sampling
-#' 
-#' @references 
+#'
+#' @references
 #' Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.18.2. http://mc-stan.org
-#' 
+#'
 NULL

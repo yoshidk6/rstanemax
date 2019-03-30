@@ -81,7 +81,7 @@ context("posterior_predict.R")
 
 test_that("returnType specification", {
   expect_error(posterior_predict.stanemax(test.fit, returnType = "tabble"),
-               "'arg' should be one of \"matrix\", \"dataframe\", \"tibble\"")
+               "'arg' should be one of*")
 })
 
 test.pp.matrix <- posterior_predict.stanemax(test.fit)

@@ -1,6 +1,7 @@
 #' Outcome prediction from posterior distribution of parameters
 #'
-#' Add explanations
+#' Compute outcome predictions using posterior samples.
+#' Exposure data for prediction can be either original data used for model fit or new data.
 #'
 #' Run \code{vignette("emaxmodel", package = "rstanemax")} to see
 #' how you can use the posterior prediction for plotting estimated Emax curve.
