@@ -35,7 +35,8 @@ response include residual variability in its calculation, therefore the range re
 The return object also contains exposure and parameter values used for calculation.
 }
 \description{
-Add explanations
+Compute outcome predictions using posterior samples.
+Exposure data for prediction can be either original data used for model fit or new data.
 }
 \details{
 Run \code{vignette("emaxmodel", package = "rstanemax")} to see

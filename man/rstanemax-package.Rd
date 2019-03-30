@@ -6,7 +6,7 @@
 \alias{rstanemax}
 \title{The 'rstanemax' package.}
 \description{
-A DESCRIPTION OF THE PACKAGE
+Perform sigmoidal Emax model fit using Stan without writing Stan model code.
 }
 \references{
 Stan Development Team (2018). RStan: the R interface to Stan. R package version 2.18.2. http://mc-stan.org

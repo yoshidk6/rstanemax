@@ -21,12 +21,12 @@
 #' @return An object of class `stanemax`
 #' @examples
 #' data(exposure.response.sample)
-#' fit <- stan_emax(response ~ exposure, data = exposure.response.sample)
+#' fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample)
 #' print(fit)
 #'
 #' \dontrun{
 #' # Set priors manually
-#' fit <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+#' fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
 #'                  priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
 #'                                gamma = c(0, 3), sigma = c(0, 30)))
 #' )
@@ -36,8 +36,19 @@
 stan_emax <- function(formula, data,
                       gamma.fix = 1, e0.fix = NULL,
                       priors = NULL, ...){
-  # Parse formula and put together stan data object
-  # Actual run is in `stan_emax_run` function
+
+
+  standata.wo.prior <- stan_emax_prep(formula, data, gamma.fix, e0.fix)
+
+  standata <- set_prior(standata.wo.prior, priors)
+
+  out <- stan_emax_run(stanmodels$emax, standata = standata, ...)
+}
+
+
+# Parse formula and put together stan data object
+stan_emax_prep <- function(formula, data,
+                           gamma.fix = 1, e0.fix = NULL){
 
   call <- match.call(expand.dots = TRUE)
   mf <- match.call(expand.dots = FALSE)
@@ -56,10 +67,7 @@ stan_emax <- function(formula, data,
   X <- X[,2]
 
   standata <-
-    create_standata(X, Y, gamma.fix, e0.fix) %>%
-    set_prior(priors)
-
-  out <- stan_emax_run(stanmodels$emax, standata = standata, ...)
+    create_standata(X, Y, gamma.fix, e0.fix)
 }
 
 

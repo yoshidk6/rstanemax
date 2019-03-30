@@ -22,8 +22,10 @@ If NULL, E0 will be estimated from the data.
 If numeric, E0 is fixed at the number provided.
 Default = NULL (estimate from the data).}
 
-\item{priors}{a list specifying priors of parameters.
-Not implemented yet.}
+\item{priors}{a named list specifying priors of parameters (ec50, emax, e0, gamma, sigma).
+Each list item should be length 2 numeric vector, one corresponding to mean and
+another corresponding to standard deviation.
+Currently only supports normal distribution for priors.}
 
 \item{...}{Arguments passed to `rstan::sampling` (e.g. iter, chains).}
 }
@@ -31,14 +33,19 @@ Not implemented yet.}
 An object of class `stanemax`
 }
 \description{
-Add explanations
+Run sigmoidal Emax model fit with formula notation
 }
 \examples{
 data(exposure.response.sample)
-fit <- stan_emax(response ~ exposure, data = exposure.response.sample)
+fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample)
 print(fit)
 
 \dontrun{
+# Set priors manually
+fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+                 priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
+                               gamma = c(0, 3), sigma = c(0, 30)))
+)
 
 }
 
