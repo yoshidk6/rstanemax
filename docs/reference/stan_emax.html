@@ -170,7 +170,9 @@ Currently only supports normal distribution for priors.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>exposure.response.sample</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>)</div><div class='output co'>#&gt; 
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>,
+                  <span class='co'># the next line is only to make the example go fast enough</span>
+                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)</div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #&gt; Chain 1: 
 #&gt; Chain 1: Gradient evaluation took 0.001 seconds
@@ -178,98 +180,37 @@ Currently only supports normal distribution for priors.</p></td>
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
-#&gt; Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
+#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)
+#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)
+#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)
+#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)
+#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)
+#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)
+#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)
+#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)
+#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)
+#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)
+#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
+#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.629 seconds (Warm-up)
-#&gt; Chain 1:                0.317 seconds (Sampling)
-#&gt; Chain 1:                0.946 seconds (Total)
-#&gt; Chain 1: 
+#&gt; Chain 1:  Elapsed Time: 0.276 seconds (Warm-up)
+#&gt; Chain 1:                0.098 seconds (Sampling)
+#&gt; Chain 1:                0.374 seconds (Total)
+#&gt; Chain 1: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; Inference for Stan model: emax.
+#&gt; 1 chains, each with iter=500; warmup=250; thin=1; 
+#&gt; post-warmup draws per chain=250, total post-warmup draws=250.
 #&gt; 
-#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 2).
-#&gt; Chain 2: 
-#&gt; Chain 2: Gradient evaluation took 0 seconds
-#&gt; Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-#&gt; Chain 2: Adjust your expectations accordingly!
-#&gt; Chain 2: 
-#&gt; Chain 2: 
-#&gt; Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.442 seconds (Warm-up)
-#&gt; Chain 2:                0.277 seconds (Sampling)
-#&gt; Chain 2:                0.719 seconds (Total)
-#&gt; Chain 2: 
+#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat
+#&gt; emax  107.33    0.32  4.65 98.67 103.91 106.99 110.80 116.55   212    1
+#&gt; e0      6.23    0.27  3.71 -0.33   3.66   6.15   8.87  14.12   190    1
+#&gt; ec50   98.72    1.56 20.47 67.31  83.27  95.45 111.43 144.57   172    1
+#&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN
+#&gt; sigma  19.99    0.09  1.32 17.64  19.12  19.91  20.78  23.15   204    1
 #&gt; 
-#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 3).
-#&gt; Chain 3: 
-#&gt; Chain 3: Gradient evaluation took 0 seconds
-#&gt; Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-#&gt; Chain 3: Adjust your expectations accordingly!
-#&gt; Chain 3: 
-#&gt; Chain 3: 
-#&gt; Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.428 seconds (Warm-up)
-#&gt; Chain 3:                0.28 seconds (Sampling)
-#&gt; Chain 3:                0.708 seconds (Total)
-#&gt; Chain 3: 
-#&gt; 
-#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 4).
-#&gt; Chain 4: 
-#&gt; Chain 4: Gradient evaluation took 0 seconds
-#&gt; Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-#&gt; Chain 4: Adjust your expectations accordingly!
-#&gt; Chain 4: 
-#&gt; Chain 4: 
-#&gt; Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)
-#&gt; Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)
-#&gt; Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)
-#&gt; Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)
-#&gt; Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)
-#&gt; Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)
-#&gt; Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)
-#&gt; Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)
-#&gt; Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)
-#&gt; Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)
-#&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
-#&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
-#&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.445 seconds (Warm-up)
-#&gt; Chain 4:                0.301 seconds (Sampling)
-#&gt; Chain 4:                0.746 seconds (Total)
-#&gt; Chain 4: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(fit): object 'fit' not found</span></div><div class='input'>
+#&gt; Samples were drawn using NUTS(diag_e) at Wed Apr 10 13:53:13 2019.
+#&gt; For each parameter, n_eff is a crude measure of effective sample size,
+#&gt; and Rhat is the potential scale reduction factor on split chains (at 
+#&gt; convergence, Rhat=1).</div><div class='input'>
 </div># NOT RUN {
 # Set priors manually
 fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,

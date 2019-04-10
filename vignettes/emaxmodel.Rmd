@@ -20,6 +20,7 @@ knitr::opts_chunk$set(
 library(rstanemax)
 library(dplyr)
 library(ggplot2)
+set.seed(12345)
 ```
 
 This vignette provide an overview of the workflow of Emax model analysis using this package.

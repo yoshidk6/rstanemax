@@ -21,8 +21,10 @@
 #' @return An object of class `stanemax`
 #' @examples
 #' data(exposure.response.sample)
-#' fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample)
-#' print(fit)
+#' fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
+#'                   # the next line is only to make the example go fast enough
+#'                   chains = 1, iter = 500, seed = 12345)
+#' print(fit1)
 #'
 #' \dontrun{
 #' # Set priors manually
