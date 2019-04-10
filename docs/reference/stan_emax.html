@@ -32,7 +32,7 @@
 
 <meta property="og:title" content="Bayesian Emax model fit with Stan — stan_emax" />
 
-<meta property="og:description" content="Add explanations" />
+<meta property="og:description" content="Run sigmoidal Emax model fit with formula notation" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
       </span>
     </div>
 
@@ -118,7 +118,7 @@
 
     <div class="ref-description">
     
-    <p>Add explanations</p>
+    <p>Run sigmoidal Emax model fit with formula notation</p>
     
     </div>
 
@@ -152,8 +152,10 @@ Default = NULL (estimate from the data).</p></td>
     </tr>
     <tr>
       <th>priors</th>
-      <td><p>a list specifying priors of parameters.
-Not implemented yet.</p></td>
+      <td><p>a named list specifying priors of parameters (ec50, emax, e0, gamma, sigma).
+Each list item should be length 2 numeric vector, one corresponding to mean and
+another corresponding to standard deviation.
+Currently only supports normal distribution for priors.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -168,11 +170,11 @@ Not implemented yet.</p></td>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>exposure.response.sample</span>)
-<span class='no'>fit</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>)</div><div class='output co'>#&gt; 
+<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>)</div><div class='output co'>#&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+#&gt; Chain 1: Gradient evaluation took 0.001 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 10 seconds.
 #&gt; Chain 1: Adjust your expectations accordingly!
 #&gt; Chain 1: 
 #&gt; Chain 1: 
@@ -189,9 +191,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.732 seconds (Warm-up)
-#&gt; Chain 1:                0.483 seconds (Sampling)
-#&gt; Chain 1:                1.215 seconds (Total)
+#&gt; Chain 1:  Elapsed Time: 0.629 seconds (Warm-up)
+#&gt; Chain 1:                0.317 seconds (Sampling)
+#&gt; Chain 1:                0.946 seconds (Total)
 #&gt; Chain 1: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 2).
@@ -214,9 +216,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 2: 
-#&gt; Chain 2:  Elapsed Time: 0.579 seconds (Warm-up)
-#&gt; Chain 2:                0.308 seconds (Sampling)
-#&gt; Chain 2:                0.887 seconds (Total)
+#&gt; Chain 2:  Elapsed Time: 0.442 seconds (Warm-up)
+#&gt; Chain 2:                0.277 seconds (Sampling)
+#&gt; Chain 2:                0.719 seconds (Total)
 #&gt; Chain 2: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 3).
@@ -239,9 +241,9 @@ Not implemented yet.</p></td>
 #&gt; Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 3: 
-#&gt; Chain 3:  Elapsed Time: 0.465 seconds (Warm-up)
-#&gt; Chain 3:                0.299 seconds (Sampling)
-#&gt; Chain 3:                0.764 seconds (Total)
+#&gt; Chain 3:  Elapsed Time: 0.428 seconds (Warm-up)
+#&gt; Chain 3:                0.28 seconds (Sampling)
+#&gt; Chain 3:                0.708 seconds (Total)
 #&gt; Chain 3: 
 #&gt; 
 #&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 4).
@@ -264,25 +266,17 @@ Not implemented yet.</p></td>
 #&gt; Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)
 #&gt; Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)
 #&gt; Chain 4: 
-#&gt; Chain 4:  Elapsed Time: 0.444 seconds (Warm-up)
-#&gt; Chain 4:                0.322 seconds (Sampling)
-#&gt; Chain 4:                0.766 seconds (Total)
-#&gt; Chain 4: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; Inference for Stan model: emax.
-#&gt; 4 chains, each with iter=2000; warmup=1000; thin=1; 
-#&gt; post-warmup draws per chain=1000, total post-warmup draws=4000.
-#&gt; 
-#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat
-#&gt; emax  106.85    0.10  5.11 96.69 103.49 106.90 110.24 116.87  2818    1
-#&gt; e0      6.69    0.08  4.08 -1.46   3.96   6.70   9.37  14.64  2549    1
-#&gt; ec50  100.58    0.43 21.53 65.73  85.67  98.26 112.51 150.79  2485    1
-#&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN
-#&gt; sigma  20.01    0.02  1.27 17.67  19.14  19.94  20.83  22.71  2961    1
-#&gt; 
-#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 14:10:00 2019.
-#&gt; For each parameter, n_eff is a crude measure of effective sample size,
-#&gt; and Rhat is the potential scale reduction factor on split chains (at 
-#&gt; convergence, Rhat=1).</div><div class='input'>
+#&gt; Chain 4:  Elapsed Time: 0.445 seconds (Warm-up)
+#&gt; Chain 4:                0.301 seconds (Sampling)
+#&gt; Chain 4:                0.746 seconds (Total)
+#&gt; Chain 4: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; <span class='error'>Error in print(fit): object 'fit' not found</span></div><div class='input'>
 </div># NOT RUN {
+# Set priors manually
+fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+                 priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
+                               gamma = c(0, 3), sigma = c(0, 30)))
+)
+
 # }
 <div class='input'>
 </div></pre>

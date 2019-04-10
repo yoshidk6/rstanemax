@@ -32,7 +32,8 @@
 
 <meta property="og:title" content="Outcome prediction from posterior distribution of parameters — posterior_predict" />
 
-<meta property="og:description" content="Add explanations" />
+<meta property="og:description" content="Compute outcome predictions using posterior samples.
+Exposure data for prediction can be either original data used for model fit or new data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -63,7 +64,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
       </span>
     </div>
 
@@ -118,7 +119,8 @@
 
     <div class="ref-description">
     
-    <p>Add explanations</p>
+    <p>Compute outcome predictions using posterior samples.
+Exposure data for prediction can be either original data used for model fit or new data.</p>
     
     </div>
 
@@ -154,11 +156,11 @@
     <p>An object that contain predicted response with posterior distribution of parameters.
 The default is a matrix containing predicted response.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.</p>
-<p>If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
+<p>If either __dataframe__ or __tibble__ is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.</p>
 <p>Two types of predictions are generated with this function.
-respHat corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-response include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
+__respHat__ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+__response__ include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
 <p>The return object also contains exposure and parameter values used for calculation.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

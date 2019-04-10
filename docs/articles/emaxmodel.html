@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
       </span>
     </div>
 
@@ -80,7 +80,7 @@
       <h1>Simple Emax model fit with Stan</h1>
                         <h4 class="author">Kenta Yoshida</h4>
             
-            <h4 class="date">2019-03-28</h4>
+            <h4 class="date">2019-04-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yoshidk6/rstanemax/blob/master/vignettes/emaxmodel.Rmd"><code>vignettes/emaxmodel.Rmd</code></a></small>
       <div class="hidden name"><code>emaxmodel.Rmd</code></div>
@@ -98,8 +98,8 @@
 <a href="#typical-workflow" class="anchor"></a>Typical workflow</h1>
 <div id="model-run-with-stan_emax-function" class="section level2">
 <h2 class="hasAnchor">
-<a href="#model-run-with-stan_emax-function" class="anchor"></a>Model run with <code><a href="../reference/stan_emax.html">stan_emax()</a></code> function</h2>
-<p><code>stan_emax</code> is the main function of this package to perfrom Emax model analysis on the data. This function requires minimum two input arguments - <code>formula</code> and <code>data</code>. In the <code>formula</code> argument, you will specify which columns of <code>data</code> will be used as exposure and response data, in a format similar to <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">stats::lm()</a></code> function, e.g. <code>response ~ exposure</code>.</p>
+<a href="#model-run-with-stan_emax-function" class="anchor"></a>Model run with <code>stan_emax</code> function</h2>
+<p><code><a href="../reference/stan_emax.html">stan_emax()</a></code> is the main function of this package to perfrom Emax model analysis on the data. This function requires minimum two input arguments - <code>formula</code> and <code>data</code>. In the <code>formula</code> argument, you will specify which columns of <code>data</code> will be used as exposure and response data, in a format similar to <code><a href="https://www.rdocumentation.org/packages/stats/topics/lm">stats::lm()</a></code> function, e.g. <code>response ~ exposure</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(exposure.response.sample)
 
 fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(response <span class="op">~</span><span class="st"> </span>exposure, <span class="dt">data =</span> exposure.response.sample)</code></pre></div>
@@ -109,13 +109,13 @@ fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/st
 <span class="co">#&gt; post-warmup draws per chain=1000, total post-warmup draws=4000.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat</span>
-<span class="co">#&gt; emax  106.90    0.10  5.20 96.80 103.34 107.02 110.35 117.05  2780    1</span>
-<span class="co">#&gt; e0      6.70    0.07  3.98 -1.17   4.07   6.78   9.33  14.49  2854    1</span>
-<span class="co">#&gt; ec50  100.24    0.43 20.28 66.93  85.71  97.79 112.08 146.88  2257    1</span>
+<span class="co">#&gt; emax  106.79    0.10  5.21 96.69 103.29 106.75 110.31 117.06  2726    1</span>
+<span class="co">#&gt; e0      6.76    0.08  3.97 -1.15   4.00   6.82   9.40  14.63  2498    1</span>
+<span class="co">#&gt; ec50  100.23    0.41 20.65 66.55  86.16  97.51 112.09 148.40  2597    1</span>
 <span class="co">#&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN</span>
-<span class="co">#&gt; sigma  20.02    0.02  1.35 17.64  19.11  19.91  20.87  22.90  3421    1</span>
+<span class="co">#&gt; sigma  20.08    0.03  1.40 17.58  19.11  19.99  20.90  23.14  2532    1</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 14:10:11 2019.</span>
+<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Wed Apr 10 12:50:41 2019.</span>
 <span class="co">#&gt; For each parameter, n_eff is a crude measure of effective sample size,</span>
 <span class="co">#&gt; and Rhat is the potential scale reduction factor on split chains (at </span>
 <span class="co">#&gt; convergence, Rhat=1).</span></code></pre></div>
@@ -138,16 +138,16 @@ response.pred <span class="op">%&gt;%</span><span class="st"> </span><span class
 <span class="co">#&gt; # A tibble: 12,000 x 4</span>
 <span class="co">#&gt;    mcmcid exposure respHat response</span>
 <span class="co">#&gt;     &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1      1        0   11.3     42.6 </span>
-<span class="co">#&gt;  2      1      100   61.9     66.9 </span>
-<span class="co">#&gt;  3      1     1000   99.4     97.6 </span>
-<span class="co">#&gt;  4      2        0    1.52     3.37</span>
-<span class="co">#&gt;  5      2      100   54.4     70.4 </span>
-<span class="co">#&gt;  6      2     1000   99.8     94.7 </span>
-<span class="co">#&gt;  7      3        0   11.6    -13.2 </span>
-<span class="co">#&gt;  8      3      100   63.0     41.6 </span>
-<span class="co">#&gt;  9      3     1000  107.      99.9 </span>
-<span class="co">#&gt; 10      4        0   11.3     40.0 </span>
+<span class="co">#&gt;  1      1        0    1.57   -12.2 </span>
+<span class="co">#&gt;  2      1      100   58.8     68.7 </span>
+<span class="co">#&gt;  3      1     1000  107.     116.  </span>
+<span class="co">#&gt;  4      2        0    7.70     7.41</span>
+<span class="co">#&gt;  5      2      100   61.9     54.1 </span>
+<span class="co">#&gt;  6      2     1000  103.     115.  </span>
+<span class="co">#&gt;  7      3        0   13.5     15.7 </span>
+<span class="co">#&gt;  8      3      100   55.9     72.4 </span>
+<span class="co">#&gt;  9      3     1000  109.      80.4 </span>
+<span class="co">#&gt; 10      4        0    8.34    -4.08</span>
 <span class="co">#&gt; # ... with 11,990 more rows</span></code></pre></div>
 <p>You can also get quantiles of predictions with <code><a href="../reference/posterior_predict.html">posterior_predict_quantile()</a></code> function. Currently this function only export 95% credible intervals of mean response and 95% prediction intervals of individual responses.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resp.pred.quantile &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">0</span>, <span class="dv">1000</span>, <span class="dt">by =</span> <span class="dv">250</span>))
@@ -155,11 +155,11 @@ resp.pred.quantile
 <span class="co">#&gt; # A tibble: 5 x 7</span>
 <span class="co">#&gt;   exposure respHat025 respHat500 respHat975 response025 response500</span>
 <span class="co">#&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span>
-<span class="co">#&gt; 1        0      -1.17       6.78       14.5       -32.3        6.57</span>
-<span class="co">#&gt; 2      250      78.0       83.3        88.2        44.9       83.9 </span>
-<span class="co">#&gt; 3      500      91.0       95.8       101.         55.3       95.6 </span>
-<span class="co">#&gt; 4      750      95.7      101.        106.         61.7      101.  </span>
-<span class="co">#&gt; 5     1000      98.1      104.        110.         64.2      103.  </span>
+<span class="co">#&gt; 1        0      -1.15       6.82       14.6       -32.6        6.26</span>
+<span class="co">#&gt; 2      250      77.8       83.3        88.4        42.2       82.9 </span>
+<span class="co">#&gt; 3      500      90.8       95.8       101.         56.3       95.7 </span>
+<span class="co">#&gt; 4      750      95.3      101.        106.         61.9      101.  </span>
+<span class="co">#&gt; 5     1000      97.8      104.        110.         63.5      104.  </span>
 <span class="co">#&gt; # ... with 1 more variable: response975 &lt;dbl&gt;</span></code></pre></div>
 <p>This is particularly useful when you want to plot the estimated Emax curve.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(resp.pred.quantile, <span class="kw">aes</span>(exposure, respHat500)) <span class="op">+</span>
@@ -184,13 +184,13 @@ fit.emax.sigmoidal &lt;-<span class="st"> </span><span class="kw"><a href="../re
 <span class="co">#&gt; post-warmup draws per chain=1000, total post-warmup draws=4000.</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat</span>
-<span class="co">#&gt; emax  108.40    0.34 11.02 91.57 100.97 106.77 114.00 134.28  1059 1.00</span>
-<span class="co">#&gt; e0      6.79    0.09  4.38 -2.16   3.88   6.92   9.82  14.99  2276 1.00</span>
-<span class="co">#&gt; ec50  108.48    1.27 39.77 67.27  85.16  99.68 120.43 204.53   982 1.01</span>
-<span class="co">#&gt; gamma   1.01    0.01  0.21  0.63   0.86   1.00   1.14   1.48  1549 1.00</span>
-<span class="co">#&gt; sigma  20.17    0.03  1.34 17.79  19.24  20.09  20.98  23.07  2226 1.00</span>
+<span class="co">#&gt; emax  108.95    0.36 11.55 90.81 101.18 107.55 114.43 138.91  1039 1.01</span>
+<span class="co">#&gt; e0      6.78    0.10  4.46 -2.30   3.78   6.80   9.69  15.57  2071 1.00</span>
+<span class="co">#&gt; ec50  109.92    1.25 39.02 65.77  86.60 100.82 121.42 217.60   972 1.01</span>
+<span class="co">#&gt; gamma   1.01    0.01  0.22  0.60   0.86   0.99   1.14   1.48  1497 1.00</span>
+<span class="co">#&gt; sigma  20.15    0.03  1.35 17.69  19.23  20.09  21.02  22.94  2188 1.00</span>
 <span class="co">#&gt; </span>
-<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Thu Mar 28 14:10:22 2019.</span>
+<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Wed Apr 10 12:50:52 2019.</span>
 <span class="co">#&gt; For each parameter, n_eff is a crude measure of effective sample size,</span>
 <span class="co">#&gt; and Rhat is the potential scale reduction factor on split chains (at </span>
 <span class="co">#&gt; convergence, Rhat=1).</span></code></pre></div>
@@ -228,7 +228,7 @@ pred &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(pred1, pred
       <ul class="nav nav-pills nav-stacked">
 <li>
 <a href="#typical-workflow">Typical workflow</a><ul class="nav nav-pills nav-stacked">
-<li><a href="#model-run-with-stan_emax-function">Model run with <code><a href="--/reference/stan_emax-html">stan_emax()</a></code> function</a></li>
+<li><a href="#model-run-with-stan_emax-function">Model run with <code>stan_emax</code> function</a></li>
       <li><a href="#prediction-of-response-with-new-exposure-data">Prediction of response with new exposure data</a></li>
       </ul>
 </li>
