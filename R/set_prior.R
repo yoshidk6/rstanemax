@@ -1,7 +1,9 @@
 
 set_prior <- function(standata, priors = NULL){
+  # First assign prior automatically
   standata <- set_prior_auto(standata)
 
+  # Replace with manual priors if provided
   if(!is.null(priors$ec50)){
     check_prior(priors$ec50)
     standata$prior_ec50_mu  <- priors$ec50[[1]]
