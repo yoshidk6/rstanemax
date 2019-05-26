@@ -43,7 +43,7 @@ fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
 print(fit1)
 
 \dontrun{
-# Set priors manually
+# Set priors manually, also estimate gamma instead of the default of fix to 1
 fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
                  priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
                                gamma = c(0, 3), sigma = c(0, 30)))

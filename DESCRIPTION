@@ -1,5 +1,5 @@
 Package: rstanemax
-Version: 0.0.1.000
+Version: 0.1.0.0
 Title: Emax model analysis with Stan
 Description: Perform sigmoidal Emax model fit using 'Stan' in a formula notation, without writing 'Stan' model code.
 Authors@R: person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"), 
