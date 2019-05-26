@@ -4,7 +4,7 @@ author: "Kenta Yoshida"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Simple Emax model fit with Stan}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -30,7 +30,7 @@ This vignette provide an overview of the workflow of Emax model analysis using t
 
 ## Model run with `stan_emax` function
 
-`stan_emax()` is the main function of this package to perfrom Emax model analysis on the data.
+`stan_emax()` is the main function of this package to perform Emax model analysis on the data.
 This function requires minimum two input arguments - `formula` and `data`.
 In the `formula` argument, you will specify which columns of `data` will be used as exposure and response data, in a format similar to `stats::lm()` function, e.g. `response ~ exposure`.
 
