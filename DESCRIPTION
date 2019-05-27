@@ -1,10 +1,12 @@
 Package: rstanemax
 Version: 0.1.0
-Title: Emax model analysis with Stan
+Title: Emax Model Analysis with 'Stan'
 Description: Perform sigmoidal Emax model fit using 'Stan' in a formula notation, without writing 'Stan' model code.
-Authors@R: person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"), 
-      comment = c(ORCID = "0000-0003-4967-3831")
-    )
+Authors@R: c(
+    person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"), 
+      comment = c(ORCID = "0000-0003-4967-3831")),
+    person("Trustees of Columbia University", role = "cph", 
+      comment="src/init.cpp, tools/make_cc.R, R/stanmodels.R"))
 Encoding: UTF-8
 License: GPL-3 | file LICENSE
 LazyData: true
