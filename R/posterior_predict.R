@@ -17,12 +17,12 @@
 #' The default is a matrix containing predicted response.
 #' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 #'
-#' If either __dataframe__ or __tibble__ is specified, the function returns a data frame or tibble object in a long format -
+#' If either _dataframe_ or _tibble_ is specified, the function returns a data frame or tibble object in a long format -
 #' each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
 #'
 #' Two types of predictions are generated with this function.
-#' __respHat__ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-#' __response__ include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+#' _respHat_ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+#' _response_ include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 #'
 #' The return object also contains exposure and parameter values used for calculation.
 #'
@@ -78,19 +78,19 @@ pp_calc <- function(stanfit, data.pp){
 #' @rdname posterior_predict
 #' @export
 #'
-posterior_predict_quantile <- function(object, newdata = NULL){
+posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9){
 
   pp.raw <- posterior_predict.stanemax(object, newdata, returnType = c("tibble"))
 
   pp.quantile <-
     pp.raw %>%
     dplyr::group_by(exposure) %>%
-    dplyr::summarize(respHat025 = stats::quantile(respHat, probs = 0.025),
-                     respHat500 = stats::quantile(respHat, probs = 0.5),
-                     respHat975 = stats::quantile(respHat, probs = 0.975),
-                     response025 = stats::quantile(response, probs = 0.025),
-                     response500 = stats::quantile(response, probs = 0.5),
-                     response975 = stats::quantile(response, probs = 0.975))
+    dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
+                     ci_med = stats::quantile(respHat, probs = 0.5),
+                     ci_high= stats::quantile(respHat, probs = 0.5 + ci/2),
+                     pi_low = stats::quantile(response, probs = 0.5 - pi/2),
+                     pi_med = stats::quantile(response, probs = 0.5),
+                     pi_high= stats::quantile(response, probs = 0.5 + pi/2))
 }
 
 

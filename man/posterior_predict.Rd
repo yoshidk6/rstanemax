@@ -9,7 +9,8 @@
 \method{posterior_predict}{stanemax}(object, newdata = NULL,
   returnType = c("matrix", "dataframe", "tibble"), ...)
 
-posterior_predict_quantile(object, newdata = NULL)
+posterior_predict_quantile(object, newdata = NULL, ci = 0.9,
+  pi = 0.9)
 }
 \arguments{
 \item{object}{A `stanemax` class object}
@@ -25,12 +26,12 @@ An object that contain predicted response with posterior distribution of paramet
 The default is a matrix containing predicted response.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 
-If either __dataframe__ or __tibble__ is specified, the function returns a data frame or tibble object in a long format -
+If either _dataframe_ or _tibble_ is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
 
 Two types of predictions are generated with this function.
-__respHat__ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-__response__ include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+_respHat_ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+_response_ include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 
 The return object also contains exposure and parameter values used for calculation.
 }

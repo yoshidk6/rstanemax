@@ -81,10 +81,10 @@ This is particularly useful when you want to plot the estimated Emax curve.
 
 
 ```{r}
-ggplot(resp.pred.quantile, aes(exposure, respHat500)) +
+ggplot(resp.pred.quantile, aes(exposure, ci_med)) +
   geom_line() + 
-  geom_ribbon(aes(ymin=respHat025, ymax=respHat975), alpha = .5) +
-  geom_ribbon(aes(ymin=response025, ymax=response975), alpha = .2) +
+  geom_ribbon(aes(ymin=ci_low, ymax=ci_high), alpha = .5) +
+  geom_ribbon(aes(ymin=pi_low, ymax=pi_high), alpha = .2) +
   labs(y = "response")
 ```
 
@@ -126,10 +126,10 @@ pred2 <-
 pred <- bind_rows(pred1, pred2)
 
 
-ggplot(pred, aes(exposure, respHat500, color = model, fill = model)) +
+ggplot(pred, aes(exposure, ci_med, color = model, fill = model)) +
   geom_line() + 
-  geom_ribbon(aes(ymin=respHat025, ymax=respHat975), alpha = .3) +
-  geom_ribbon(aes(ymin=response025, ymax=response975), alpha = .1, color = NA) +
+  geom_ribbon(aes(ymin=ci_low, ymax=ci_high), alpha = .3) +
+  geom_ribbon(aes(ymin=pi_low, ymax=pi_high), alpha = .1, color = NA) +
   geom_point(data=exposure.response.sample, aes(exposure, response), 
              color = "black", fill = NA, size=2) +
   labs(y = "response")
