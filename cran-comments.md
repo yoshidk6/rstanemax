@@ -1,7 +1,7 @@
 ## Test environments
 * local Windows 7 install, R 3.5.2
 * ubuntu 14.04 (on travis-ci), R 3.6.0
-* win-builder (devel)
+* win-builder (devel and release)
 
 
 ## R CMD check results
@@ -24,5 +24,7 @@ Below is the brief summary of changes:
 * Corrected the example in "man/stan_emax.Rd"
 * Added the copyright holder in the ‘Authors@R’ section
 
-Also, there is currently no reference describing the methods in the package.
+There is currently no reference describing the methods in the package.
+
+For full transparency, I also would like to mention that the implementation of `posterior_predict_quantile` and `plot.stanemax` was slightly modified from the original submission.
 

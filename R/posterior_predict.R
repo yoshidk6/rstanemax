@@ -12,7 +12,7 @@
 #' @param object A `stanemax` class object
 #' @param newdata An optional data frame with a column named `exposure` or a numeric vector
 #' @param returnType An optional string specifying the type of return object.
-#' @param ... Additional rguments passed to methods.
+#' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
 #' The default is a matrix containing predicted response.
 #' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
@@ -77,6 +77,8 @@ pp_calc <- function(stanfit, data.pp){
 
 #' @rdname posterior_predict
 #' @export
+#' @param ci Credible interval of the response without residual variability.
+#' @param pi Prediction interval of the response with residual variability.
 #'
 posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9){
 

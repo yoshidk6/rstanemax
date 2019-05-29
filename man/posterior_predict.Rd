@@ -19,7 +19,11 @@ posterior_predict_quantile(object, newdata = NULL, ci = 0.9,
 
 \item{returnType}{An optional string specifying the type of return object.}
 
-\item{...}{Additional rguments passed to methods.}
+\item{...}{Additional arguments passed to methods.}
+
+\item{ci}{Credible interval of the response without residual variability.}
+
+\item{pi}{Prediction interval of the response with residual variability.}
 }
 \value{
 An object that contain predicted response with posterior distribution of parameters.
