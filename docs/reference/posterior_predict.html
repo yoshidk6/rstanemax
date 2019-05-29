@@ -64,7 +64,7 @@ Exposure data for prediction can be either original data used for model fit or n
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -128,7 +128,8 @@ Exposure data for prediction can be either original data used for model fit or n
 <span class='fu'>posterior_predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>returnType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"matrix"</span>, <span class='st'>"dataframe"</span>, <span class='st'>"tibble"</span>), <span class='no'>...</span>)
 
-<span class='fu'>posterior_predict_quantile</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+<span class='fu'>posterior_predict_quantile</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
+  <span class='kw'>pi</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -156,11 +157,11 @@ Exposure data for prediction can be either original data used for model fit or n
     <p>An object that contain predicted response with posterior distribution of parameters.
 The default is a matrix containing predicted response.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.</p>
-<p>If either __dataframe__ or __tibble__ is specified, the function returns a data frame or tibble object in a long format -
+<p>If either _dataframe_ or _tibble_ is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.</p>
 <p>Two types of predictions are generated with this function.
-__respHat__ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-__response__ include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
+_respHat_ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+_response_ include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
 <p>The return object also contains exposure and parameter values used for calculation.</p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

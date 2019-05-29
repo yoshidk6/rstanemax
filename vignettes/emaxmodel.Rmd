@@ -70,7 +70,6 @@ response.pred %>% select(mcmcid, exposure, respHat, response)
 ```
 
 You can also get quantiles of predictions with `posterior_predict_quantile()` function.
-Currently this function only export 95% credible intervals of mean response and 95% prediction intervals of individual responses.
 
 ```{r}
 resp.pred.quantile <- posterior_predict_quantile(fit.emax, newdata = seq(0, 1000, by = 250))
