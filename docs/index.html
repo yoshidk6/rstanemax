@@ -18,7 +18,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -30,7 +30,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -57,6 +57,9 @@
     </li>
   </ul>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -75,56 +78,110 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
+    
 
-
-<div id="introduction-to-rstanemax" class="section level1">
+    
+    
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<div id="rstanemax" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#introduction-to-rstanemax" class="anchor"></a>Introduction to <strong>rstanemax</strong>
-</h1></div>
+<a href="#rstanemax" class="anchor"></a>rstanemax</h1></div>
+
 <p>This small package performs simple sigmoidal Emax model fit using Stan, without the need of writing Stan model code, inspired by <strong>rstanarm</strong> package.</p>
 <p><strong>rstanarm</strong> package (<a href="https://mc-stan.org/users/interfaces/rstanarm">link</a>) is a very flexible, general purpose tool to perform various Bayesian modeling with formula notations, such as generalized mixed effect models or joint models. One small gap it has is in nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with <code>SS</code> prefixes (<a href="http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer">link</a>). Unfortunately the (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions. The <strong>rstanarm</strong> package also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects.</p>
 <p>I hope this <strong>rstanemax</strong> package will fill the niche gap, allow for easier implementation of Emax model in Bayesian framework, and enable routine uses in the pharmacokinetic/pharmacodynamic field.</p>
 <p>This package was build using <strong>rstantools</strong> (<a href="https://mc-stan.org/rstantools/">link</a>) following a very helpful step-by-step guide (<a href="https://mc-stan.org/rstantools/articles/minimal-rstan-package.html">link</a>) on creating a package that depends on RStan.</p>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<div id="from-cran" class="section level3">
+<h3 class="hasAnchor">
+<a href="#from-cran" class="anchor"></a>From CRAN</h3>
+<p>You can install the released version of rstanemax from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"rstanemax"</span>)</code></pre></div>
 </div>
-<div id="installation" class="section level1">
-<h1 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h1>
-<p>Before installing this package from source, you first have to install RStan and C++ Toolchain.<br><a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">RStan Getting Started</a><br>
+<div id="from-source" class="section level3">
+<h3 class="hasAnchor">
+<a href="#from-source" class="anchor"></a>From source</h3>
+<p>You can alternatively install the package from source.<br>
+Before doing so, you first have to install RStan and C++ Toolchain.<br><a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">RStan Getting Started</a><br>
 Also, you have to follow the instruction below if you are using Windows PC.<br><a href="https://github.com/stan-dev/rstan/wiki/Installing-RStan-from-source-on-Windows">Installing RStan from source on Windows</a></p>
 <p>After this step you should be able to install the package from GitHub using <strong>devtools</strong>.</p>
-<pre><code>install.packages(c("devtools"))
-library(devtools)
-devtools::install_github("yoshidk6/rstanemax")</code></pre>
-<p>See <a href="http://yoshidk6.hatenablog.com/entry/2019/02/19/061100">this blog post</a> (written in Japanese) if the above process doesn’t work.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(devtools)
+devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"yoshidk6/rstanemax"</span>)</code></pre></div>
 </div>
-<div id="how-to-use" class="section level1">
-<h1 class="hasAnchor">
-<a href="#how-to-use" class="anchor"></a>How to use</h1>
+</div>
+<div id="example" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example" class="anchor"></a>Example</h2>
 <p><a href="https://yoshidk6.github.io/rstanemax">This GitHub pages</a> contains function references and vignette.</p>
-<div id="load-rstanemax" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-rstanemax" class="anchor"></a>Load <strong>rstanemax</strong>
-</h2>
-<pre><code><a href="https://www.rdocumentation.org/packages/base/topics/library">library(rstanemax)</a></code></pre>
-</div>
-<div id="run-model-with-a-sample-dataset" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-model-with-a-sample-dataset" class="anchor"></a>Run model with a sample dataset</h2>
-<pre><code>data(exposure.response.sample)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load rstanemax</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rstanemax)
+<span class="co">#&gt; Loading required package: Rcpp</span>
 
-fit.emax &lt;- stan_emax(response ~ exposure, data = exposure.response.sample)
+<span class="co"># Run model with a sample dataset</span>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">12345</span>)
 
-fit.emax</code></pre>
+<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/data">data</a></span>(exposure.response.sample)
+
+fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="reference/stan_emax.html">stan_emax</a></span>(response <span class="op">~</span><span class="st"> </span>exposure, <span class="dt">data =</span> exposure.response.sample,
+                      <span class="co"># the next line is only to make the output short</span>
+                      <span class="dt">chains =</span> <span class="dv">1</span>, <span class="dt">iter =</span> <span class="dv">500</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)
+<span class="co">#&gt; </span>
+<span class="co">#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).</span>
+<span class="co">#&gt; Chain 1: </span>
+<span class="co">#&gt; Chain 1: Gradient evaluation took 0 seconds</span>
+<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.</span>
+<span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
+<span class="co">#&gt; Chain 1: </span>
+<span class="co">#&gt; Chain 1: </span>
+<span class="co">#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)</span>
+<span class="co">#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)</span>
+<span class="co">#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)</span>
+<span class="co">#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)</span>
+<span class="co">#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)</span>
+<span class="co">#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)</span>
+<span class="co">#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)</span>
+<span class="co">#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)</span>
+<span class="co">#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)</span>
+<span class="co">#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)</span>
+<span class="co">#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)</span>
+<span class="co">#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)</span>
+<span class="co">#&gt; Chain 1: </span>
+<span class="co">#&gt; Chain 1:  Elapsed Time: 0.285 seconds (Warm-up)</span>
+<span class="co">#&gt; Chain 1:                0.18 seconds (Sampling)</span>
+<span class="co">#&gt; Chain 1:                0.465 seconds (Total)</span>
+<span class="co">#&gt; Chain 1:</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.emax
+<span class="co">#&gt; Inference for Stan model: emax.</span>
+<span class="co">#&gt; 1 chains, each with iter=500; warmup=250; thin=1; </span>
+<span class="co">#&gt; post-warmup draws per chain=250, total post-warmup draws=250.</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat</span>
+<span class="co">#&gt; emax  107.33    0.32  4.65 98.67 103.91 106.99 110.80 116.55   212    1</span>
+<span class="co">#&gt; e0      6.23    0.27  3.71 -0.33   3.66   6.15   8.87  14.12   190    1</span>
+<span class="co">#&gt; ec50   98.72    1.56 20.47 67.31  83.27  95.45 111.43 144.57   172    1</span>
+<span class="co">#&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN</span>
+<span class="co">#&gt; sigma  19.99    0.09  1.32 17.64  19.12  19.91  20.78  23.15   204    1</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Samples were drawn using NUTS(diag_e) at Mon Jun 03 15:41:21 2019.</span>
+<span class="co">#&gt; For each parameter, n_eff is a crude measure of effective sample size,</span>
+<span class="co">#&gt; and Rhat is the potential scale reduction factor on split chains (at </span>
+<span class="co">#&gt; convergence, Rhat=1).</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(fit.emax)</code></pre></div>
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 </div>
 </div>
-
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=rstanemax">https://​cloud.r-project.org/​package=rstanemax</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/yoshidk6/rstanemax">https://​github.com/​yoshidk6/​rstanemax</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/yoshidk6/rstanemax/issues">https://​github.com/​yoshidk6/​rstanemax/​issues</a>
@@ -147,14 +204,18 @@ fit.emax</code></pre>
 </ul>
 </div>
 
-  <div class="dev-status">
+      <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/yoshidk6/rstanemax"><img src="https://travis-ci.org/yoshidk6/rstanemax.svg?branch=master" alt="Travis-CI Build Status"></a></li>
+<li><a href="https://cran.r-project.org/package=rstanemax"><img src="https://www.r-pkg.org/badges/version/rstanemax" alt="CRAN status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=rstanemax"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rstanemax" alt="downloads"></a></li>
 </ul>
 </div>
 </div>
+
 </div>
+
 
       <footer><div class="copyright">
   <p>Developed by Kenta Yoshida.</p>
