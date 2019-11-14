@@ -35,6 +35,11 @@ An object of class `stanemax`
 \description{
 Run sigmoidal Emax model fit with formula notation
 }
+\details{
+The following structure is used for the Emax model:
+\deqn{Response = e_0 + e_{max} exposure ^{\gamma} / (ec50 + exposure) ^{\gamma} + \epsilon}{Response = e0 + emax * exposure ^ gamma / (ec50 + exposure) ^ gamma + epsilon}
+\deqn{\epsilon ~ N(0, \sigma^2)}{epsilon ~ N(0, sigma ^ 2)}
+}
 \examples{
 data(exposure.response.sample)
 fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
