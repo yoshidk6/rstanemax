@@ -7,11 +7,77 @@ NULL
 
 #' @rdname stanemax-methods
 #' @export
-print.stanemax <- function(x, ...) {
+print.stanemax <- function(x, digits_summary = 2, ...) {
+
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
-  print(x$stanfit, pars = param.extract)
+  s <- replace_prm_names(x, param.extract)
+
+  # print(x$stanfit, pars = param.extract)
+
+  cat("---- Emax model fit with rstanemax ----\n")
+  cat("\n")
+  print(round(s, digits_summary))
+  cat("\n")
+  cat("* Use `posterior_predict()` or `posterior_predict_quantile()` function to get\n")
+  cat("  raw predictions or make predictions on new data\n")
+  cat("* Use `plot()` function to visualize model fit\n")
+  cat("* Raw stanfit object is stored in `$stanfit`")
 }
+
+
+replace_prm_names <- function(x, pars) {
+
+  # x <- test.fit.cov
+  s <- rstan::summary(x$stanfit, pars = pars)$summary
+
+  stbl <- tibble::as_tibble(s, rownames = "prmname")
+
+  ## Get parameter names in stanfit
+  prm.df <-
+    stbl %>%
+    tidyr::separate(prmname, into = c("prm", "index", "del"), fill = "right", remove = FALSE) %>%
+    mutate(index = as.numeric(index)) %>%
+    select(prmname, prm, index)
+
+
+  ## Get factor levels in covariates
+  cov.levels <- x$prminput$cov.levels
+
+  prm.cov.df.list <- list()
+
+  for(k in names(cov.levels)){
+    prm.cov.df.tomerge <-
+      tibble::tibble(prm = k,
+                     level = cov.levels[[k]])
+
+    if(nrow(prm.cov.df.tomerge) > 1){
+      prm.cov.df.list[[k]] <-
+        prm.cov.df.tomerge %>%
+        dplyr::mutate(index = dplyr::row_number(),
+                      level = as.character(level))
+    } else{
+      prm.cov.df.list[[k]] <-
+        prm.cov.df.tomerge %>%
+        dplyr::select(-level)
+    }
+  }
+  prm.cov.df <-
+    dplyr::bind_rows(prm.cov.df.list)
+
+  ## Merge back to the original data frame
+  stbl2 <-
+    dplyr::left_join(prm.df, prm.cov.df, by = c("prm", "index")) %>%
+    dplyr::mutate(prmname2 = ifelse(is.na(level), prm, paste0(prm, "[", level, "]"))) %>%
+    dplyr::left_join(stbl, ., by = "prmname") %>%
+    dplyr::select(-c(prmname, prm, index, level))
+
+  s2 <- as.matrix(dplyr::select(stbl2, -prmname2))
+  rownames(s2) <- stbl2$prmname2
+
+  return(s2)
+}
+
 
 
 #' @rdname stanemax-methods

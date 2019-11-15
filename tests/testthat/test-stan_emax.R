@@ -18,6 +18,16 @@ test.fit.cov <- stan_emax(formula = resp ~ conc, data = test.data,
                           chains = 2, iter = 1000,
                           refresh = 0)
 
+test.data.2 <-
+  mutate(test.data,
+         cov1 = ifelse(cov1 == 1, "x1", "x0"),
+         cov3 = 5)
+test.fit.cov2 <- stan_emax(formula = resp ~ conc, data = test.data.2,
+                           param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+                           chains = 2, iter = 1000,
+                           refresh = 0)
+
+
 ##########
 context("stan_emax.R")
 
