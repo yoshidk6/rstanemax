@@ -23,9 +23,10 @@ test.data <-
            e0 + emax * exposure / (ec50 + exposure) +
            rnorm(exposure, 0, sd.response))
 
+
+df.model <- create_model_frame(response ~ exposure, test.data, cov.levels = covs_get_levels(test.data))
 test.standata.noprior <-
-  create_standata(test.data$exposure,
-                  test.data$response,
+  create_standata(df.model,
                   gamma.fix = 1, e0.fix = NULL)
 
 ##########

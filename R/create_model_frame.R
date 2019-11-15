@@ -22,9 +22,9 @@ create_model_frame <- function(formula, data, param.cov = NULL, cov.levels){
 
 create_df_covs <- function(data, param.cov = NULL, cov.levels){
 
-  df.cov <- data.frame(emax = rep(1, nrow(data)),
-                       ec50 = rep(1, nrow(data)),
-                       e0   = rep(1, nrow(data)))
+  df.cov <- data.frame(emax = factor(rep(1, nrow(data))),
+                       ec50 = factor(rep(1, nrow(data))),
+                       e0   = factor(rep(1, nrow(data))))
 
   for(k in names(param.cov)){
     df.cov[[k]] <- factor(data[[param.cov[[k]]]], levels = cov.levels[[k]])
