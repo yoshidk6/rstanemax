@@ -34,6 +34,7 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
   if(is.null(newdata)) {
     newdata <- data.frame(exposure = object$standata$exposure,
+                          # Do we need response column here?
                           response = object$standata$response)
   } else {
     if(is.vector(newdata)) newdata <- dplyr::tibble(exposure = newdata)
@@ -82,10 +83,12 @@ pp_calc <- function(stanfit, data.pp){
 #'
 posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9){
 
+  # Need to check no identical rows in newdata?
   pp.raw <- posterior_predict.stanemax(object, newdata, returnType = c("tibble"))
 
   pp.quantile <-
     pp.raw %>%
+    # Should I do `!mcmcid` here for grouping?
     dplyr::group_by(exposure) %>%
     dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
                      ci_med = stats::quantile(respHat, probs = 0.5),
