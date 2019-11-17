@@ -18,8 +18,7 @@
 #' another corresponding to standard deviation.
 #' Currently only supports normal distribution for priors.
 #' @param param.cov a named list specifying categorical covariates on parameters (ec50, emax, e0).
-#' If corresponding column in `data` is the factor, the levels will be used as it is.
-#' Otherwise the levels are sorted according to their frequency (with \code{\link[forcats]{fct_infreq}} function) and the most frequent group will be used as the reference group.
+#' Convert a column into factor if specific order of covarates are needed.
 #' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
 #' @return An object of class `stanemax`
 #' @details The following structure is used for the Emax model:
@@ -41,9 +40,14 @@
 #'                   chains = 1, iter = 500, seed = 12345)
 #' print(fit2)
 #'
+#' # Specify covariates
+#' fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.test,
+#'                   param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+#'                   # the next line is only to make the example go fast enough
+#'                   chains = 1, iter = 500, seed = 12345)
+#' print(fit3)
 #'
 #'
-# Depreciate gamma.fix, e0.fix and replace with param.fix as list object?
 
 # Remove NA data, show warning
 stan_emax <- function(formula, data,
@@ -80,7 +84,8 @@ stan_emax_prep <- function(formula, data,
   out.prep <- list()
   out.prep$standata <- standata
   out.prep$prminput <- list()
-  out.prep$prminput$df.model <- df.model
+  out.prep$prminput$formula    <- formula
+  out.prep$prminput$df.model   <- df.model
   out.prep$prminput$cov.levels <- cov.levels
   out.prep$prminput$param.cov  <- param.cov
 

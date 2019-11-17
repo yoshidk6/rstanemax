@@ -6,7 +6,7 @@
 \alias{plot.stanemax}
 \title{Methods for stanemax objects}
 \usage{
-\method{print}{stanemax}(x, ...)
+\method{print}{stanemax}(x, digits_summary = 2, ...)
 
 \method{plot}{stanemax}(x, show.ci = TRUE, show.pi = FALSE, ...)
 }

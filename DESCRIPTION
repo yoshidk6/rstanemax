@@ -17,7 +17,7 @@ Imports:
   rstantools (>= 1.5.1), 
   magrittr (>= 1.5), 
   dplyr (>= 0.8.0), 
-  tidyr (>= 0.8.0), 
+  tidyr (>= 1.0.0), 
   ggplot2 (>= 2.2.1)
 LinkingTo: 
   StanHeaders (>= 2.18.1), 

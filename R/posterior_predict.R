@@ -33,17 +33,26 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
   returnType <- match.arg(returnType)
 
   if(is.null(newdata)) {
-    newdata <- data.frame(exposure = object$standata$exposure,
-                          # Do we need response column here?
-                          response = object$standata$response)
+    df.model <- object$prminput$df.model
   } else {
-    if(is.vector(newdata)) newdata <- dplyr::tibble(exposure = newdata)
+    df.model <- create_model_frame_pp(formula = object$prminput$formula,
+                                      data = newdata,
+                                      param.cov = object$prminput$param.cov,
+                                      cov.levels = object$prminput$cov.levels)
   }
 
-  pred.response <- pp_calc(object$stanfit, newdata)
+  # if(is.null(newdata)) {
+  #   newdata <- data.frame(exposure = object$standata$exposure,
+  #                         # Do we need response column here?
+  #                         response = object$standata$response)
+  # } else {
+  #   if(is.vector(newdata)) newdata <- dplyr::tibble(exposure = newdata)
+  # }
+
+  pred.response <- pp_calc(object$stanfit, df.model)
 
   if(returnType == "matrix") {
-    return(matrix(pred.response$response, ncol = nrow(newdata), byrow = TRUE))
+    return(matrix(pred.response$response, ncol = nrow(df.model), byrow = TRUE))
   } else if(returnType == "dataframe") {
     return(as.data.frame(pred.response))
   } else if(returnType == "tibble") {
@@ -55,16 +64,44 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
 # Calculate posterior prediction from stanfit object and exposure data
 ## data.pp is a data frame with column named `exposure`
-pp_calc <- function(stanfit, data.pp){
+pp_calc <- function(stanfit, df.model){
 
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
-  param.fit  <-
-    rstan::extract(stanfit, pars = param.extract) %>%
-    dplyr::as_tibble() %>%
-    dplyr::mutate(mcmcid = dplyr::row_number())
+  param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
+  param.extract.2 <- rstan::extract(stanfit, pars = c("gamma", "sigma"))
 
-  df <- tidyr::crossing(param.fit, data.pp)
+  extract_params_covs <- function(k){
+    out <-
+      dplyr::as_tibble(param.extract.1[[k]]) %>%
+      dplyr::mutate(mcmcid = dplyr::row_number()) %>%
+      tidyr::pivot_longer(-mcmcid,
+                          names_to = paste0("cov", k),
+                          values_to = k,
+                          names_prefix = "V")
+  }
+
+  param.fit.withcov <-
+    dplyr::full_join(extract_params_covs("emax"),
+                     extract_params_covs("e0"), by = "mcmcid") %>%
+    dplyr::full_join(extract_params_covs("ec50"), by = "mcmcid") %>%
+    dplyr::mutate(covemax = as.numeric(covemax),
+                  covec50 = as.numeric(covec50),
+                  cove0   = as.numeric(cove0))
+
+  param.fit  <-
+    param.extract.2 %>%
+    dplyr::as_tibble() %>%
+    dplyr::mutate(mcmcid = dplyr::row_number()) %>%
+    dplyr::full_join(param.fit.withcov, ., by = "mcmcid")
+
+  df <-
+    df.model %>%
+    dplyr::mutate(covemax = as.numeric(covemax),
+                  covec50 = as.numeric(covec50),
+                  cove0   = as.numeric(cove0)) %>%
+    tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
+    dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
 
   out <-
     df %>%

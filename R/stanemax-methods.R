@@ -37,8 +37,8 @@ replace_prm_names <- function(x, pars) {
   prm.df <-
     stbl %>%
     tidyr::separate(prmname, into = c("prm", "index", "del"), fill = "right", remove = FALSE) %>%
-    mutate(index = as.numeric(index)) %>%
-    select(prmname, prm, index)
+    dplyr::mutate(index = as.numeric(index)) %>%
+    dplyr::select(prmname, prm, index)
 
 
   ## Get factor levels in covariates

@@ -18,6 +18,23 @@ create_model_frame <- function(formula, data, param.cov = NULL, cov.levels){
   return(df.model)
 }
 
+# Create data frame for posterior prediction
+create_model_frame_pp <- function(formula, data, param.cov = NULL, cov.levels){
+
+  formula <- formula[-2]
+
+  df.cov <- create_df_covs(data, param.cov, cov.levels)
+
+  formula.cov <- update(formula, ~ . + covemax + covec50 + cove0)
+  modelframe <- stats::lm(formula.cov, bind_cols(data, df.cov), method = "model.frame")
+
+  df.model <-
+    modelframe %>%
+    as.data.frame() %>%
+    rename(exposure = 1)
+
+  return(df.model)
+}
 
 
 create_df_covs <- function(data, param.cov = NULL, cov.levels){
@@ -46,16 +63,8 @@ covs_get_levels <- function(data, param.cov = NULL){
                      e0   = NULL)
 
   for(k in names(cov.levels)){
-
     if(!is.null(param.cov[[k]])){
-
-      covvec <- data[[param.cov[[k]]]]
-
-      if(is.factor(covvec)) {
-        cov.levels[[k]] = levels(covvec)
-      } else{
-        cov.levels[[k]] = levels(forcats::fct_infreq(factor(covvec)))
-      }
+      cov.levels[[k]] = levels(factor(data[[param.cov[[k]]]]))
     }
   }
 
