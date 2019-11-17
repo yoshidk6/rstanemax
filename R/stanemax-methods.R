@@ -47,19 +47,15 @@ replace_prm_names <- function(x, pars) {
   prm.cov.df.list <- list()
 
   for(k in names(cov.levels)){
-    prm.cov.df.tomerge <-
-      tibble::tibble(prm = k,
-                     level = cov.levels[[k]])
-
-    if(nrow(prm.cov.df.tomerge) > 1){
+    if(length(cov.levels[[k]]) > 1){
       prm.cov.df.list[[k]] <-
-        prm.cov.df.tomerge %>%
+        tibble::tibble(prm = k,
+                       level = cov.levels[[k]]) %>%
         dplyr::mutate(index = dplyr::row_number(),
                       level = as.character(level))
     } else{
       prm.cov.df.list[[k]] <-
-        prm.cov.df.tomerge %>%
-        dplyr::select(-level)
+        tibble::tibble(prm = k, index = 1, level = NA_character_)
     }
   }
   prm.cov.df <-
