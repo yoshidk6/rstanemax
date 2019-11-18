@@ -6,6 +6,10 @@ NULL
 
 
 #' @rdname stanemax-methods
+#' @param x An object of class `stanemax`
+#' @param digits_summary The number of significant digits to use when printing
+#' the summary, defaulting to 2. Applies to the quantities other than the
+#' effective sample size, which is always rounded to the nearest integer.
 #' @export
 print.stanemax <- function(x, digits_summary = 2, ...) {
 
@@ -92,7 +96,6 @@ extract_obs_mod_frame <- function(x) {
 
 #' @rdname stanemax-methods
 #' @export
-#' @param x An object of class `stanemax`
 #' @param show.ci An logical specifying if the output figure include
 #' credible interval of posterior prediction. Default TRUE.
 #' @param show.pi An logical specifying if the output figure include
