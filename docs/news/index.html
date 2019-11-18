@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
       </span>
     </div>
 
@@ -119,6 +119,21 @@
 <h1 class="page-header">
 <a href="#rstanemax-0-1-1" class="anchor"></a>rstanemax 0.1.1<small> Unreleased </small>
 </h1>
+<div id="breaking-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
+<ul>
+<li>For posterior prediction, the column name of the newdata needs to be the same as the one in the original input data, instead of <code>exposure</code> in the previous version.</li>
+</ul>
+</div>
+<div id="major-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#major-changes" class="anchor"></a>Major changes</h2>
+<ul>
+<li>
+<code><a href="../reference/stan_emax.html">stan_emax()</a></code> can now incorporate categorical covariates in select parameters. See <code><a href="../articles/emaxmodel.html">vignette("emaxmodel")</a></code> for detail.</li>
+</ul>
+</div>
 </div>
     <div id="rstanemax-0-1-0" class="section level1">
 <h1 class="page-header">

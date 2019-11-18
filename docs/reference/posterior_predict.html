@@ -64,7 +64,7 @@ Exposure data for prediction can be either original data used for model fit or n
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
       </span>
     </div>
 
@@ -129,10 +129,11 @@ Exposure data for prediction can be either original data used for model fit or n
 
     <pre class="usage"><span class='co'># S3 method for stanemax</span>
 <span class='fu'>posterior_predict</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>returnType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"matrix"</span>, <span class='st'>"dataframe"</span>, <span class='st'>"tibble"</span>), <span class='no'>...</span>)
+  <span class='kw'>returnType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"matrix"</span>, <span class='st'>"dataframe"</span>, <span class='st'>"tibble"</span>),
+  <span class='kw'>newDataType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"raw"</span>, <span class='st'>"modelframe"</span>), <span class='no'>...</span>)
 
 <span class='fu'>posterior_predict_quantile</span>(<span class='no'>object</span>, <span class='kw'>newdata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
-  <span class='kw'>pi</span> <span class='kw'>=</span> <span class='fl'>0.9</span>)</pre>
+  <span class='kw'>pi</span> <span class='kw'>=</span> <span class='fl'>0.9</span>, <span class='kw'>newDataType</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"raw"</span>, <span class='st'>"modelframe"</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,11 +144,18 @@ Exposure data for prediction can be either original data used for model fit or n
     </tr>
     <tr>
       <th>newdata</th>
-      <td><p>An optional data frame with a column named `exposure` or a numeric vector</p></td>
+      <td><p>An optional data frame that contains columns needed for model to run (exposure and covariates).
+If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.</p></td>
     </tr>
     <tr>
       <th>returnType</th>
       <td><p>An optional string specifying the type of return object.</p></td>
+    </tr>
+    <tr>
+      <th>newDataType</th>
+      <td><p>An optional string specifying the type of newdata input,
+whether in the format of an original data frame or a processed model frame.
+Mostly used for internal purposes and users can usually leave at default.</p></td>
     </tr>
     <tr>
       <th>...</th>
