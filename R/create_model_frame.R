@@ -13,8 +13,8 @@ create_model_frame <- function(formula, data, param.cov = NULL, cov.levels, is.m
   df.cov <- create_df_covs(data, param.cov, cov.levels)
   cov.groups <- create_cov_groups(df.cov, param.cov)
 
-  formula.cov <- update(formula, ~ . + covemax + covec50 + cove0)
-  modelframe <- stats::lm(formula.cov, bind_cols(data, df.cov), method = "model.frame")
+  formula.cov <- stats::update(formula, ~ . + covemax + covec50 + cove0)
+  modelframe <- stats::lm(formula.cov, dplyr::bind_cols(data, df.cov), method = "model.frame")
 
   if(is.model.fit) {
     df.model <-

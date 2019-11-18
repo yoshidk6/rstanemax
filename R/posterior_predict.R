@@ -67,20 +67,20 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
     df.model %>%
     dplyr::select(covemaxfct = covemax,
                   covec50fct = covec50,
-                  cove0fct = cove0) %>%
+                  cove0fct   = cove0) %>%
     dplyr::distinct() %>%
     dplyr::mutate(covemax = as.numeric(covemaxfct),
                   covec50 = as.numeric(covec50fct),
                   cove0   = as.numeric(cove0fct))
 
   pred.response <-
-    left_join(pred.response.raw, cov.fct.numeric, by = c("covemax", "covec50", "cove0")) %>%
-    select(-(covemax:cove0)) %>%
-    select(mcmcid, exposure,
-           covemax = covemaxfct,
-           covec50 = covec50fct,
-           cove0 = cove0fct,
-           everything())
+    dplyr::left_join(pred.response.raw, cov.fct.numeric, by = c("covemax", "covec50", "cove0")) %>%
+    dplyr::select(-(covemax:cove0)) %>%
+    dplyr::select(mcmcid, exposure,
+                  covemax = covemaxfct,
+                  covec50 = covec50fct,
+                  cove0   = cove0fct,
+                  dplyr::everything())
 
   if(returnType == "matrix") {
     return(matrix(pred.response$response, ncol = nrow(df.model), byrow = TRUE))
@@ -168,7 +168,7 @@ posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.
 
   pp.raw.2 <-
     pp.raw %>%
-    mutate(dataid = rep(1:ndata, length.out = nrow(.)))
+    dplyr::mutate(dataid = rep(1:ndata, length.out = nrow(.)))
 
   pp.quantile <-
     pp.raw.2 %>%

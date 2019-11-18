@@ -3,10 +3,16 @@
 \name{stanemax-methods}
 \alias{stanemax-methods}
 \alias{print.stanemax}
+\alias{extract_stanfit}
+\alias{extract_obs_mod_frame}
 \alias{plot.stanemax}
 \title{Methods for stanemax objects}
 \usage{
 \method{print}{stanemax}(x, digits_summary = 2, ...)
+
+extract_stanfit(x)
+
+extract_obs_mod_frame(x)
 
 \method{plot}{stanemax}(x, show.ci = TRUE, show.pi = FALSE, ...)
 }

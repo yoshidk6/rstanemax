@@ -32,7 +32,7 @@ replace_prm_names <- function(x, pars) {
   # x <- test.fit.cov
   s <- rstan::summary(x$stanfit, pars = pars)$summary
 
-  stbl <- tibble::as_tibble(s, rownames = "prmname")
+  stbl <- dplyr::as_tibble(s, rownames = "prmname")
 
   ## Get parameter names in stanfit
   prm.df <-
@@ -50,13 +50,13 @@ replace_prm_names <- function(x, pars) {
   for(k in names(cov.levels)){
     if(length(cov.levels[[k]]) > 1){
       prm.cov.df.list[[k]] <-
-        tibble::tibble(prm = k,
-                       level = cov.levels[[k]]) %>%
+        dplyr::tibble(prm = k,
+                      level = cov.levels[[k]]) %>%
         dplyr::mutate(index = dplyr::row_number(),
                       level = as.character(level))
     } else{
       prm.cov.df.list[[k]] <-
-        tibble::tibble(prm = k, index = 1, level = NA_character_)
+        dplyr::tibble(prm = k, index = 1, level = NA_character_)
     }
   }
   prm.cov.df <-
@@ -78,23 +78,13 @@ replace_prm_names <- function(x, pars) {
 
 
 #' @rdname stanemax-methods
-#'
-#' Extract stanfit object
-#'
 #' @export
-#' @param x An object of class `stanemax`
 extract_stanfit <- function(x) {
   return(x$stanfit)
 }
 
 #' @rdname stanemax-methods
-#'
-#' Extract input data in a processed model frame format
-#'
-#' This can be useful for plotting with posterior predictions
-#'
 #' @export
-#' @param x An object of class `stanemax`
 extract_obs_mod_frame <- function(x) {
   return(x$prminput$df.model)
 }
