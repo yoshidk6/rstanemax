@@ -1,40 +1,35 @@
 
 # Create data frame with relevant columns
 # (renamed for our purposes, not in the original names)
-create_model_frame <- function(formula, data, param.cov = NULL, cov.levels){
+create_model_frame <- function(formula, data, param.cov = NULL, cov.levels, is.model.fit = TRUE){
 
-  check_formula(formula, data)
-
-  df.cov <- create_df_covs(data, param.cov, cov.levels)
-
-  formula.cov <- update(formula, ~ . + covemax + covec50 + cove0)
-  modelframe <- stats::lm(formula.cov, bind_cols(data, df.cov), method = "model.frame")
-
-  df.model <-
-    modelframe %>%
-    as.data.frame() %>%
-    rename(response = 1, exposure = 2)
-
-  return(df.model)
-}
-
-# Create data frame for posterior prediction
-create_model_frame_pp <- function(formula, data, param.cov = NULL, cov.levels){
-
-  formula <- formula[-2]
+  if(is.model.fit) {
+    check_formula(formula, data)
+  } else {
+    check_covs_in_data(data, param.cov)
+    formula <- formula[-2]
+  }
 
   df.cov <- create_df_covs(data, param.cov, cov.levels)
 
   formula.cov <- update(formula, ~ . + covemax + covec50 + cove0)
   modelframe <- stats::lm(formula.cov, bind_cols(data, df.cov), method = "model.frame")
 
-  df.model <-
-    modelframe %>%
-    as.data.frame() %>%
-    rename(exposure = 1)
+  if(is.model.fit) {
+    df.model <-
+      modelframe %>%
+      as.data.frame() %>%
+      rename(response = 1, exposure = 2)
+  } else {
+    df.model <-
+      modelframe %>%
+      as.data.frame() %>%
+      rename(exposure = 1)
+  }
 
   return(df.model)
 }
+
 
 
 create_df_covs <- function(data, param.cov = NULL, cov.levels){

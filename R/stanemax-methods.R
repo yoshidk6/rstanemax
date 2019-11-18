@@ -10,10 +10,9 @@ NULL
 print.stanemax <- function(x, digits_summary = 2, ...) {
 
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
+  # print(x$stanfit, pars = param.extract)
 
   s <- replace_prm_names(x, param.extract)
-
-  # print(x$stanfit, pars = param.extract)
 
   cat("---- Emax model fit with rstanemax ----\n")
   cat("\n")
@@ -22,7 +21,7 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
   cat("* Use `posterior_predict()` or `posterior_predict_quantile()` function to get\n")
   cat("  raw predictions or make predictions on new data\n")
   cat("* Use `plot()` function to visualize model fit\n")
-  cat("* Raw stanfit object is stored in `$stanfit`")
+  cat("* Use `extract_stanfit()` function to extract raw stanfit object")
 }
 
 
@@ -74,6 +73,17 @@ replace_prm_names <- function(x, pars) {
   return(s2)
 }
 
+
+
+#' @rdname stanemax-methods
+#'
+#' Extract stanfit object
+#'
+#' @export
+#' @param x An object of class `stanemax`
+extract_stanfit <- function(x) {
+  return(x$stanfit)
+}
 
 
 #' @rdname stanemax-methods

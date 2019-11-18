@@ -10,7 +10,8 @@
 #' @export posterior_predict
 #' @name posterior_predict
 #' @param object A `stanemax` class object
-#' @param newdata An optional data frame with a column named `exposure` or a numeric vector
+#' @param newdata An optional data frame that contains colums needed (exposure and covariates).
+#' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType An optional string specifying the type of return object.
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
@@ -32,13 +33,19 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
   returnType <- match.arg(returnType)
 
+  if(is.vector(newdata)) {
+    newdata <- data.frame(newdata)
+    names(newdata) <- as.character(object$prminput$formula[[3]])
+  }
+
   if(is.null(newdata)) {
     df.model <- object$prminput$df.model
   } else {
-    df.model <- create_model_frame_pp(formula = object$prminput$formula,
-                                      data = newdata,
-                                      param.cov = object$prminput$param.cov,
-                                      cov.levels = object$prminput$cov.levels)
+    df.model <- create_model_frame(formula = object$prminput$formula,
+                                   data = newdata,
+                                   param.cov = object$prminput$param.cov,
+                                   cov.levels = object$prminput$cov.levels,
+                                   is.model.fit = FALSE)
   }
 
   # if(is.null(newdata)) {
@@ -65,6 +72,27 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 # Calculate posterior prediction from stanfit object and exposure data
 ## data.pp is a data frame with column named `exposure`
 pp_calc <- function(stanfit, df.model){
+
+  param.fit <- extract_param_fit(stanfit)
+
+  df <-
+    df.model %>%
+    dplyr::mutate(covemax = as.numeric(covemax),
+                  covec50 = as.numeric(covec50),
+                  cove0   = as.numeric(cove0)) %>%
+    tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
+    dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
+
+  out <-
+    df %>%
+    dplyr::mutate(respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
+                  response= stats::rnorm(respHat, respHat, sigma)) %>%
+    dplyr::select(mcmcid, exposure, dplyr::everything())
+
+}
+
+
+extract_param_fit <- function(stanfit){
 
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
@@ -95,22 +123,8 @@ pp_calc <- function(stanfit, df.model){
     dplyr::mutate(mcmcid = dplyr::row_number()) %>%
     dplyr::full_join(param.fit.withcov, ., by = "mcmcid")
 
-  df <-
-    df.model %>%
-    dplyr::mutate(covemax = as.numeric(covemax),
-                  covec50 = as.numeric(covec50),
-                  cove0   = as.numeric(cove0)) %>%
-    tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
-    dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
-
-  out <-
-    df %>%
-    dplyr::mutate(respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
-                  response= stats::rnorm(respHat, respHat, sigma)) %>%
-    dplyr::select(mcmcid, exposure, dplyr::everything())
-
+  return(param.fit)
 }
-
 
 
 #' @rdname posterior_predict
