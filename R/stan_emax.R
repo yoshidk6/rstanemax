@@ -17,6 +17,8 @@
 #' Each list item should be length 2 numeric vector, one corresponding to mean and
 #' another corresponding to standard deviation.
 #' Currently only supports normal distribution for priors.
+#' @param param.cov a named list specifying categorical covariates on parameters (ec50, emax, e0).
+#' Convert a column into factor if specific order of covariates are needed.
 #' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
 #' @return An object of class `stanemax`
 #' @details The following structure is used for the Emax model:
@@ -38,43 +40,67 @@
 #'                   chains = 1, iter = 500, seed = 12345)
 #' print(fit2)
 #'
+#' # Specify covariates
+#' fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.test,
+#'                   param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+#'                   # the next line is only to make the example go fast enough
+#'                   chains = 1, iter = 500, seed = 12345)
+#' print(fit3)
 #'
+#'
+
+# Remove NA data, show warning
 stan_emax <- function(formula, data,
                       gamma.fix = 1, e0.fix = NULL,
-                      priors = NULL, ...){
+                      priors = NULL, param.cov = NULL, ...){
 
+  out.prep <- stan_emax_prep(formula, data, gamma.fix, e0.fix, param.cov)
 
-  standata.wo.prior <- stan_emax_prep(formula, data, gamma.fix, e0.fix)
-
-  standata <- set_prior(standata.wo.prior, priors)
+  standata <- set_prior(out.prep$standata, priors)
 
   out <- stan_emax_run(stanmodels$emax, standata = standata, ...)
+
+  out$prminput <- out.prep$prminput
+
+  return(out)
 }
+
 
 
 # Parse formula and put together stan data object
 stan_emax_prep <- function(formula, data,
-                           gamma.fix = 1, e0.fix = NULL){
+                           gamma.fix = 1, e0.fix = NULL, param.cov = NULL){
 
-  call <- match.call(expand.dots = TRUE)
-  mf <- match.call(expand.dots = FALSE)
 
-  mf[[1L]] <- as.name("lm")
-  mf$method <- "model.frame"
-  modelframe <- suppressWarnings(eval(mf, parent.frame()))
+  check_param_cov(param.cov)
+  cov.levels <- covs_get_levels(data, param.cov)
+  df.model <- create_model_frame(formula, data, param.cov, cov.levels)
 
-  mt <- attr(modelframe, "terms")
-  Y <- stats::model.response(modelframe)
-  X <- stats::model.matrix(mt, modelframe)
-
-  if(NCOL(Y) != 1) stop("Only one response variable is allowed")
-  if(NCOL(X) != 2) stop("Only one exposure variable is allowed")
-
-  X <- X[,2]
 
   standata <-
-    create_standata(X, Y, gamma.fix, e0.fix)
+    create_standata(df.model, gamma.fix, e0.fix)
+
+
+  out.prep <- list()
+  out.prep$standata <- standata
+  out.prep$prminput <- list()
+  out.prep$prminput$formula    <- formula
+  out.prep$prminput$df.model   <- df.model
+  out.prep$prminput$cov.levels <- cov.levels
+  out.prep$prminput$param.cov  <- param.cov
+
+  return(out.prep)
 }
+
+
+
+# Check param.cov input
+check_param_cov <- function(param.cov = NULL){
+  if(sum(!(names(param.cov) %in% c("emax", "ec50", "e0")))){
+    stop("Covariates can be specified only to emax, ec50, or e0")
+  }
+}
+
 
 
 # Run Emax model
@@ -96,11 +122,17 @@ stan_emax_run <- function(stanmodel, standata, ...){
 }
 
 
-create_standata <- function(X, Y, gamma.fix = 1, e0.fix = NULL){
+create_standata <- function(df.model, gamma.fix = 1, e0.fix = NULL){
 
-  out <- list(exposure = X,
-              response = Y,
-              N = length(Y),
+  out <- list(exposure = df.model$exposure,
+              response = df.model$response,
+              covemax  = as.numeric(df.model$covemax),
+              covec50  = as.numeric(df.model$covec50),
+              cove0    = as.numeric(df.model$cove0),
+              n_covlev_emax = length(levels(df.model$covemax)),
+              n_covlev_ec50 = length(levels(df.model$covec50)),
+              n_covlev_e0   = length(levels(df.model$cove0)),
+              N = nrow(df.model),
               gamma_fix_flg = 1,
               gamma_fix_value = 1,
               e0_fix_flg = 0,

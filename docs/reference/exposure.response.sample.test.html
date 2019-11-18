@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Methods for stanemax objects — stanemax-methods • rstanemax</title>
+<title>Sample simulated data for exposure-response with covariates for package testing — exposure.response.sample.test • rstanemax</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -30,9 +30,9 @@
 
 
 
-<meta property="og:title" content="Methods for stanemax objects — stanemax-methods" />
+<meta property="og:title" content="Sample simulated data for exposure-response with covariates for package testing — exposure.response.sample.test" />
 
-<meta property="og:description" content="Methods for stanemax objects" />
+<meta property="og:description" content="Sample simulated data for exposure-response with covariates for package testing" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -114,63 +114,56 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Methods for stanemax objects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/yoshidk6/rstanemax/blob/master/R/stanemax-methods.R'><code>R/stanemax-methods.R</code></a></small>
-    <div class="hidden name"><code>stanemax-methods.Rd</code></div>
+    <h1>Sample simulated data for exposure-response with covariates for package testing</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yoshidk6/rstanemax/blob/master/R/yyy.R'><code>R/yyy.R</code></a></small>
+    <div class="hidden name"><code>exposure.response.sample.test.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Methods for stanemax objects</p>
+    <p>Sample simulated data for exposure-response with covariates for package testing</p>
     
     </div>
 
-    <pre class="usage"><span class='co'># S3 method for stanemax</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>x</span>, <span class='kw'>digits_summary</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='no'>exposure.response.sample.test</span></pre>
+        
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-<span class='fu'>extract_stanfit</span>(<span class='no'>x</span>)
-
-<span class='fu'>extract_obs_mod_frame</span>(<span class='no'>x</span>)
-
-<span class='co'># S3 method for stanemax</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>show.ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>show.pi</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='no'>...</span>)</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x</th>
-      <td><p>An object of class `stanemax`</p></td>
-    </tr>
-    <tr>
-      <th>digits_summary</th>
-      <td><p>The number of significant digits to use when printing
-the summary, defaulting to 2. Applies to the quantities other than the
-effective sample size, which is always rounded to the nearest integer.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Additional arguments passed to methods.</p></td>
-    </tr>
-    <tr>
-      <th>show.ci</th>
-      <td><p>An logical specifying if the output figure include
-credible interval of posterior prediction. Default TRUE.</p></td>
-    </tr>
-    <tr>
-      <th>show.pi</th>
-      <td><p>An logical specifying if the output figure include
-prediction interval. Default FALSE.</p></td>
-    </tr>
-    </table>
+    <p>A data frame with columns:</p><dl class='dl-horizontal'>
+<dt>dose</dt><dd><p>Dose levels used for simulation of pharmacokinetics</p></dd>
+<dt>conc</dt><dd><p>Simulated exposure</p></dd>
+<dt>resp</dt><dd><p>Simulated pharmacodynamic response</p></dd>
+<dt>cov1</dt><dd><p>Covariate 1 for e0</p></dd>
+<dt>cov2</dt><dd><p>Covariate 2 for emax</p></dd>
+<dt>cov3</dt><dd><p>Covariate 3 for ec50 (data type factor)</p></dd>
+<dt>cov3num</dt><dd><p>Covariate 3 for ec50 (data type numeric)</p></dd>
+</dl>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>exposure.response.sample</span></div><div class='output co'>#&gt; # A tibble: 60 x 3
+#&gt;     dose exposure response
+#&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+#&gt;  1     0        0    17.2 
+#&gt;  2     0        0     9.78
+#&gt;  3     0        0    -8.81
+#&gt;  4     0        0     7.68
+#&gt;  5     0        0    -6.30
+#&gt;  6     0        0    14.8 
+#&gt;  7     0        0   -18.5 
+#&gt;  8     0        0    17.3 
+#&gt;  9     0        0    15.0 
+#&gt; 10     0        0    11.3 
+#&gt; # ... with 50 more rows</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#format">Format</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -49,6 +49,7 @@ Example
 # Load rstanemax
 library(rstanemax)
 #> Loading required package: Rcpp
+#> Warning: package 'Rcpp' was built under R version 3.5.3
 
 # Run model with a sample dataset
 set.seed(12345)
@@ -79,29 +80,35 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.284 seconds (Warm-up)
-#> Chain 1:                0.102 seconds (Sampling)
-#> Chain 1:                0.386 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.305 seconds (Warm-up)
+#> Chain 1:                0.088 seconds (Sampling)
+#> Chain 1:                0.393 seconds (Total)
 #> Chain 1:
+#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+#> Running the chains for more iterations may help. See
+#> http://mc-stan.org/misc/warnings.html#bulk-ess
+#> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
+#> Running the chains for more iterations may help. See
+#> http://mc-stan.org/misc/warnings.html#tail-ess
 ```
 
 ``` r
 fit.emax
-#> Inference for Stan model: emax.
-#> 1 chains, each with iter=500; warmup=250; thin=1; 
-#> post-warmup draws per chain=250, total post-warmup draws=250.
+#> ---- Emax model fit with rstanemax ----
 #> 
-#>         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat
-#> emax  107.33    0.32  4.65 98.67 103.91 106.99 110.80 116.55   212    1
-#> e0      6.23    0.27  3.71 -0.33   3.66   6.15   8.87  14.12   190    1
-#> ec50   98.72    1.56 20.47 67.31  83.27  95.45 111.43 144.57   172    1
-#> gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN
-#> sigma  19.99    0.09  1.32 17.64  19.12  19.91  20.78  23.15   204    1
+#>        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
+#> emax  92.21    0.57  6.17 79.44 88.09 92.63 96.96 102.45 118.05    1
+#> e0     5.59    0.43  4.38 -2.89  2.60  5.79  8.69  13.94 104.78    1
+#> ec50  74.15    1.09 17.24 45.44 62.52 72.85 84.23 108.22 249.22    1
+#> gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN
+#> sigma 16.52    0.12  1.44 14.01 15.49 16.47 17.54  19.36 155.65    1
 #> 
-#> Samples were drawn using NUTS(diag_e) at Mon Jun 03 14:59:47 2019.
-#> For each parameter, n_eff is a crude measure of effective sample size,
-#> and Rhat is the potential scale reduction factor on split chains (at 
-#> convergence, Rhat=1).
+#> * Use `extract_stanfit()` function to extract raw stanfit object
+#> * Use `plot()` function to visualize model fit
+#> * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
+#>   raw predictions or make predictions on new data
+#> * Use `extract_obs_mod_frame()` function to extract raw data 
+#>   in a processed format (useful for plotting)
 ```
 
 ``` r

@@ -3,15 +3,25 @@
 \name{stanemax-methods}
 \alias{stanemax-methods}
 \alias{print.stanemax}
+\alias{extract_stanfit}
+\alias{extract_obs_mod_frame}
 \alias{plot.stanemax}
 \title{Methods for stanemax objects}
 \usage{
-\method{print}{stanemax}(x, ...)
+\method{print}{stanemax}(x, digits_summary = 2, ...)
+
+extract_stanfit(x)
+
+extract_obs_mod_frame(x)
 
 \method{plot}{stanemax}(x, show.ci = TRUE, show.pi = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class `stanemax`}
+
+\item{digits_summary}{The number of significant digits to use when printing
+the summary, defaulting to 2. Applies to the quantities other than the
+effective sample size, which is always rounded to the nearest integer.}
 
 \item{...}{Additional arguments passed to methods.}
 

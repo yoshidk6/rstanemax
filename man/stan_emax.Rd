@@ -5,7 +5,7 @@
 \title{Bayesian Emax model fit with Stan}
 \usage{
 stan_emax(formula, data, gamma.fix = 1, e0.fix = NULL, priors = NULL,
-  ...)
+  param.cov = NULL, ...)
 }
 \arguments{
 \item{formula}{a symbolic description of variables for Emax model fit.}
@@ -26,6 +26,9 @@ Default = NULL (estimate from the data).}
 Each list item should be length 2 numeric vector, one corresponding to mean and
 another corresponding to standard deviation.
 Currently only supports normal distribution for priors.}
+
+\item{param.cov}{a named list specifying categorical covariates on parameters (ec50, emax, e0).
+Convert a column into factor if specific order of covariates are needed.}
 
 \item{...}{Arguments passed to `rstan::sampling` (e.g. iter, chains).}
 }
@@ -54,6 +57,13 @@ fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fi
                   # the next line is only to make the example go fast enough
                   chains = 1, iter = 500, seed = 12345)
 print(fit2)
+
+# Specify covariates
+fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.test,
+                  param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+                  # the next line is only to make the example go fast enough
+                  chains = 1, iter = 500, seed = 12345)
+print(fit3)
 
 
 }

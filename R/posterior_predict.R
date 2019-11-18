@@ -10,8 +10,12 @@
 #' @export posterior_predict
 #' @name posterior_predict
 #' @param object A `stanemax` class object
-#' @param newdata An optional data frame with a column named `exposure` or a numeric vector
+#' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
+#' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType An optional string specifying the type of return object.
+#' @param newDataType An optional string specifying the type of newdata input,
+#' whether in the format of an original data frame or a processed model frame.
+#' Mostly used for internal purposes and users can usually leave at default.
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
 #' The default is a matrix containing predicted response.
@@ -28,21 +32,58 @@
 #'
 posterior_predict.stanemax <- function(object, newdata = NULL,
                                        returnType = c("matrix", "dataframe", "tibble"),
+                                       newDataType = c("raw", "modelframe"),
                                        ...){
 
   returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+
 
   if(is.null(newdata)) {
-    newdata <- data.frame(exposure = object$standata$exposure,
-                          response = object$standata$response)
+    df.model <- object$prminput$df.model
   } else {
-    if(is.vector(newdata)) newdata <- dplyr::tibble(exposure = newdata)
+    if(newDataType == "modelframe"){
+      df.model <- newdata
+    } else {
+      if(is.vector(newdata)) {
+        newdata <- data.frame(newdata)
+        names(newdata) <- as.character(object$prminput$formula[[3]])
+      }
+
+      df.model <- create_model_frame(formula = object$prminput$formula,
+                                     data = newdata,
+                                     param.cov = object$prminput$param.cov,
+                                     cov.levels = object$prminput$cov.levels,
+                                     is.model.fit = FALSE)
+    }
   }
 
-  pred.response <- pp_calc(object$stanfit, newdata)
+
+
+
+  pred.response.raw <- pp_calc(object$stanfit, df.model)
+
+  cov.fct.numeric <-
+    df.model %>%
+    dplyr::select(covemaxfct = covemax,
+                  covec50fct = covec50,
+                  cove0fct   = cove0) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(covemax = as.numeric(covemaxfct),
+                  covec50 = as.numeric(covec50fct),
+                  cove0   = as.numeric(cove0fct))
+
+  pred.response <-
+    dplyr::left_join(pred.response.raw, cov.fct.numeric, by = c("covemax", "covec50", "cove0")) %>%
+    dplyr::select(-(covemax:cove0)) %>%
+    dplyr::select(mcmcid, exposure,
+                  covemax = covemaxfct,
+                  covec50 = covec50fct,
+                  cove0   = cove0fct,
+                  dplyr::everything())
 
   if(returnType == "matrix") {
-    return(matrix(pred.response$response, ncol = nrow(newdata), byrow = TRUE))
+    return(matrix(pred.response$response, ncol = nrow(df.model), byrow = TRUE))
   } else if(returnType == "dataframe") {
     return(as.data.frame(pred.response))
   } else if(returnType == "tibble") {
@@ -54,16 +95,17 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
 
 # Calculate posterior prediction from stanfit object and exposure data
 ## data.pp is a data frame with column named `exposure`
-pp_calc <- function(stanfit, data.pp){
+pp_calc <- function(stanfit, df.model){
 
-  param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
+  param.fit <- extract_param_fit(stanfit)
 
-  param.fit  <-
-    rstan::extract(stanfit, pars = param.extract) %>%
-    dplyr::as_tibble() %>%
-    dplyr::mutate(mcmcid = dplyr::row_number())
-
-  df <- tidyr::crossing(param.fit, data.pp)
+  df <-
+    df.model %>%
+    dplyr::mutate(covemax = as.numeric(covemax),
+                  covec50 = as.numeric(covec50),
+                  cove0   = as.numeric(cove0)) %>%
+    tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
+    dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
 
   out <-
     df %>%
@@ -74,25 +116,72 @@ pp_calc <- function(stanfit, data.pp){
 }
 
 
+extract_param_fit <- function(stanfit){
+
+  param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
+
+  param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
+  param.extract.2 <- rstan::extract(stanfit, pars = c("gamma", "sigma"))
+
+  extract_params_covs <- function(k){
+    out <-
+      dplyr::as_tibble(param.extract.1[[k]]) %>%
+      dplyr::mutate(mcmcid = dplyr::row_number()) %>%
+      tidyr::pivot_longer(-mcmcid,
+                          names_to = paste0("cov", k),
+                          values_to = k,
+                          names_prefix = "V")
+  }
+
+  param.fit.withcov <-
+    dplyr::full_join(extract_params_covs("emax"),
+                     extract_params_covs("e0"), by = "mcmcid") %>%
+    dplyr::full_join(extract_params_covs("ec50"), by = "mcmcid") %>%
+    dplyr::mutate(covemax = as.numeric(covemax),
+                  covec50 = as.numeric(covec50),
+                  cove0   = as.numeric(cove0))
+
+  param.fit  <-
+    param.extract.2 %>%
+    dplyr::as_tibble() %>%
+    dplyr::mutate(mcmcid = dplyr::row_number()) %>%
+    dplyr::full_join(param.fit.withcov, ., by = "mcmcid")
+
+  return(param.fit)
+}
+
 
 #' @rdname posterior_predict
 #' @export
 #' @param ci Credible interval of the response without residual variability.
 #' @param pi Prediction interval of the response with residual variability.
 #'
-posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9){
+posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9,
+                                       newDataType = c("raw", "modelframe")){
 
-  pp.raw <- posterior_predict.stanemax(object, newdata, returnType = c("tibble"))
+  pp.raw <- posterior_predict.stanemax(object, newdata,
+                                       returnType = c("tibble"), newDataType = newDataType)
+
+  ndata <-
+    dplyr::filter(pp.raw, mcmcid == 1) %>%
+    nrow()
+
+  pp.raw.2 <-
+    pp.raw %>%
+    dplyr::mutate(dataid = rep(1:ndata, length.out = nrow(.)))
 
   pp.quantile <-
-    pp.raw %>%
-    dplyr::group_by(exposure) %>%
+    pp.raw.2 %>%
+    dplyr::group_by(exposure, covemax, covec50, cove0, Covariates, dataid) %>%
     dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
                      ci_med = stats::quantile(respHat, probs = 0.5),
                      ci_high= stats::quantile(respHat, probs = 0.5 + ci/2),
                      pi_low = stats::quantile(response, probs = 0.5 - pi/2),
                      pi_med = stats::quantile(response, probs = 0.5),
-                     pi_high= stats::quantile(response, probs = 0.5 + pi/2))
+                     pi_high= stats::quantile(response, probs = 0.5 + pi/2)) %>%
+    dplyr::arrange(dataid) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-dataid)
 }
 
 

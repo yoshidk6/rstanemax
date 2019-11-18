@@ -7,17 +7,23 @@
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
 \method{posterior_predict}{stanemax}(object, newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"), ...)
+  returnType = c("matrix", "dataframe", "tibble"),
+  newDataType = c("raw", "modelframe"), ...)
 
 posterior_predict_quantile(object, newdata = NULL, ci = 0.9,
-  pi = 0.9)
+  pi = 0.9, newDataType = c("raw", "modelframe"))
 }
 \arguments{
 \item{object}{A `stanemax` class object}
 
-\item{newdata}{An optional data frame with a column named `exposure` or a numeric vector}
+\item{newdata}{An optional data frame that contains columns needed for model to run (exposure and covariates).
+If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.}
 
 \item{returnType}{An optional string specifying the type of return object.}
+
+\item{newDataType}{An optional string specifying the type of newdata input,
+whether in the format of an original data frame or a processed model frame.
+Mostly used for internal purposes and users can usually leave at default.}
 
 \item{...}{Additional arguments passed to methods.}
 

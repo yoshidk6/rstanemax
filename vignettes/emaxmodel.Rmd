@@ -37,7 +37,9 @@ In the `formula` argument, you will specify which columns of `data` will be used
 ```{r, results="hide"}
 data(exposure.response.sample)
 
-fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample)
+fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
+                      # the next line is only to make the example go fast enough
+                      chains = 2, iter = 1000, seed = 12345)
 ```
 
 ```{r}
@@ -46,14 +48,14 @@ fit.emax
 
 `plot()` function shows the estimated Emax model curve with 95% credible intervals of parameters.
 
-```{r, fig.show='hold'}
+```{r plot_example, fig.show='hold'}
 plot(fit.emax)
 ```
 
-Raw output from `rstan` is stored in the output variable, and you can access it with `$stanfit`.
+Raw output from `rstan` is stored in the output variable, and you can access it with `extract_stanfit()` function.
 
 ```{r}
-class(fit.emax$stanfit)
+class(extract_stanfit(fit.emax))
 ```
 
 ## Prediction of response with new exposure data
@@ -72,18 +74,25 @@ response.pred %>% select(mcmcid, exposure, respHat, response)
 You can also get quantiles of predictions with `posterior_predict_quantile()` function.
 
 ```{r}
-resp.pred.quantile <- posterior_predict_quantile(fit.emax, newdata = seq(0, 1000, by = 250))
+resp.pred.quantile <- posterior_predict_quantile(fit.emax, newdata = seq(0, 5000, by = 100))
 resp.pred.quantile
 ```
 
-This is particularly useful when you want to plot the estimated Emax curve.
-
+Input data can be obtained in a same format with `extract_obs_mod_frame()` function.
 
 ```{r}
+obs.formatted <- extract_obs_mod_frame(fit.emax)
+```
+
+These are particularly useful when you want to plot the estimated Emax curve.
+
+```{r plot_with_pp, fig.show='hold'}
 ggplot(resp.pred.quantile, aes(exposure, ci_med)) +
   geom_line() + 
   geom_ribbon(aes(ymin=ci_low, ymax=ci_high), alpha = .5) +
   geom_ribbon(aes(ymin=pi_low, ymax=pi_high), alpha = .2) +
+  geom_point(data = obs.formatted,
+             aes(y = response)) +
   labs(y = "response")
 ```
 
@@ -100,7 +109,9 @@ Below is the example of estimating gamma from data.
 ```{r, results="hide"}
 data(exposure.response.sample)
 
-fit.emax.sigmoidal <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL)
+fit.emax.sigmoidal <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+                                # the next line is only to make the example go fast enough
+                                chains = 2, iter = 1000, seed = 12345)
 ```
 
 ```{r}
@@ -109,7 +120,7 @@ fit.emax.sigmoidal
 
 You can compare the difference of posterior predictions between two models (in this case they are very close to each other):
 
-```{r fig.width = 6, fig.height = 4}
+```{r plot_with_gamma_fix, fig.width = 6, fig.height = 4, fig.show='hold'}
 
 exposure_pred <- seq(min(exposure.response.sample$exposure),
                      max(exposure.response.sample$exposure),
@@ -140,5 +151,29 @@ ggplot(pred, aes(exposure, ci_med, color = model, fill = model)) +
 
 
 
+
+# Set covariates
+
+You can specify categorical covariates for Emax, EC50, and E0.
+See help of `stan_emax()` for the details.
+
+
+```{r, results="hide"}
+data(exposure.response.sample.test)
+
+test.data <-
+  mutate(exposure.response.sample.test,
+         SEX = ifelse(cov2 == 0, "MALE", "FEMALE"))
+
+fit.cov <- stan_emax(formula = resp ~ conc, data = test.data,
+                     param.cov = list(emax = "SEX"),
+                     # the next line is only to make the example go fast enough
+                     chains = 2, iter = 1000, seed = 12345)
+```
+
+```{r plot_with_cov, fig.show='hold'}
+fit.cov
+plot(fit.cov)
+```
 
 

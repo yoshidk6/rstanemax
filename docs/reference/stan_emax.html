@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>stan_emax</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>e0.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>priors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>)</pre>
+  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,6 +159,11 @@ Default = NULL (estimate from the data).</p></td>
 Each list item should be length 2 numeric vector, one corresponding to mean and
 another corresponding to standard deviation.
 Currently only supports normal distribution for priors.</p></td>
+    </tr>
+    <tr>
+      <th>param.cov</th>
+      <td><p>a named list specifying categorical covariates on parameters (ec50, emax, e0).
+Convert a column into factor if specific order of covariates are needed.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -202,24 +207,28 @@ $$\epsilon ~ N(0, \sigma^2)$$</p>
 #&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.39 seconds (Warm-up)
-#&gt; Chain 1:                0.153 seconds (Sampling)
-#&gt; Chain 1:                0.543 seconds (Total)
-#&gt; Chain 1: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; Inference for Stan model: emax.
-#&gt; 1 chains, each with iter=500; warmup=250; thin=1; 
-#&gt; post-warmup draws per chain=250, total post-warmup draws=250.
+#&gt; Chain 1:  Elapsed Time: 0.28 seconds (Warm-up)
+#&gt; Chain 1:                0.081 seconds (Sampling)
+#&gt; Chain 1:                0.361 seconds (Total)
+#&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; ---- Emax model fit with rstanemax ----
 #&gt; 
-#&gt;         mean se_mean    sd  2.5%    25%    50%    75%  97.5% n_eff Rhat
-#&gt; emax  107.33    0.32  4.65 98.67 103.91 106.99 110.80 116.55   212    1
-#&gt; e0      6.23    0.27  3.71 -0.33   3.66   6.15   8.87  14.12   190    1
-#&gt; ec50   98.72    1.56 20.47 67.31  83.27  95.45 111.43 144.57   172    1
-#&gt; gamma   1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00   NaN  NaN
-#&gt; sigma  19.99    0.09  1.32 17.64  19.12  19.91  20.78  23.15   204    1
+#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
+#&gt; emax  92.21    0.57  6.17 79.44 88.09 92.63 96.96 102.45 118.05    1
+#&gt; e0     5.59    0.43  4.38 -2.89  2.60  5.79  8.69  13.94 104.78    1
+#&gt; ec50  74.15    1.09 17.24 45.44 62.52 72.85 84.23 108.22 249.22    1
+#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN
+#&gt; sigma 16.52    0.12  1.44 14.01 15.49 16.47 17.54  19.36 155.65    1
 #&gt; 
-#&gt; Samples were drawn using NUTS(diag_e) at Thu Aug 01 14:59:18 2019.
-#&gt; For each parameter, n_eff is a crude measure of effective sample size,
-#&gt; and Rhat is the potential scale reduction factor on split chains (at 
-#&gt; convergence, Rhat=1).</div><div class='input'>
+#&gt; * Use `extract_stanfit()` function to extract raw stanfit object
+#&gt; * Use `plot()` function to visualize model fit
+#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
+#&gt;   raw predictions or make predictions on new data
+#&gt; * Use `extract_obs_mod_frame()` function to extract raw data 
+#&gt;   in a processed format (useful for plotting)</div><div class='input'>
 <span class='co'># Set priors manually, also estimate gamma instead of the default of fix to 1</span>
 <span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>, <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
                   <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>ec50</span>  <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>emax</span>  <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>e0</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>),
@@ -246,24 +255,81 @@ $$\epsilon ~ N(0, \sigma^2)$$</p>
 #&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.503 seconds (Warm-up)
-#&gt; Chain 1:                0.149 seconds (Sampling)
-#&gt; Chain 1:                0.652 seconds (Total)
-#&gt; Chain 1: </div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; Inference for Stan model: emax.
-#&gt; 1 chains, each with iter=500; warmup=250; thin=1; 
-#&gt; post-warmup draws per chain=250, total post-warmup draws=250.
+#&gt; Chain 1:  Elapsed Time: 0.32 seconds (Warm-up)
+#&gt; Chain 1:                0.145 seconds (Sampling)
+#&gt; Chain 1:                0.465 seconds (Total)
+#&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; ---- Emax model fit with rstanemax ----
 #&gt; 
-#&gt;         mean se_mean    sd  2.5%   25%    50%    75%  97.5% n_eff Rhat
-#&gt; emax  104.45    0.60  7.05 91.19 99.74 104.13 109.68 119.29   138 1.02
-#&gt; e0      8.05    0.30  3.14  1.48  5.89   8.14  10.51  13.32   113 1.00
-#&gt; ec50   99.25    1.33 16.78 71.46 86.49  97.63 109.85 134.01   160 1.00
-#&gt; gamma   1.07    0.02  0.17  0.79  0.95   1.05   1.17   1.45   122 1.02
-#&gt; sigma  20.08    0.09  1.35 17.65 19.16  20.05  20.87  22.65   207 1.00
+#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
+#&gt; emax  89.14    0.70  7.63 74.51 83.05 89.72 94.76 102.97 120.33 1.01
+#&gt; e0     8.65    0.33  3.67  2.19  6.30  8.35 10.95  15.96 121.06 1.00
+#&gt; ec50  82.16    1.58 16.27 54.11 71.76 80.45 92.95 116.78 106.42 1.01
+#&gt; gamma  1.12    0.02  0.26  0.73  0.95  1.08  1.26   1.72 171.32 1.01
+#&gt; sigma 16.74    0.11  1.47 14.07 15.78 16.67 17.75  19.69 177.61 1.00
 #&gt; 
-#&gt; Samples were drawn using NUTS(diag_e) at Thu Aug 01 14:59:20 2019.
-#&gt; For each parameter, n_eff is a crude measure of effective sample size,
-#&gt; and Rhat is the potential scale reduction factor on split chains (at 
-#&gt; convergence, Rhat=1).</div><div class='input'>
+#&gt; * Use `extract_stanfit()` function to extract raw stanfit object
+#&gt; * Use `plot()` function to visualize model fit
+#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
+#&gt;   raw predictions or make predictions on new data
+#&gt; * Use `extract_obs_mod_frame()` function to extract raw data 
+#&gt;   in a processed format (useful for plotting)</div><div class='input'>
+<span class='co'># Specify covariates</span>
+<span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>resp</span> ~ <span class='no'>conc</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample.test</span>,
+                  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>emax</span> <span class='kw'>=</span> <span class='st'>"cov2"</span>, <span class='kw'>ec50</span> <span class='kw'>=</span> <span class='st'>"cov3"</span>, <span class='kw'>e0</span> <span class='kw'>=</span> <span class='st'>"cov1"</span>),
+                  <span class='co'># the next line is only to make the example go fast enough</span>
+                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)</div><div class='output co'>#&gt; 
+#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
+#&gt; Chain 1: 
+#&gt; Chain 1: Gradient evaluation took 0 seconds
+#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+#&gt; Chain 1: Adjust your expectations accordingly!
+#&gt; Chain 1: 
+#&gt; Chain 1: 
+#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)
+#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)
+#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)
+#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)
+#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)
+#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)
+#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)
+#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)
+#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)
+#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)
+#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
+#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
+#&gt; Chain 1: 
+#&gt; Chain 1:  Elapsed Time: 0.591 seconds (Warm-up)
+#&gt; Chain 1:                0.088 seconds (Sampling)
+#&gt; Chain 1:                0.679 seconds (Total)
+#&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.05, indicating chains have not mixed.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
+#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
+#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit3</span>)</div><div class='output co'>#&gt; ---- Emax model fit with rstanemax ----
+#&gt; 
+#&gt;           mean se_mean    sd  2.5%    25%    50%    75%  97.5%  n_eff Rhat
+#&gt; emax[0]  86.18    0.33  4.05 78.63  83.19  86.03  88.93  94.24 154.77 1.01
+#&gt; emax[2]  81.41    0.30  3.13 74.47  79.20  81.62  83.83  86.83 109.69 1.04
+#&gt; emax[3]  77.33    0.40  3.98 69.08  74.72  77.35  79.95  84.93  97.80 1.05
+#&gt; e0[0]     7.30    0.23  2.68  2.39   5.45   7.39   9.07  12.45 136.62 1.00
+#&gt; e0[1]    19.39    0.18  2.15 15.38  17.97  19.44  20.71  23.70 136.01 1.00
+#&gt; ec50[1] 131.69    1.81 26.16 89.21 112.69 130.45 145.82 187.15 207.83 1.00
+#&gt; ec50[0]  85.31    1.38 18.70 49.91  73.37  85.54  96.25 123.92 182.53 1.01
+#&gt; gamma     1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00    NaN  NaN
+#&gt; sigma     8.39    0.05  0.75  7.18   7.80   8.35   8.83  10.08 263.43 1.00
+#&gt; 
+#&gt; * Use `extract_stanfit()` function to extract raw stanfit object
+#&gt; * Use `plot()` function to visualize model fit
+#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
+#&gt;   raw predictions or make predictions on new data
+#&gt; * Use `extract_obs_mod_frame()` function to extract raw data 
+#&gt;   in a processed format (useful for plotting)</div><div class='input'>
 
 </div></pre>
   </div>

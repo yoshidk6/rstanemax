@@ -83,4 +83,3 @@ fit.emax
 plot(fit.emax)
 ```
 
-
