@@ -10,11 +10,11 @@
 #' @export posterior_predict
 #' @name posterior_predict
 #' @param object A `stanemax` class object
-#' @param newdata An optional data frame that contains colums needed (exposure and covariates).
+#' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
 #' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType An optional string specifying the type of return object.
 #' @param newDataType An optional string specifying the type of newdata input,
-#' whether in the format of an original data frame or aprocessed model frame.
+#' whether in the format of an original data frame or a processed model frame.
 #' Mostly used for internal purposes and users can usually leave at default.
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.

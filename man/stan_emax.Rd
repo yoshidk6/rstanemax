@@ -28,7 +28,7 @@ another corresponding to standard deviation.
 Currently only supports normal distribution for priors.}
 
 \item{param.cov}{a named list specifying categorical covariates on parameters (ec50, emax, e0).
-Convert a column into factor if specific order of covarates are needed.}
+Convert a column into factor if specific order of covariates are needed.}
 
 \item{...}{Arguments passed to `rstan::sampling` (e.g. iter, chains).}
 }
