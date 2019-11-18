@@ -96,18 +96,53 @@ extract_stanfit <- function(x) {
 #' @param ... Additional arguments passed to methods.
 plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
 
-  obs  <- data.frame(exposure = x$standata$exposure,
-                     response = x$standata$response)
-  newdata <- create_new_data(x$standata)
+  obs <- x$prminput$df.model
+  param.cov <- x$prminput$param.cov
 
-  pred.quantile <- posterior_predict_quantile(x, newdata = newdata)
+  cov.group.for.plot <-
+    obs %>%
+    as_tibble() %>%
+    dplyr::mutate(covemaxstr = paste0("Emax:", covemax),
+                  covec50str = paste0("EC50:", covec50),
+                  cove0str   = paste0("E0:",   cove0)) %>%
+    dplyr::select(covemax, covec50, cove0, covemaxstr, covec50str, cove0str) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(Covariates = "",
+                  Covariates = purrr::map2_chr(Covariates, covemaxstr, ~ifelse(is.null(param.cov$emax), .x, paste(.x, .y))),
+                  Covariates = purrr::map2_chr(Covariates, covec50str, ~ifelse(is.null(param.cov$ec50), .x, paste(.x, .y))),
+                  Covariates = purrr::map2_chr(Covariates, cove0str,   ~ifelse(is.null(param.cov$e0),   .x, paste(.x, .y))),
+                  Covariates = trimws(Covariates))
 
-  g <-
-    ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med)) +
-    ggplot2::geom_line()
+  obs <- dplyr::left_join(obs, cov.group.for.plot, by = c("covemax", "covec50", "cove0"))
 
-  if(show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=ci_low, ymax=ci_high), alpha = .5)
-  if(show.pi) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=pi_low, ymax=pi_high), alpha = .2)
+  exposure.range <- create_exposure_range(x$standata)
+
+  cov.list <-
+    obs %>%
+    dplyr::select(covemax, covec50, cove0) %>%
+    dplyr::distinct()
+
+  newdata <- tidyr::crossing(exposure.range, cov.list)
+
+  pred.quantile <- posterior_predict_quantile(x, newdata = newdata, newDataType = "modelframe")
+
+
+  if(is.null(x$prminput$param.cov)){
+    g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med))
+  } else {
+    pred.quantile <- dplyr::left_join(pred.quantile, cov.group.for.plot, by = c("covemax", "covec50", "cove0"))
+
+    g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med,
+                                                     group = Covariates,
+                                                     color = Covariates,
+                                                     fill = Covariates))
+  }
+
+
+  if(show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=ci_low, ymax=ci_high), alpha = .5, color = NA)
+  if(show.pi) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=pi_low, ymax=pi_high), alpha = .2, color = NA)
+
+  g <- g + ggplot2::geom_line()
 
   g <-
     g +
@@ -119,7 +154,7 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
 }
 
 
-create_new_data <- function(standata, length.out = 50){
+create_exposure_range <- function(standata, length.out = 50){
 
   min.newdata <- min(standata$exposure)
   min.nozero.newdata <- min(standata$exposure[standata$exposure>0])
@@ -128,7 +163,7 @@ create_new_data <- function(standata, length.out = 50){
   seq.normal.scale <- seq(min.newdata, max.newdata, length.out = length.out)
   seq.log.scale <- seq(min.nozero.newdata, max.newdata, length.out = length.out)
 
-  newdata <- dplyr::tibble(exposure = sort(c(seq.normal.scale, seq.log.scale)))
+  exposure.range <- dplyr::tibble(exposure = sort(c(seq.normal.scale, seq.log.scale)))
 
 }
 
