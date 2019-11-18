@@ -48,15 +48,26 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
                                    is.model.fit = FALSE)
   }
 
-  # if(is.null(newdata)) {
-  #   newdata <- data.frame(exposure = object$standata$exposure,
-  #                         # Do we need response column here?
-  #                         response = object$standata$response)
-  # } else {
-  #   if(is.vector(newdata)) newdata <- dplyr::tibble(exposure = newdata)
-  # }
+  pred.response.raw <- pp_calc(object$stanfit, df.model)
 
-  pred.response <- pp_calc(object$stanfit, df.model)
+  cov.fct.numeric <-
+    df.model %>%
+    dplyr::select(covemaxfct = covemax,
+                  covec50fct = covec50,
+                  cove0fct = cove0) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(covemax = as.numeric(covemaxfct),
+                  covec50 = as.numeric(covec50fct),
+                  cove0   = as.numeric(cove0fct))
+
+  pred.response <-
+    left_join(pred.response.raw, cov.fct.numeric, by = c("covemax", "covec50", "cove0")) %>%
+    select(-(covemax:cove0)) %>%
+    select(mcmcid, exposure,
+           covemax = covemaxfct,
+           covec50 = covec50fct,
+           cove0 = cove0fct,
+           everything())
 
   if(returnType == "matrix") {
     return(matrix(pred.response$response, ncol = nrow(df.model), byrow = TRUE))
