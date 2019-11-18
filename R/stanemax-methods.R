@@ -18,10 +18,12 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
   cat("\n")
   print(round(s, digits_summary))
   cat("\n")
+  cat("* Use `extract_stanfit()` function to extract raw stanfit object\n")
+  cat("* Use `plot()` function to visualize model fit\n")
   cat("* Use `posterior_predict()` or `posterior_predict_quantile()` function to get\n")
   cat("  raw predictions or make predictions on new data\n")
-  cat("* Use `plot()` function to visualize model fit\n")
-  cat("* Use `extract_stanfit()` function to extract raw stanfit object")
+  cat("* Use `extract_obs_mod_frame()` function to extract raw data \n")
+  cat("  in a processed format (useful for plotting)\n")
 }
 
 
@@ -85,6 +87,18 @@ extract_stanfit <- function(x) {
   return(x$stanfit)
 }
 
+#' @rdname stanemax-methods
+#'
+#' Extract input data in a processed model frame format
+#'
+#' This can be useful for plotting with posterior predictions
+#'
+#' @export
+#' @param x An object of class `stanemax`
+extract_obs_mod_frame <- function(x) {
+  return(x$prminput$df.model)
+}
+
 
 #' @rdname stanemax-methods
 #' @export
@@ -97,23 +111,6 @@ extract_stanfit <- function(x) {
 plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
 
   obs <- x$prminput$df.model
-  param.cov <- x$prminput$param.cov
-
-  cov.group.for.plot <-
-    obs %>%
-    as_tibble() %>%
-    dplyr::mutate(covemaxstr = paste0("Emax:", covemax),
-                  covec50str = paste0("EC50:", covec50),
-                  cove0str   = paste0("E0:",   cove0)) %>%
-    dplyr::select(covemax, covec50, cove0, covemaxstr, covec50str, cove0str) %>%
-    dplyr::distinct() %>%
-    dplyr::mutate(Covariates = "",
-                  Covariates = purrr::map2_chr(Covariates, covemaxstr, ~ifelse(is.null(param.cov$emax), .x, paste(.x, .y))),
-                  Covariates = purrr::map2_chr(Covariates, covec50str, ~ifelse(is.null(param.cov$ec50), .x, paste(.x, .y))),
-                  Covariates = purrr::map2_chr(Covariates, cove0str,   ~ifelse(is.null(param.cov$e0),   .x, paste(.x, .y))),
-                  Covariates = trimws(Covariates))
-
-  obs <- dplyr::left_join(obs, cov.group.for.plot, by = c("covemax", "covec50", "cove0"))
 
   exposure.range <- create_exposure_range(x$standata)
 
@@ -122,7 +119,9 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
     dplyr::select(covemax, covec50, cove0) %>%
     dplyr::distinct()
 
-  newdata <- tidyr::crossing(exposure.range, cov.list)
+  cov.list.2 <- create_cov_groups(cov.list, x$prminput$param.cov)
+
+  newdata <- tidyr::crossing(exposure.range, cov.list.2)
 
   pred.quantile <- posterior_predict_quantile(x, newdata = newdata, newDataType = "modelframe")
 
@@ -130,24 +129,22 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
   if(is.null(x$prminput$param.cov)){
     g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med))
   } else {
-    pred.quantile <- dplyr::left_join(pred.quantile, cov.group.for.plot, by = c("covemax", "covec50", "cove0"))
-
     g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med,
                                                      group = Covariates,
                                                      color = Covariates,
                                                      fill = Covariates))
   }
 
+  g <-
+    g +
+    ggplot2::geom_point(data = obs, ggplot2::aes(y = response)) +
+    ggplot2::labs(y = "response")
 
   if(show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=ci_low, ymax=ci_high), alpha = .5, color = NA)
   if(show.pi) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=pi_low, ymax=pi_high), alpha = .2, color = NA)
 
   g <- g + ggplot2::geom_line()
 
-  g <-
-    g +
-    ggplot2::geom_point(data = obs, ggplot2::aes(y = response)) +
-    ggplot2::labs(y = "response")
 
   print(g)
 

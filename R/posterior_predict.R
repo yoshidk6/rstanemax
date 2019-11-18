@@ -38,17 +38,18 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
 
-  if(newDataType == "modelframe"){
-    df.model <- newdata
-  } else {
-    if(is.vector(newdata)) {
-      newdata <- data.frame(newdata)
-      names(newdata) <- as.character(object$prminput$formula[[3]])
-    }
 
-    if(is.null(newdata)) {
-      df.model <- object$prminput$df.model
+  if(is.null(newdata)) {
+    df.model <- object$prminput$df.model
+  } else {
+    if(newDataType == "modelframe"){
+      df.model <- newdata
     } else {
+      if(is.vector(newdata)) {
+        newdata <- data.frame(newdata)
+        names(newdata) <- as.character(object$prminput$formula[[3]])
+      }
+
       df.model <- create_model_frame(formula = object$prminput$formula,
                                      data = newdata,
                                      param.cov = object$prminput$param.cov,
@@ -56,6 +57,9 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
                                      is.model.fit = FALSE)
     }
   }
+
+
+
 
   pred.response.raw <- pp_calc(object$stanfit, df.model)
 
@@ -168,7 +172,7 @@ posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.
 
   pp.quantile <-
     pp.raw.2 %>%
-    dplyr::group_by(exposure, covemax, covec50, cove0, dataid) %>%
+    dplyr::group_by(exposure, covemax, covec50, cove0, Covariates, dataid) %>%
     dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
                      ci_med = stats::quantile(respHat, probs = 0.5),
                      ci_high= stats::quantile(respHat, probs = 0.5 + ci/2),

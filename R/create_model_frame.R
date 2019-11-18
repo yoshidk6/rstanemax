@@ -11,6 +11,7 @@ create_model_frame <- function(formula, data, param.cov = NULL, cov.levels, is.m
   }
 
   df.cov <- create_df_covs(data, param.cov, cov.levels)
+  cov.groups <- create_cov_groups(df.cov, param.cov)
 
   formula.cov <- update(formula, ~ . + covemax + covec50 + cove0)
   modelframe <- stats::lm(formula.cov, bind_cols(data, df.cov), method = "model.frame")
@@ -19,12 +20,14 @@ create_model_frame <- function(formula, data, param.cov = NULL, cov.levels, is.m
     df.model <-
       modelframe %>%
       as.data.frame() %>%
-      rename(response = 1, exposure = 2)
+      dplyr::rename(response = 1, exposure = 2) %>%
+      dplyr::left_join(cov.groups, by = c("covemax", "covec50", "cove0"))
   } else {
     df.model <-
       modelframe %>%
       as.data.frame() %>%
-      rename(exposure = 1)
+      dplyr::rename(exposure = 1) %>%
+      dplyr::left_join(cov.groups, by = c("covemax", "covec50", "cove0"))
   }
 
   return(df.model)
@@ -45,6 +48,23 @@ create_df_covs <- function(data, param.cov = NULL, cov.levels){
   names(df.cov) <- paste0("cov", names(df.cov))
 
   return(df.cov)
+}
+
+
+create_cov_groups <- function(df.cov, param.cov) {
+  cov.groups <-
+    df.cov %>%
+    dplyr::mutate(covemaxstr = paste0("Emax:", covemax),
+                  covec50str = paste0("EC50:", covec50),
+                  cove0str   = paste0("E0:",   cove0)) %>%
+    dplyr::select(covemax, covec50, cove0, covemaxstr, covec50str, cove0str) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(Covariates = "",
+                  Covariates = purrr::map2_chr(Covariates, covemaxstr, ~ifelse(is.null(param.cov$emax), .x, paste(.x, .y))),
+                  Covariates = purrr::map2_chr(Covariates, covec50str, ~ifelse(is.null(param.cov$ec50), .x, paste(.x, .y))),
+                  Covariates = purrr::map2_chr(Covariates, cove0str,   ~ifelse(is.null(param.cov$e0),   .x, paste(.x, .y))),
+                  Covariates = trimws(Covariates)) %>%
+    dplyr::select(-(covemaxstr:cove0str))
 }
 
 

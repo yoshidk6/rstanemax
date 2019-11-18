@@ -66,7 +66,7 @@ test_that("posterior prediction with new data with covariates", {
 
   # Make sure posterior_predict works with covariates
   test.pp.tibble <- posterior_predict.stanemax(test.fit.2cov, newdata = test.data.short, returnType = "tibble")
-  expect_equal(dim(test.pp.tibble), c(30000, 12))
+  expect_equal(dim(test.pp.tibble), c(30000, 13))
 
   # Make sure data is not re-sorted
   expect_equal(filter(test.pp.tibble, mcmcid == 1) %>% .$exposure,
@@ -78,11 +78,20 @@ test_that("posterior prediction with new data with covariates", {
 test_that("posterior prediction of quantile", {
   test.pp.quantile <- posterior_predict_quantile(test.fit.2cov)
 
-  expect_equal(dim(test.pp.quantile), c(60, 10))
+  expect_equal(dim(test.pp.quantile), c(60, 11))
   expect_equal(as.numeric(select(test.pp.quantile, starts_with("ci_"))[1,]),
                c(11.4, 15.2, 19.2),
                tolerance = 0.1)
 
+
+})
+
+
+test_that("make sure at least plot() doesn't cause error", {
+  g1 <- plot(test.fit)
+  g2 <- plot(test.fit.2cov)
+  expect_is(g1, "gg")
+  expect_is(g2, "gg")
 
 })
 
