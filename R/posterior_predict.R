@@ -13,6 +13,9 @@
 #' @param newdata An optional data frame that contains colums needed (exposure and covariates).
 #' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType An optional string specifying the type of return object.
+#' @param newDataType An optional string specifying the type of newdata input,
+#' whether in the format of an original data frame or aprocessed model frame.
+#' Mostly used for internal purposes and users can usually leave at default.
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
 #' The default is a matrix containing predicted response.
@@ -29,23 +32,29 @@
 #'
 posterior_predict.stanemax <- function(object, newdata = NULL,
                                        returnType = c("matrix", "dataframe", "tibble"),
+                                       newDataType = c("raw", "modelframe"),
                                        ...){
 
   returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
 
-  if(is.vector(newdata)) {
-    newdata <- data.frame(newdata)
-    names(newdata) <- as.character(object$prminput$formula[[3]])
-  }
-
-  if(is.null(newdata)) {
-    df.model <- object$prminput$df.model
+  if(newDataType == "modelframe"){
+    df.model <- newdata
   } else {
-    df.model <- create_model_frame(formula = object$prminput$formula,
-                                   data = newdata,
-                                   param.cov = object$prminput$param.cov,
-                                   cov.levels = object$prminput$cov.levels,
-                                   is.model.fit = FALSE)
+    if(is.vector(newdata)) {
+      newdata <- data.frame(newdata)
+      names(newdata) <- as.character(object$prminput$formula[[3]])
+    }
+
+    if(is.null(newdata)) {
+      df.model <- object$prminput$df.model
+    } else {
+      df.model <- create_model_frame(formula = object$prminput$formula,
+                                     data = newdata,
+                                     param.cov = object$prminput$param.cov,
+                                     cov.levels = object$prminput$cov.levels,
+                                     is.model.fit = FALSE)
+    }
   }
 
   pred.response.raw <- pp_calc(object$stanfit, df.model)
@@ -143,21 +152,32 @@ extract_param_fit <- function(stanfit){
 #' @param ci Credible interval of the response without residual variability.
 #' @param pi Prediction interval of the response with residual variability.
 #'
-posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9){
+posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9,
+                                       newDataType = c("raw", "modelframe")){
 
-  # Need to check no identical rows in newdata?
-  pp.raw <- posterior_predict.stanemax(object, newdata, returnType = c("tibble"))
+  pp.raw <- posterior_predict.stanemax(object, newdata,
+                                       returnType = c("tibble"), newDataType = newDataType)
+
+  ndata <-
+    dplyr::filter(pp.raw, mcmcid == 1) %>%
+    nrow()
+
+  pp.raw.2 <-
+    pp.raw %>%
+    mutate(dataid = rep(1:ndata, length.out = nrow(.)))
 
   pp.quantile <-
-    pp.raw %>%
-    # Should I do `!mcmcid` here for grouping?
-    dplyr::group_by(exposure) %>%
+    pp.raw.2 %>%
+    dplyr::group_by(exposure, covemax, covec50, cove0, dataid) %>%
     dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
                      ci_med = stats::quantile(respHat, probs = 0.5),
                      ci_high= stats::quantile(respHat, probs = 0.5 + ci/2),
                      pi_low = stats::quantile(response, probs = 0.5 - pi/2),
                      pi_med = stats::quantile(response, probs = 0.5),
-                     pi_high= stats::quantile(response, probs = 0.5 + pi/2))
+                     pi_high= stats::quantile(response, probs = 0.5 + pi/2)) %>%
+    dplyr::arrange(dataid) %>%
+    dplyr::ungroup() %>%
+    dplyr::select(-dataid)
 }
 
 

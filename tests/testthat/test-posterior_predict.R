@@ -53,13 +53,13 @@ test_that("posterior prediction with new data", {
 
 
 
-param.fit.with2cov <- extract_param_fit(test.fit.2cov$stanfit)
 
 test_that("posterior prediction with new data with covariates", {
   expect_error(posterior_predict.stanemax(test.fit.2cov, newdata = newdata.vec),
                "Covariate specified with `param.cov` does not exist in the dataset")
 
   # Make sure parameter extraction works fine
+  param.fit.with2cov <- extract_param_fit(test.fit.2cov$stanfit)
   param.extract.raw <- rstan::extract(test.fit.2cov$stanfit, pars = c("emax", "e0", "ec50"))
   expect_equal(filter(param.fit.with2cov, mcmcid == 1) %>% select(emax) %>% distinct() %>% .$emax,
                param.extract.raw$emax[1,])
@@ -74,4 +74,15 @@ test_that("posterior prediction with new data with covariates", {
 
 })
 
+
+test_that("posterior prediction of quantile", {
+  test.pp.quantile <- posterior_predict_quantile(test.fit.2cov)
+
+  expect_equal(dim(test.pp.quantile), c(60, 10))
+  expect_equal(as.numeric(select(test.pp.quantile, starts_with("ci_"))[1,]),
+               c(11.4, 15.2, 19.2),
+               tolerance = 0.1)
+
+
+})
 
