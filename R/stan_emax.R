@@ -26,6 +26,7 @@
 #' \deqn{\epsilon ~ N(0, \sigma^2)}{epsilon ~ N(0, sigma ^ 2)}
 #'
 #' @examples
+#' \dontrun{
 #' data(exposure.response.sample)
 #' fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #'                   # the next line is only to make the example go fast enough
@@ -46,7 +47,7 @@
 #'                   # the next line is only to make the example go fast enough
 #'                   chains = 1, iter = 500, seed = 12345)
 #' print(fit3)
-#'
+#'}
 #'
 
 # Remove NA data, show warning
