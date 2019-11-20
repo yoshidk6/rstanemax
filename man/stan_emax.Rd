@@ -4,15 +4,8 @@
 \alias{stan_emax}
 \title{Bayesian Emax model fit with Stan}
 \usage{
-stan_emax(
-  formula,
-  data,
-  gamma.fix = 1,
-  e0.fix = NULL,
-  priors = NULL,
-  param.cov = NULL,
-  ...
-)
+stan_emax(formula, data, gamma.fix = 1, e0.fix = NULL, priors = NULL,
+  param.cov = NULL, ...)
 }
 \arguments{
 \item{formula}{a symbolic description of variables for Emax model fit.}
@@ -47,7 +40,7 @@ Run sigmoidal Emax model fit with formula notation
 }
 \details{
 The following structure is used for the Emax model:
-\deqn{Response = e_0 + e_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma}　+ exposure　^　{\gamma})  + \epsilon}{Response = e0 + emax * exposure ^ gamma / (ec50 ^ gamma + exposure ^ gamma)  + epsilon}
+\deqn{Response = e_0 + e_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma} + exposure ^ {\gamma}) + \epsilon}{Response = e0 + emax * exposure ^ gamma / (ec50 ^ gamma + exposure ^ gamma)  + epsilon}
 \deqn{\epsilon \sim N(0, \sigma^2)}{epsilon ~ N(0, sigma ^ 2)}
 }
 \examples{
