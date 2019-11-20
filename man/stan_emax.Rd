@@ -47,10 +47,11 @@ Run sigmoidal Emax model fit with formula notation
 }
 \details{
 The following structure is used for the Emax model:
-\deqn{Response = e_0 + e_{max} exposure ^{\gamma} / (ec50 + exposure) ^{\gamma} + \epsilon}{Response = e0 + emax * exposure ^ gamma / (ec50 + exposure) ^ gamma + epsilon}
-\deqn{\epsilon ~ N(0, \sigma^2)}{epsilon ~ N(0, sigma ^ 2)}
+\deqn{Response = e_0 + e_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma}　+ exposure　^　{\gamma})  + \epsilon}{Response = e0 + emax * exposure ^ gamma / (ec50 ^ gamma + exposure ^ gamma)  + epsilon}
+\deqn{\epsilon \sim N(0, \sigma^2)}{epsilon ~ N(0, sigma ^ 2)}
 }
 \examples{
+\dontrun{
 data(exposure.response.sample)
 fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
                   # the next line is only to make the example go fast enough
@@ -71,6 +72,6 @@ fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.test,
                   # the next line is only to make the example go fast enough
                   chains = 1, iter = 500, seed = 12345)
 print(fit3)
-
+}
 
 }
