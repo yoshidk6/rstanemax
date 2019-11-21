@@ -171,7 +171,7 @@ fit.cov <- stan_emax(formula = resp ~ conc, data = test.data,
                      chains = 2, iter = 1000, seed = 12345)
 ```
 
-```{r plot_with_cov, fig.show='hold'}
+```{r plot_with_cov, fig.width = 6, fig.height = 4, fig.show='hold'}
 fit.cov
 plot(fit.cov)
 ```

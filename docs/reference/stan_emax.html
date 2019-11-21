@@ -8,21 +8,25 @@
 
 <title>Bayesian Emax model fit with Stan — stan_emax • rstanemax</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +34,11 @@
 
 
 
-<meta property="og:title" content="Bayesian Emax model fit with Stan — stan_emax" />
 
+<meta property="og:title" content="Bayesian Emax model fit with Stan — stan_emax" />
 <meta property="og:description" content="Run sigmoidal Emax model fit with formula notation" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -45,6 +50,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -63,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -71,7 +77,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -94,11 +100,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/yoshidk6/rstanemax">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -109,6 +114,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -120,14 +126,19 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Run sigmoidal Emax model fit with formula notation</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>stan_emax</span>(<span class='no'>formula</span>, <span class='no'>data</span>, <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>e0.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>priors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
-    
+    <pre class="usage"><span class='fu'>stan_emax</span>(
+  <span class='no'>formula</span>,
+  <span class='no'>data</span>,
+  <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+  <span class='kw'>e0.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)</pre>
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -170,183 +181,52 @@ Convert a column into factor if specific order of covariates are needed.</p></td
       <td><p>Arguments passed to `rstan::sampling` (e.g. iter, chains).</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class `stanemax`</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The following structure is used for the Emax model:
-$$Response = e_0 + e_{max} exposure ^{\gamma} / (ec50 + exposure) ^{\gamma} + \epsilon$$
-$$\epsilon ~ N(0, \sigma^2)$$</p>
-    
+$$Response = e_0 + e_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma}　+ exposure　^　{\gamma})  + \epsilon$$
+$$\epsilon \sim N(0, \sigma^2)$$</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/utils/topics/data'>data</a></span>(<span class='no'>exposure.response.sample</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>exposure.response.sample</span>)
 <span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>,
                   <span class='co'># the next line is only to make the example go fast enough</span>
-                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0.001 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 10 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.28 seconds (Warm-up)
-#&gt; Chain 1:                0.081 seconds (Sampling)
-#&gt; Chain 1:                0.361 seconds (Total)
-#&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit1</span>)</div><div class='output co'>#&gt; ---- Emax model fit with rstanemax ----
-#&gt; 
-#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
-#&gt; emax  92.21    0.57  6.17 79.44 88.09 92.63 96.96 102.45 118.05    1
-#&gt; e0     5.59    0.43  4.38 -2.89  2.60  5.79  8.69  13.94 104.78    1
-#&gt; ec50  74.15    1.09 17.24 45.44 62.52 72.85 84.23 108.22 249.22    1
-#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN
-#&gt; sigma 16.52    0.12  1.44 14.01 15.49 16.47 17.54  19.36 155.65    1
-#&gt; 
-#&gt; * Use `extract_stanfit()` function to extract raw stanfit object
-#&gt; * Use `plot()` function to visualize model fit
-#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
-#&gt;   raw predictions or make predictions on new data
-#&gt; * Use `extract_obs_mod_frame()` function to extract raw data 
-#&gt;   in a processed format (useful for plotting)</div><div class='input'>
+                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit1</span>)
+
 <span class='co'># Set priors manually, also estimate gamma instead of the default of fix to 1</span>
 <span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>, <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>ec50</span>  <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>emax</span>  <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>e0</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>),
-                                <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>30</span>)),
+                  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ec50</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>emax</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>e0</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>),
+                                <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>30</span>)),
                   <span class='co'># the next line is only to make the example go fast enough</span>
-                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.32 seconds (Warm-up)
-#&gt; Chain 1:                0.145 seconds (Sampling)
-#&gt; Chain 1:                0.465 seconds (Total)
-#&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit2</span>)</div><div class='output co'>#&gt; ---- Emax model fit with rstanemax ----
-#&gt; 
-#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
-#&gt; emax  89.14    0.70  7.63 74.51 83.05 89.72 94.76 102.97 120.33 1.01
-#&gt; e0     8.65    0.33  3.67  2.19  6.30  8.35 10.95  15.96 121.06 1.00
-#&gt; ec50  82.16    1.58 16.27 54.11 71.76 80.45 92.95 116.78 106.42 1.01
-#&gt; gamma  1.12    0.02  0.26  0.73  0.95  1.08  1.26   1.72 171.32 1.01
-#&gt; sigma 16.74    0.11  1.47 14.07 15.78 16.67 17.75  19.69 177.61 1.00
-#&gt; 
-#&gt; * Use `extract_stanfit()` function to extract raw stanfit object
-#&gt; * Use `plot()` function to visualize model fit
-#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
-#&gt;   raw predictions or make predictions on new data
-#&gt; * Use `extract_obs_mod_frame()` function to extract raw data 
-#&gt;   in a processed format (useful for plotting)</div><div class='input'>
+                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit2</span>)
+
 <span class='co'># Specify covariates</span>
 <span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>resp</span> ~ <span class='no'>conc</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample.test</span>,
-                  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='kw'>emax</span> <span class='kw'>=</span> <span class='st'>"cov2"</span>, <span class='kw'>ec50</span> <span class='kw'>=</span> <span class='st'>"cov3"</span>, <span class='kw'>e0</span> <span class='kw'>=</span> <span class='st'>"cov1"</span>),
+                  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>emax</span> <span class='kw'>=</span> <span class='st'>"cov2"</span>, <span class='kw'>ec50</span> <span class='kw'>=</span> <span class='st'>"cov3"</span>, <span class='kw'>e0</span> <span class='kw'>=</span> <span class='st'>"cov1"</span>),
                   <span class='co'># the next line is only to make the example go fast enough</span>
-                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)</div><div class='output co'>#&gt; 
-#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
-#&gt; Chain 1: 
-#&gt; Chain 1: Gradient evaluation took 0 seconds
-#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
-#&gt; Chain 1: Adjust your expectations accordingly!
-#&gt; Chain 1: 
-#&gt; Chain 1: 
-#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)
-#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)
-#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)
-#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)
-#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)
-#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)
-#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)
-#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)
-#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)
-#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)
-#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
-#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
-#&gt; Chain 1: 
-#&gt; Chain 1:  Elapsed Time: 0.591 seconds (Warm-up)
-#&gt; Chain 1:                0.088 seconds (Sampling)
-#&gt; Chain 1:                0.679 seconds (Total)
-#&gt; Chain 1: </div><div class='output co'>#&gt; <span class='warning'>Warning: The largest R-hat is 1.05, indicating chains have not mixed.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#r-hat</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#bulk-ess</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-#&gt; <span class='warning'>Running the chains for more iterations may help. See</span>
-#&gt; <span class='warning'>http://mc-stan.org/misc/warnings.html#tail-ess</span></div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/print'>print</a></span>(<span class='no'>fit3</span>)</div><div class='output co'>#&gt; ---- Emax model fit with rstanemax ----
-#&gt; 
-#&gt;           mean se_mean    sd  2.5%    25%    50%    75%  97.5%  n_eff Rhat
-#&gt; emax[0]  86.18    0.33  4.05 78.63  83.19  86.03  88.93  94.24 154.77 1.01
-#&gt; emax[2]  81.41    0.30  3.13 74.47  79.20  81.62  83.83  86.83 109.69 1.04
-#&gt; emax[3]  77.33    0.40  3.98 69.08  74.72  77.35  79.95  84.93  97.80 1.05
-#&gt; e0[0]     7.30    0.23  2.68  2.39   5.45   7.39   9.07  12.45 136.62 1.00
-#&gt; e0[1]    19.39    0.18  2.15 15.38  17.97  19.44  20.71  23.70 136.01 1.00
-#&gt; ec50[1] 131.69    1.81 26.16 89.21 112.69 130.45 145.82 187.15 207.83 1.00
-#&gt; ec50[0]  85.31    1.38 18.70 49.91  73.37  85.54  96.25 123.92 182.53 1.01
-#&gt; gamma     1.00     NaN  0.00  1.00   1.00   1.00   1.00   1.00    NaN  NaN
-#&gt; sigma     8.39    0.05  0.75  7.18   7.80   8.35   8.83  10.08 263.43 1.00
-#&gt; 
-#&gt; * Use `extract_stanfit()` function to extract raw stanfit object
-#&gt; * Use `plot()` function to visualize model fit
-#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
-#&gt;   raw predictions or make predictions on new data
-#&gt; * Use `extract_obs_mod_frame()` function to extract raw data 
-#&gt;   in a processed format (useful for plotting)</div><div class='input'>
-
-</div></pre>
+                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit3</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -354,13 +234,16 @@ $$\epsilon ~ N(0, \sigma^2)$$</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
