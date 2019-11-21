@@ -6,12 +6,21 @@
 \alias{posterior_predict_quantile}
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
-\method{posterior_predict}{stanemax}(object, newdata = NULL,
+\method{posterior_predict}{stanemax}(
+  object,
+  newdata = NULL,
   returnType = c("matrix", "dataframe", "tibble"),
-  newDataType = c("raw", "modelframe"), ...)
+  newDataType = c("raw", "modelframe"),
+  ...
+)
 
-posterior_predict_quantile(object, newdata = NULL, ci = 0.9,
-  pi = 0.9, newDataType = c("raw", "modelframe"))
+posterior_predict_quantile(
+  object,
+  newdata = NULL,
+  ci = 0.9,
+  pi = 0.9,
+  newDataType = c("raw", "modelframe")
+)
 }
 \arguments{
 \item{object}{A `stanemax` class object}

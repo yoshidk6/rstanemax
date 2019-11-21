@@ -4,8 +4,15 @@
 \alias{stan_emax}
 \title{Bayesian Emax model fit with Stan}
 \usage{
-stan_emax(formula, data, gamma.fix = 1, e0.fix = NULL, priors = NULL,
-  param.cov = NULL, ...)
+stan_emax(
+  formula,
+  data,
+  gamma.fix = 1,
+  e0.fix = NULL,
+  priors = NULL,
+  param.cov = NULL,
+  ...
+)
 }
 \arguments{
 \item{formula}{a symbolic description of variables for Emax model fit.}
