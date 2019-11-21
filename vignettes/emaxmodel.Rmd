@@ -177,3 +177,26 @@ plot(fit.cov)
 ```
 
 
+You can extract MCMC samples from raw stanfit and evaluate differences between groups.
+
+```{r compare_emax, fig.show='hold'}
+emax.posterior <- 
+  fit.cov %>% 
+  extract_stanfit() %>% 
+  rstan::extract(pars = "emax") %>% 
+  .$emax
+
+# delta = emax[FEMALE] - emax[MALE]
+delta.emax.posterior <- emax.posterior[,1] - emax.posterior[,2]
+
+ggplot2::qplot(delta.emax.posterior, bins = 30) +
+  ggplot2::labs(x = "emax[FEMALE] - emax[MALE]")
+
+# Credible interval of delta
+quantile(delta.emax.posterior, probs = c(0.025, 0.05, 0.5, 0.95, 0.975))
+
+# Posterior probability of emax[FEMALE] < emax[MALE]
+sum(delta.emax.posterior < 0) / length(delta.emax.posterior)
+
+```
+
