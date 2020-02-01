@@ -8,11 +8,13 @@
 
 <title>Outcome prediction from posterior distribution of parameters — posterior_predict • rstanemax</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
@@ -32,11 +34,12 @@
 
 
 
-<meta property="og:title" content="Outcome prediction from posterior distribution of parameters — posterior_predict" />
 
+<meta property="og:title" content="Outcome prediction from posterior distribution of parameters — posterior_predict" />
 <meta property="og:description" content="Compute outcome predictions using posterior samples.
 Exposure data for prediction can be either original data used for model fit or new data." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -98,7 +101,6 @@ Exposure data for prediction can be either original data used for model fit or n
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/yoshidk6/rstanemax">
@@ -125,10 +127,8 @@ Exposure data for prediction can be either original data used for model fit or n
     </div>
 
     <div class="ref-description">
-    
     <p>Compute outcome predictions using posterior samples.
 Exposure data for prediction can be either original data used for model fit or new data.</p>
-    
     </div>
 
     <pre class="usage"><span class='co'># S3 method for stanemax</span>
@@ -147,7 +147,7 @@ Exposure data for prediction can be either original data used for model fit or n
   <span class='kw'>pi</span> <span class='kw'>=</span> <span class='fl'>0.9</span>,
   <span class='kw'>newDataType</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"raw"</span>, <span class='st'>"modelframe"</span>)
 )</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -183,7 +183,7 @@ Mostly used for internal purposes and users can usually leave at default.</p></t
       <td><p>Prediction interval of the response with residual variability.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object that contain predicted response with posterior distribution of parameters.
@@ -195,23 +195,19 @@ each row is a prediction generated using a single draw of the model parameters a
 _respHat_ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
 _response_ include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
 <p>The return object also contains exposure and parameter values used for calculation.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Run <code><a href='../articles/emaxmodel.html'>vignette("emaxmodel", package = "rstanemax")</a></code> to see
 how you can use the posterior prediction for plotting estimated Emax curve.</p>
-    
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>

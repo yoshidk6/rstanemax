@@ -85,7 +85,7 @@
       <h1>Simple Emax model fit with Stan</h1>
                         <h4 class="author">Kenta Yoshida</h4>
             
-            <h4 class="date">2019-11-20</h4>
+            <h4 class="date">2020-01-31</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yoshidk6/rstanemax/blob/master/vignettes/emaxmodel.Rmd"><code>vignettes/emaxmodel.Rmd</code></a></small>
       <div class="hidden name"><code>emaxmodel.Rmd</code></div>
@@ -94,11 +94,10 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rstanemax)
-<span class="co">#&gt; Warning: package 'Rcpp' was built under R version 3.4.4</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)
-<span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">12345</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rstanemax)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(dplyr)</a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">12345</span>)</a></code></pre></div>
 <p>This vignette provide an overview of the workflow of Emax model analysis using this package.</p>
 <div id="typical-workflow" class="section level1">
 <h1 class="hasAnchor">
@@ -106,85 +105,85 @@
 <div id="model-run-with-stan_emax-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#model-run-with-stan_emax-function" class="anchor"></a>Model run with <code>stan_emax</code> function</h2>
-<p><code><a href="../reference/stan_emax.html">stan_emax()</a></code> is the main function of this package to perform Emax model analysis on the data. This function requires minimum two input arguments - <code>formula</code> and <code>data</code>. In the <code>formula</code> argument, you will specify which columns of <code>data</code> will be used as exposure and response data, in a format similar to <code><a href="https://rdrr.io/r/stats/lm.html">stats::lm()</a></code> function, e.g. <code>response ~ exposure</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(exposure.response.sample)
-
-fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(response <span class="op">~</span><span class="st"> </span>exposure, <span class="dt">data =</span> exposure.response.sample,
-                      <span class="co"># the next line is only to make the example go fast enough</span>
-                      <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">1000</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.emax
-<span class="co">#&gt; ---- Emax model fit with rstanemax ----</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span>
-<span class="co">#&gt; emax  91.92    0.22  6.13 80.10 88.14 91.74 95.66 104.75 767.81 1.00</span>
-<span class="co">#&gt; e0     5.83    0.18  4.85 -3.66  2.68  5.82  9.11  14.89 734.19 1.00</span>
-<span class="co">#&gt; ec50  75.66    0.69 19.75 43.43 62.15 73.14 86.88 122.00 824.79 1.01</span>
-<span class="co">#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN</span>
-<span class="co">#&gt; sigma 16.46    0.06  1.57 13.64 15.44 16.40 17.44  20.03 778.19 1.00</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span>
-<span class="co">#&gt; * Use `plot()` function to visualize model fit</span>
-<span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span>
-<span class="co">#&gt;   raw predictions or make predictions on new data</span>
-<span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span>
-<span class="co">#&gt;   in a processed format (useful for plotting)</span></code></pre></div>
+<p><code><a href="../reference/stan_emax.html">stan_emax()</a></code> is the main function of this package to perform Emax model analysis on the data. This function requires minimum two input arguments - <code>formula</code> and <code>data</code>. In the <code>formula</code> argument, you will specify which columns of <code>data</code> will be used as exposure and response data, in a format similar to <code><a href="https://rdrr.io/r/stats/lm.html">stats::lm()</a></code> function, e.g. <code>response ~ exposure</code>.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(exposure.response.sample)</a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3">fit.emax &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(response <span class="op">~</span><span class="st"> </span>exposure, <span class="dt">data =</span> exposure.response.sample,</a>
+<a class="sourceLine" id="cb2-4" title="4">                      <span class="co"># the next line is only to make the example go fast enough</span></a>
+<a class="sourceLine" id="cb2-5" title="5">                      <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">1000</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">fit.emax</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-4" title="4"><span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">#&gt; emax  92.32    0.31  6.04 81.25 88.17 92.27 96.35 103.96 384.95 1.01</span></a>
+<a class="sourceLine" id="cb3-6" title="6"><span class="co">#&gt; e0     5.63    0.22  4.67 -2.97  2.42  5.78  8.85  14.39 444.72 1.01</span></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="co">#&gt; ec50  76.11    0.87 21.05 43.81 61.75 73.35 86.40 124.79 587.83 1.00</span></a>
+<a class="sourceLine" id="cb3-8" title="8"><span class="co">#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN</span></a>
+<a class="sourceLine" id="cb3-9" title="9"><span class="co">#&gt; sigma 16.65    0.06  1.56 14.12 15.56 16.50 17.48  20.37 656.97 1.01</span></a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb3-11" title="11"><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></a>
+<a class="sourceLine" id="cb3-12" title="12"><span class="co">#&gt; * Use `plot()` function to visualize model fit</span></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span></a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="co">#&gt;   raw predictions or make predictions on new data</span></a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></a>
+<a class="sourceLine" id="cb3-16" title="16"><span class="co">#&gt;   in a processed format (useful for plotting)</span></a></code></pre></div>
 <p><code><a href="https://rdrr.io/r/graphics/plot.html">plot()</a></code> function shows the estimated Emax model curve with 95% credible intervals of parameters.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.emax)</code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.emax)</a></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_example-1.png" width="700"></p>
 <p>Raw output from <code>rstan</code> is stored in the output variable, and you can access it with <code><a href="../reference/stanemax-methods.html">extract_stanfit()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw"><a href="../reference/stanemax-methods.html">extract_stanfit</a></span>(fit.emax))
-<span class="co">#&gt; [1] "stanfit"</span>
-<span class="co">#&gt; attr(,"package")</span>
-<span class="co">#&gt; [1] "rstan"</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="kw"><a href="../reference/stanemax-methods.html">extract_stanfit</a></span>(fit.emax))</a>
+<a class="sourceLine" id="cb5-2" title="2"><span class="co">#&gt; [1] "stanfit"</span></a>
+<a class="sourceLine" id="cb5-3" title="3"><span class="co">#&gt; attr(,"package")</span></a>
+<a class="sourceLine" id="cb5-4" title="4"><span class="co">#&gt; [1] "rstan"</span></a></code></pre></div>
 </div>
 <div id="prediction-of-response-with-new-exposure-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prediction-of-response-with-new-exposure-data" class="anchor"></a>Prediction of response with new exposure data</h2>
 <p><code><a href="../reference/posterior_predict.html">posterior_predict()</a></code> function allows users to predict the response using new exposure data. If <code>newdata</code> is not provided, the function returns the prediction on the exposures in original data. The default output is a matrix of posterior predictions, but you can also specify “dataframe” or “tibble” that contain posterior predictions in a long format. See help of <code><a href="../reference/posterior_predict.html">rstanemax::posterior_predict()</a></code> for the description of two predictions, <code>respHat</code> and <code>response</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">response.pred &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">1000</span>), <span class="dt">returnType =</span> <span class="st">"tibble"</span>)
-
-response.pred <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(mcmcid, exposure, respHat, response)
-<span class="co">#&gt; # A tibble: 3,000 x 4</span>
-<span class="co">#&gt;    mcmcid exposure respHat response</span>
-<span class="co">#&gt;     &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span>
-<span class="co">#&gt;  1      1        0    4.13    -7.89</span>
-<span class="co">#&gt;  2      1      100   59.3     64.5 </span>
-<span class="co">#&gt;  3      1     1000   90.7     95.2 </span>
-<span class="co">#&gt;  4      2        0    4.90   -12.5 </span>
-<span class="co">#&gt;  5      2      100   59.1     54.5 </span>
-<span class="co">#&gt;  6      2     1000   93.8     74.6 </span>
-<span class="co">#&gt;  7      3        0   -2.01   -37.6 </span>
-<span class="co">#&gt;  8      3      100   60.2     51.8 </span>
-<span class="co">#&gt;  9      3     1000   91.6     98.2 </span>
-<span class="co">#&gt; 10      4        0    8.54    -9.87</span>
-<span class="co">#&gt; # … with 2,990 more rows</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">response.pred &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">100</span>, <span class="dv">1000</span>), <span class="dt">returnType =</span> <span class="st">"tibble"</span>)</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3">response.pred <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(mcmcid, exposure, respHat, response)</a>
+<a class="sourceLine" id="cb6-4" title="4"><span class="co">#&gt; # A tibble: 3,000 x 4</span></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co">#&gt;    mcmcid exposure respHat response</span></a>
+<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt;     &lt;int&gt;    &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="co">#&gt;  1      1        0   -3.54    3.52 </span></a>
+<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt;  2      1      100   60.3    51.5  </span></a>
+<a class="sourceLine" id="cb6-9" title="9"><span class="co">#&gt;  3      1     1000   97.9   103.   </span></a>
+<a class="sourceLine" id="cb6-10" title="10"><span class="co">#&gt;  4      2        0    5.71   13.6  </span></a>
+<a class="sourceLine" id="cb6-11" title="11"><span class="co">#&gt;  5      2      100   54.0    38.9  </span></a>
+<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt;  6      2     1000   92.6   109.   </span></a>
+<a class="sourceLine" id="cb6-13" title="13"><span class="co">#&gt;  7      3        0    8.01   -0.487</span></a>
+<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt;  8      3      100   59.7    46.8  </span></a>
+<a class="sourceLine" id="cb6-15" title="15"><span class="co">#&gt;  9      3     1000   91.1    75.1  </span></a>
+<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt; 10      4        0    6.71   -8.70 </span></a>
+<a class="sourceLine" id="cb6-17" title="17"><span class="co">#&gt; # ... with 2,990 more rows</span></a></code></pre></div>
 <p>You can also get quantiles of predictions with <code><a href="../reference/posterior_predict.html">posterior_predict_quantile()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">resp.pred.quantile &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">5000</span>, <span class="dt">by =</span> <span class="dv">100</span>))
-resp.pred.quantile
-<span class="co">#&gt; # A tibble: 51 x 11</span>
-<span class="co">#&gt;    exposure covemax covec50 cove0 Covariates ci_low ci_med ci_high pi_low pi_med</span>
-<span class="co">#&gt;       &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt; &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span>
-<span class="co">#&gt;  1        0 1       1       1     ""          -2.57   5.82    13.7  -23.0   6.75</span>
-<span class="co">#&gt;  2      100 1       1       1     ""          53.1   58.8     64.3   30.5  59.7 </span>
-<span class="co">#&gt;  3      200 1       1       1     ""          67.9   72.9     77.6   44.7  73.1 </span>
-<span class="co">#&gt;  4      300 1       1       1     ""          74.7   79.5     84.0   52.1  79.2 </span>
-<span class="co">#&gt;  5      400 1       1       1     ""          78.3   83.3     87.9   56.7  82.9 </span>
-<span class="co">#&gt;  6      500 1       1       1     ""          80.6   85.7     90.7   61.3  86.8 </span>
-<span class="co">#&gt;  7      600 1       1       1     ""          82.3   87.5     92.8   57.5  87.2 </span>
-<span class="co">#&gt;  8      700 1       1       1     ""          83.5   88.9     94.2   61.5  89.4 </span>
-<span class="co">#&gt;  9      800 1       1       1     ""          84.4   89.9     95.5   63.1  90.3 </span>
-<span class="co">#&gt; 10      900 1       1       1     ""          84.9   90.7     96.4   60.4  89.6 </span>
-<span class="co">#&gt; # … with 41 more rows, and 1 more variable: pi_high &lt;dbl&gt;</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1">resp.pred.quantile &lt;-<span class="st"> </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax, <span class="dt">newdata =</span> <span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">5000</span>, <span class="dt">by =</span> <span class="dv">100</span>))</a>
+<a class="sourceLine" id="cb7-2" title="2">resp.pred.quantile</a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co">#&gt; # A tibble: 51 x 11</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co">#&gt;    exposure covemax covec50 cove0 Covariates ci_low ci_med ci_high pi_low pi_med</span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co">#&gt;       &lt;dbl&gt; &lt;fct&gt;   &lt;fct&gt;   &lt;fct&gt; &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co">#&gt;  1        0 1       1       1     ""          -2.09   5.78    13.0  -22.2   4.83</span></a>
+<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;  2      100 1       1       1     ""          52.3   58.8     64.5   30.3  58.8 </span></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt;  3      200 1       1       1     ""          67.8   72.9     77.7   42.6  73.0 </span></a>
+<a class="sourceLine" id="cb7-9" title="9"><span class="co">#&gt;  4      300 1       1       1     ""          75.0   79.5     84.2   50.0  80.3 </span></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="co">#&gt;  5      400 1       1       1     ""          78.8   83.4     88.1   56.0  83.5 </span></a>
+<a class="sourceLine" id="cb7-11" title="11"><span class="co">#&gt;  6      500 1       1       1     ""          81.2   85.9     90.6   59.3  85.7 </span></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="co">#&gt;  7      600 1       1       1     ""          82.6   87.6     92.6   58.3  87.1 </span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="co">#&gt;  8      700 1       1       1     ""          83.7   88.9     94.1   61.1  88.8 </span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;  9      800 1       1       1     ""          84.6   89.9     95.4   61.1  90.1 </span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 10      900 1       1       1     ""          85.2   90.7     96.4   63.7  90.4 </span></a>
+<a class="sourceLine" id="cb7-16" title="16"><span class="co">#&gt; # ... with 41 more rows, and 1 more variable: pi_high &lt;dbl&gt;</span></a></code></pre></div>
 <p>Input data can be obtained in a same format with <code><a href="../reference/stanemax-methods.html">extract_obs_mod_frame()</a></code> function.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">obs.formatted &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stanemax-methods.html">extract_obs_mod_frame</a></span>(fit.emax)</code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1">obs.formatted &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stanemax-methods.html">extract_obs_mod_frame</a></span>(fit.emax)</a></code></pre></div>
 <p>These are particularly useful when you want to plot the estimated Emax curve.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(resp.pred.quantile, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(exposure, ci_med)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">ymin=</span>ci_low, <span class="dt">ymax=</span>ci_high), <span class="dt">alpha =</span> .<span class="dv">5</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">ymin=</span>pi_low, <span class="dt">ymax=</span>pi_high), <span class="dt">alpha =</span> .<span class="dv">2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">data =</span> obs.formatted,
-             <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">y =</span> response)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">y =</span> <span class="st">"response"</span>)</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">ggplot</span>(resp.pred.quantile, <span class="kw">aes</span>(exposure, ci_med)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-2" title="2"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>ci_low, <span class="dt">ymax=</span>ci_high), <span class="dt">alpha =</span> <span class="fl">.5</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-4" title="4"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>pi_low, <span class="dt">ymax=</span>pi_high), <span class="dt">alpha =</span> <span class="fl">.2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-5" title="5"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> obs.formatted,</a>
+<a class="sourceLine" id="cb9-6" title="6">             <span class="kw">aes</span>(<span class="dt">y =</span> response)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb9-7" title="7"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">"response"</span>)</a></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_with_pp-1.png" width="700"></p>
 </div>
 </div>
@@ -193,118 +192,119 @@ resp.pred.quantile
 <a href="#fix-parameter-values-in-emax-model" class="anchor"></a>Fix parameter values in Emax model</h1>
 <p>You can fix parameter values in Emax model for E0 and/or gamma (Hill coefficient). See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details. The default is to fix gamma at 1 and to estimate E0 from data.</p>
 <p>Below is the example of estimating gamma from data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(exposure.response.sample)
-
-fit.emax.sigmoidal &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(response <span class="op">~</span><span class="st"> </span>exposure, <span class="dt">data =</span> exposure.response.sample, <span class="dt">gamma.fix =</span> <span class="ot">NULL</span>,
-                                <span class="co"># the next line is only to make the example go fast enough</span>
-                                <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">1000</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)
-<span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-<span class="co">#&gt; Running the chains for more iterations may help. See</span>
-<span class="co">#&gt; http://mc-stan.org/misc/warnings.html#tail-ess</span></code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.emax.sigmoidal
-<span class="co">#&gt; ---- Emax model fit with rstanemax ----</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span>
-<span class="co">#&gt; emax  90.94    0.79 12.52 71.79 82.94 89.12 96.48 122.78 251.27    1</span>
-<span class="co">#&gt; e0     6.99    0.22  5.05 -3.44  3.66  7.12 10.25  16.84 504.71    1</span>
-<span class="co">#&gt; ec50  84.30    3.41 46.39 45.06 61.22 73.18 92.09 193.35 185.10    1</span>
-<span class="co">#&gt; gamma  1.15    0.02  0.39  0.56  0.90  1.09  1.35   2.07 470.08    1</span>
-<span class="co">#&gt; sigma 16.78    0.08  1.82 13.95 15.52 16.57 17.86  20.91 493.14    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span>
-<span class="co">#&gt; * Use `plot()` function to visualize model fit</span>
-<span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span>
-<span class="co">#&gt;   raw predictions or make predictions on new data</span>
-<span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span>
-<span class="co">#&gt;   in a processed format (useful for plotting)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(exposure.response.sample)</a>
+<a class="sourceLine" id="cb10-2" title="2"></a>
+<a class="sourceLine" id="cb10-3" title="3">fit.emax.sigmoidal &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(response <span class="op">~</span><span class="st"> </span>exposure, <span class="dt">data =</span> exposure.response.sample, <span class="dt">gamma.fix =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb10-4" title="4">                                <span class="co"># the next line is only to make the example go fast enough</span></a>
+<a class="sourceLine" id="cb10-5" title="5">                                <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">1000</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)</a>
+<a class="sourceLine" id="cb10-6" title="6"><span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span></a>
+<a class="sourceLine" id="cb10-7" title="7"><span class="co">#&gt; Running the chains for more iterations may help. See</span></a>
+<a class="sourceLine" id="cb10-8" title="8"><span class="co">#&gt; http://mc-stan.org/misc/warnings.html#tail-ess</span></a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1">fit.emax.sigmoidal</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="co">#&gt; emax  91.77    0.99 12.29 73.44 84.14 89.72 96.48 123.18 154.54 1.00</span></a>
+<a class="sourceLine" id="cb11-6" title="6"><span class="co">#&gt; e0     6.43    0.23  4.94 -3.17  3.00  6.52  9.50  15.63 446.65 1.00</span></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">#&gt; ec50  83.26    3.79 46.60 44.55 61.03 72.14 87.97 223.54 151.51 1.01</span></a>
+<a class="sourceLine" id="cb11-8" title="8"><span class="co">#&gt; gamma  1.12    0.02  0.34  0.53  0.90  1.09  1.31   1.88 322.49 1.00</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="co">#&gt; sigma 16.74    0.06  1.66 13.93 15.56 16.60 17.73  20.31 735.46 1.00</span></a>
+<a class="sourceLine" id="cb11-10" title="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb11-11" title="11"><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">#&gt; * Use `plot()` function to visualize model fit</span></a>
+<a class="sourceLine" id="cb11-13" title="13"><span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span></a>
+<a class="sourceLine" id="cb11-14" title="14"><span class="co">#&gt;   raw predictions or make predictions on new data</span></a>
+<a class="sourceLine" id="cb11-15" title="15"><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></a>
+<a class="sourceLine" id="cb11-16" title="16"><span class="co">#&gt;   in a processed format (useful for plotting)</span></a></code></pre></div>
 <p>You can compare the difference of posterior predictions between two models (in this case they are very close to each other):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
-exposure_pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(exposure.response.sample<span class="op">$</span>exposure),
-                     <span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(exposure.response.sample<span class="op">$</span>exposure),
-                     <span class="dt">length.out =</span> <span class="dv">100</span>)
-
-pred1 &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax, exposure_pred) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">model =</span> <span class="st">"Emax"</span>)
-pred2 &lt;-<span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax.sigmoidal, exposure_pred) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">model =</span> <span class="st">"Sigmoidal Emax"</span>)
-
-pred &lt;-<span class="st"> </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/bind.html">bind_rows</a></span>(pred1, pred2)
-
-
-<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(pred, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(exposure, ci_med, <span class="dt">color =</span> model, <span class="dt">fill =</span> model)) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>() <span class="op">+</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">ymin=</span>ci_low, <span class="dt">ymax=</span>ci_high), <span class="dt">alpha =</span> .<span class="dv">3</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_ribbon.html">geom_ribbon</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">ymin=</span>pi_low, <span class="dt">ymax=</span>pi_high), <span class="dt">alpha =</span> .<span class="dv">1</span>, <span class="dt">color =</span> <span class="ot">NA</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="dt">data=</span>exposure.response.sample, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(exposure, response), 
-             <span class="dt">color =</span> <span class="st">"black"</span>, <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span>
-<span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">y =</span> <span class="st">"response"</span>)
-
-
-
- </code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"></a>
+<a class="sourceLine" id="cb12-2" title="2">exposure_pred &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(exposure.response.sample<span class="op">$</span>exposure),</a>
+<a class="sourceLine" id="cb12-3" title="3">                     <span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(exposure.response.sample<span class="op">$</span>exposure),</a>
+<a class="sourceLine" id="cb12-4" title="4">                     <span class="dt">length.out =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb12-5" title="5"></a>
+<a class="sourceLine" id="cb12-6" title="6">pred1 &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="st">  </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax, exposure_pred) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="st">"Emax"</span>)</a>
+<a class="sourceLine" id="cb12-9" title="9">pred2 &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="st">  </span><span class="kw"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span>(fit.emax.sigmoidal, exposure_pred) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">model =</span> <span class="st">"Sigmoidal Emax"</span>)</a>
+<a class="sourceLine" id="cb12-12" title="12"></a>
+<a class="sourceLine" id="cb12-13" title="13">pred &lt;-<span class="st"> </span><span class="kw">bind_rows</span>(pred1, pred2)</a>
+<a class="sourceLine" id="cb12-14" title="14"></a>
+<a class="sourceLine" id="cb12-15" title="15"></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="kw">ggplot</span>(pred, <span class="kw">aes</span>(exposure, ci_med, <span class="dt">color =</span> model, <span class="dt">fill =</span> model)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="st">  </span><span class="kw">geom_line</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-18" title="18"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>ci_low, <span class="dt">ymax=</span>ci_high), <span class="dt">alpha =</span> <span class="fl">.3</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-19" title="19"><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin=</span>pi_low, <span class="dt">ymax=</span>pi_high), <span class="dt">alpha =</span> <span class="fl">.1</span>, <span class="dt">color =</span> <span class="ot">NA</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-20" title="20"><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data=</span>exposure.response.sample, <span class="kw">aes</span>(exposure, response), </a>
+<a class="sourceLine" id="cb12-21" title="21">             <span class="dt">color =</span> <span class="st">"black"</span>, <span class="dt">fill =</span> <span class="ot">NA</span>, <span class="dt">size=</span><span class="dv">2</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-22" title="22"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">y =</span> <span class="st">"response"</span>)</a>
+<a class="sourceLine" id="cb12-23" title="23"></a>
+<a class="sourceLine" id="cb12-24" title="24"></a>
+<a class="sourceLine" id="cb12-25" title="25"></a>
+<a class="sourceLine" id="cb12-26" title="26"> </a></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_with_gamma_fix-1.png" width="576"></p>
 </div>
 <div id="set-covariates" class="section level1">
 <h1 class="hasAnchor">
 <a href="#set-covariates" class="anchor"></a>Set covariates</h1>
 <p>You can specify categorical covariates for Emax, EC50, and E0. See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(exposure.response.sample.test)
-
-test.data &lt;-
-<span class="st">  </span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(exposure.response.sample.test,
-         <span class="dt">SEX =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(cov2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="st">"MALE"</span>, <span class="st">"FEMALE"</span>))
-
-fit.cov &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(<span class="dt">formula =</span> resp <span class="op">~</span><span class="st"> </span>conc, <span class="dt">data =</span> test.data,
-                     <span class="dt">param.cov =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">emax =</span> <span class="st">"SEX"</span>),
-                     <span class="co"># the next line is only to make the example go fast enough</span>
-                     <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">1000</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fit.cov
-<span class="co">#&gt; ---- Emax model fit with rstanemax ----</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;                mean se_mean    sd  2.5%   25%    50%    75%  97.5%  n_eff Rhat</span>
-<span class="co">#&gt; emax[FEMALE]  81.41    0.19  4.04 73.64 78.66  81.36  84.17  89.23 442.17 1.00</span>
-<span class="co">#&gt; emax[MALE]    87.50    0.21  5.29 77.17 84.13  87.47  91.19  97.21 613.78 1.01</span>
-<span class="co">#&gt; e0            15.24    0.10  2.26 10.84 13.63  15.31  16.70  19.82 497.55 1.01</span>
-<span class="co">#&gt; ec50         107.85    0.87 21.58 70.12 92.89 105.73 120.76 156.49 610.36 1.00</span>
-<span class="co">#&gt; gamma          1.00     NaN  0.00  1.00  1.00   1.00   1.00   1.00    NaN  NaN</span>
-<span class="co">#&gt; sigma         10.54    0.04  1.04  8.73  9.81  10.43  11.18  12.95 687.40 1.00</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span>
-<span class="co">#&gt; * Use `plot()` function to visualize model fit</span>
-<span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span>
-<span class="co">#&gt;   raw predictions or make predictions on new data</span>
-<span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span>
-<span class="co">#&gt;   in a processed format (useful for plotting)</span>
-<span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.cov)</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(exposure.response.sample.test)</a>
+<a class="sourceLine" id="cb13-2" title="2"></a>
+<a class="sourceLine" id="cb13-3" title="3">test.data &lt;-</a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="st">  </span><span class="kw">mutate</span>(exposure.response.sample.test,</a>
+<a class="sourceLine" id="cb13-5" title="5">         <span class="dt">SEX =</span> <span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(cov2 <span class="op">==</span><span class="st"> </span><span class="dv">0</span>, <span class="st">"MALE"</span>, <span class="st">"FEMALE"</span>))</a>
+<a class="sourceLine" id="cb13-6" title="6"></a>
+<a class="sourceLine" id="cb13-7" title="7">fit.cov &lt;-<span class="st"> </span><span class="kw"><a href="../reference/stan_emax.html">stan_emax</a></span>(<span class="dt">formula =</span> resp <span class="op">~</span><span class="st"> </span>conc, <span class="dt">data =</span> test.data,</a>
+<a class="sourceLine" id="cb13-8" title="8">                     <span class="dt">param.cov =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">emax =</span> <span class="st">"SEX"</span>),</a>
+<a class="sourceLine" id="cb13-9" title="9">                     <span class="co"># the next line is only to make the example go fast enough</span></a>
+<a class="sourceLine" id="cb13-10" title="10">                     <span class="dt">chains =</span> <span class="dv">2</span>, <span class="dt">iter =</span> <span class="dv">1000</span>, <span class="dt">seed =</span> <span class="dv">12345</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">fit.cov</a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="co">#&gt;                mean se_mean    sd  2.5%   25%    50%    75%  97.5%  n_eff Rhat</span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="co">#&gt; emax[FEMALE]  81.34    0.15  3.89 73.91 78.82  81.13  83.78  89.05 651.49    1</span></a>
+<a class="sourceLine" id="cb14-6" title="6"><span class="co">#&gt; emax[MALE]    87.66    0.20  5.00 78.19 84.22  87.72  91.15  97.42 621.72    1</span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="co">#&gt; e0            15.07    0.09  2.35 10.30 13.51  15.13  16.70  19.32 638.51    1</span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="co">#&gt; ec50         106.28    0.74 20.07 70.69 93.03 104.42 116.83 150.64 740.38    1</span></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="co">#&gt; gamma          1.00     NaN  0.00  1.00  1.00   1.00   1.00   1.00    NaN  NaN</span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="co">#&gt; sigma         10.53    0.04  1.06  8.77  9.80  10.42  11.16  12.82 573.60    1</span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb14-12" title="12"><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="co">#&gt; * Use `plot()` function to visualize model fit</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="co">#&gt;   raw predictions or make predictions on new data</span></a>
+<a class="sourceLine" id="cb14-16" title="16"><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="co">#&gt;   in a processed format (useful for plotting)</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(fit.cov)</a></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_with_cov-1.png" width="576"></p>
 <p>You can extract MCMC samples from raw stanfit and evaluate differences between groups.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">emax.posterior &lt;-<span class="st"> </span>
-<span class="st">  </span>fit.cov <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span><span class="kw"><a href="../reference/stanemax-methods.html">extract_stanfit</a></span>() <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>rstan<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rstan/man/stanfit-method-extract.html">extract</a></span>(<span class="dt">pars =</span> <span class="st">"emax"</span>) <span class="op">%&gt;%</span><span class="st"> </span>
-<span class="st">  </span>.<span class="op">$</span>emax
-
-<span class="co"># delta = emax[FEMALE] - emax[MALE]</span>
-delta.emax.posterior &lt;-<span class="st"> </span>emax.posterior[,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>emax.posterior[,<span class="dv">2</span>]
-
-ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/qplot.html">qplot</a></span>(delta.emax.posterior, <span class="dt">bins =</span> <span class="dv">30</span>) <span class="op">+</span>
-<span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"emax[FEMALE] - emax[MALE]"</span>)
-
-<span class="co"># Credible interval of delta</span>
-<span class="kw"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span>(delta.emax.posterior, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.025</span>, <span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span>))
-<span class="co">#&gt;       2.5%         5%        50%        95%      97.5% </span>
-<span class="co">#&gt; -15.677844 -13.809181  -6.113999   2.154101   3.688977</span>
-
-<span class="co"># Posterior probability of emax[FEMALE] &lt; emax[MALE]</span>
-<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(delta.emax.posterior <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(delta.emax.posterior)
-<span class="co">#&gt; [1] 0.898</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">emax.posterior &lt;-<span class="st"> </span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="st">  </span>fit.cov <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="st">  </span><span class="kw"><a href="../reference/stanemax-methods.html">extract_stanfit</a></span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="st">  </span>rstan<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/rstan/man/stanfit-method-extract.html">extract</a></span>(<span class="dt">pars =</span> <span class="st">"emax"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="st">  </span>.<span class="op">$</span>emax</a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="co"># delta = emax[FEMALE] - emax[MALE]</span></a>
+<a class="sourceLine" id="cb15-8" title="8">delta.emax.posterior &lt;-<span class="st"> </span>emax.posterior[,<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>emax.posterior[,<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10">ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/qplot.html">qplot</a></span>(delta.emax.posterior, <span class="dt">bins =</span> <span class="dv">30</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="st">  </span>ggplot2<span class="op">::</span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span>(<span class="dt">x =</span> <span class="st">"emax[FEMALE] - emax[MALE]"</span>)</a>
+<a class="sourceLine" id="cb15-12" title="12"></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="co"># Credible interval of delta</span></a>
+<a class="sourceLine" id="cb15-14" title="14"><span class="kw"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span>(delta.emax.posterior, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.025</span>, <span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span>))</a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="co">#&gt;       2.5%         5%        50%        95%      97.5% </span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="co">#&gt; -15.260268 -14.311511  -6.239138   1.613685   2.968104</span></a>
+<a class="sourceLine" id="cb15-17" title="17"></a>
+<a class="sourceLine" id="cb15-18" title="18"><span class="co"># Posterior probability of emax[FEMALE] &lt; emax[MALE]</span></a>
+<a class="sourceLine" id="cb15-19" title="19"><span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(delta.emax.posterior <span class="op">&lt;</span><span class="st"> </span><span class="dv">0</span>) <span class="op">/</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(delta.emax.posterior)</a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="co">#&gt; [1] 0.91</span></a></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/compare_emax-1.png" width="700"></p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>

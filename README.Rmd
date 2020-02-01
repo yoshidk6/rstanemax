@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/rstanemax)](https://CRAN.R-project.org/package=rstanemax)
 
 
-This small package performs simple sigmoidal Emax model fit using Stan, without the need of writing Stan model code (and also compiling Stan model), inspired by __rstanarm__ package.
+This small package performs simple sigmoidal Emax model fit using Stan, without the need of (1) writing Stan model code and (2) setting up an environment to compile Stan model, inspired by __rstanarm__ package.
 
 __rstanarm__ package ([link](https://mc-stan.org/users/interfaces/rstanarm)) is a very flexible, general purpose tool to perform various Bayesian modeling with formula notations, such as generalized mixed effect models or joint models.
 One small gap it has is in nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with `SS` prefixes ([link](http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer)). 
