@@ -4,12 +4,14 @@
 \name{exposure.response.sample}
 \alias{exposure.response.sample}
 \title{Sample simulated data for exposure-response.}
-\format{A data frame with columns:
+\format{
+A data frame with columns:
 \describe{
 \item{dose}{Dose levels used for simulation of pharmacokinetics}
 \item{exposure}{Simulated exposure}
 \item{response}{Simulated pharmacodynamic response}
-}}
+}
+}
 \usage{
 exposure.response.sample
 }

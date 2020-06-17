@@ -36,7 +36,7 @@ static int current_statement_begin__;
 stan::io::program_reader prog_reader__() {
     stan::io::program_reader reader;
     reader.add_event(0, 0, "start", "model_emax");
-    reader.add_event(91, 89, "end", "model_emax");
+    reader.add_event(99, 97, "end", "model_emax");
     return reader;
 }
 
@@ -54,8 +54,10 @@ private:
         int n_covlev_e0;
         int gamma_fix_flg;
         int e0_fix_flg;
+        int emax_fix_flg;
         double gamma_fix_value;
         double e0_fix_value;
+        double emax_fix_value;
         double prior_emax_mu;
         double prior_ec50_mu;
         double prior_gamma_mu;
@@ -221,6 +223,15 @@ public:
             check_less_or_equal(function__, "e0_fix_flg", e0_fix_flg, 1);
 
             current_statement_begin__ = 17;
+            context__.validate_dims("data initialization", "emax_fix_flg", "int", context__.to_vec());
+            emax_fix_flg = int(0);
+            vals_i__ = context__.vals_i("emax_fix_flg");
+            pos__ = 0;
+            emax_fix_flg = vals_i__[pos__++];
+            check_greater_or_equal(function__, "emax_fix_flg", emax_fix_flg, 0);
+            check_less_or_equal(function__, "emax_fix_flg", emax_fix_flg, 1);
+
+            current_statement_begin__ = 18;
             context__.validate_dims("data initialization", "gamma_fix_value", "double", context__.to_vec());
             gamma_fix_value = double(0);
             vals_r__ = context__.vals_r("gamma_fix_value");
@@ -228,21 +239,28 @@ public:
             gamma_fix_value = vals_r__[pos__++];
             check_greater_or_equal(function__, "gamma_fix_value", gamma_fix_value, 0);
 
-            current_statement_begin__ = 18;
+            current_statement_begin__ = 19;
             context__.validate_dims("data initialization", "e0_fix_value", "double", context__.to_vec());
             e0_fix_value = double(0);
             vals_r__ = context__.vals_r("e0_fix_value");
             pos__ = 0;
             e0_fix_value = vals_r__[pos__++];
 
-            current_statement_begin__ = 22;
+            current_statement_begin__ = 20;
+            context__.validate_dims("data initialization", "emax_fix_value", "double", context__.to_vec());
+            emax_fix_value = double(0);
+            vals_r__ = context__.vals_r("emax_fix_value");
+            pos__ = 0;
+            emax_fix_value = vals_r__[pos__++];
+
+            current_statement_begin__ = 24;
             context__.validate_dims("data initialization", "prior_emax_mu", "double", context__.to_vec());
             prior_emax_mu = double(0);
             vals_r__ = context__.vals_r("prior_emax_mu");
             pos__ = 0;
             prior_emax_mu = vals_r__[pos__++];
 
-            current_statement_begin__ = 23;
+            current_statement_begin__ = 25;
             context__.validate_dims("data initialization", "prior_ec50_mu", "double", context__.to_vec());
             prior_ec50_mu = double(0);
             vals_r__ = context__.vals_r("prior_ec50_mu");
@@ -250,7 +268,7 @@ public:
             prior_ec50_mu = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_ec50_mu", prior_ec50_mu, 0);
 
-            current_statement_begin__ = 24;
+            current_statement_begin__ = 26;
             context__.validate_dims("data initialization", "prior_gamma_mu", "double", context__.to_vec());
             prior_gamma_mu = double(0);
             vals_r__ = context__.vals_r("prior_gamma_mu");
@@ -258,14 +276,14 @@ public:
             prior_gamma_mu = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_gamma_mu", prior_gamma_mu, 0);
 
-            current_statement_begin__ = 25;
+            current_statement_begin__ = 27;
             context__.validate_dims("data initialization", "prior_e0_mu", "double", context__.to_vec());
             prior_e0_mu = double(0);
             vals_r__ = context__.vals_r("prior_e0_mu");
             pos__ = 0;
             prior_e0_mu = vals_r__[pos__++];
 
-            current_statement_begin__ = 26;
+            current_statement_begin__ = 28;
             context__.validate_dims("data initialization", "prior_sigma_mu", "double", context__.to_vec());
             prior_sigma_mu = double(0);
             vals_r__ = context__.vals_r("prior_sigma_mu");
@@ -273,7 +291,7 @@ public:
             prior_sigma_mu = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_sigma_mu", prior_sigma_mu, 0);
 
-            current_statement_begin__ = 28;
+            current_statement_begin__ = 30;
             context__.validate_dims("data initialization", "prior_emax_sig", "double", context__.to_vec());
             prior_emax_sig = double(0);
             vals_r__ = context__.vals_r("prior_emax_sig");
@@ -281,7 +299,7 @@ public:
             prior_emax_sig = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_emax_sig", prior_emax_sig, 0);
 
-            current_statement_begin__ = 29;
+            current_statement_begin__ = 31;
             context__.validate_dims("data initialization", "prior_ec50_sig", "double", context__.to_vec());
             prior_ec50_sig = double(0);
             vals_r__ = context__.vals_r("prior_ec50_sig");
@@ -289,7 +307,7 @@ public:
             prior_ec50_sig = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_ec50_sig", prior_ec50_sig, 0);
 
-            current_statement_begin__ = 30;
+            current_statement_begin__ = 32;
             context__.validate_dims("data initialization", "prior_gamma_sig", "double", context__.to_vec());
             prior_gamma_sig = double(0);
             vals_r__ = context__.vals_r("prior_gamma_sig");
@@ -297,7 +315,7 @@ public:
             prior_gamma_sig = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_gamma_sig", prior_gamma_sig, 0);
 
-            current_statement_begin__ = 31;
+            current_statement_begin__ = 33;
             context__.validate_dims("data initialization", "prior_e0_sig", "double", context__.to_vec());
             prior_e0_sig = double(0);
             vals_r__ = context__.vals_r("prior_e0_sig");
@@ -305,7 +323,7 @@ public:
             prior_e0_sig = vals_r__[pos__++];
             check_greater_or_equal(function__, "prior_e0_sig", prior_e0_sig, 0);
 
-            current_statement_begin__ = 32;
+            current_statement_begin__ = 34;
             context__.validate_dims("data initialization", "prior_sigma_sig", "double", context__.to_vec());
             prior_sigma_sig = double(0);
             vals_r__ = context__.vals_r("prior_sigma_sig");
@@ -322,20 +340,21 @@ public:
             // validate, set parameter ranges
             num_params_r__ = 0U;
             param_ranges_i__.clear();
-            current_statement_begin__ = 36;
-            validate_non_negative_index("emax", "n_covlev_emax", n_covlev_emax);
-            num_params_r__ += n_covlev_emax;
-            current_statement_begin__ = 37;
+            current_statement_begin__ = 39;
             validate_non_negative_index("ec50", "n_covlev_ec50", n_covlev_ec50);
             num_params_r__ += n_covlev_ec50;
-            current_statement_begin__ = 39;
+            current_statement_begin__ = 41;
             validate_non_negative_index("e0_par", "n_covlev_e0", n_covlev_e0);
             validate_non_negative_index("e0_par", "(1 - e0_fix_flg)", (1 - e0_fix_flg));
             num_params_r__ += ((1 * n_covlev_e0) * (1 - e0_fix_flg));
-            current_statement_begin__ = 40;
+            current_statement_begin__ = 42;
+            validate_non_negative_index("emax_par", "n_covlev_emax", n_covlev_emax);
+            validate_non_negative_index("emax_par", "(1 - emax_fix_flg)", (1 - emax_fix_flg));
+            num_params_r__ += ((1 * n_covlev_emax) * (1 - emax_fix_flg));
+            current_statement_begin__ = 43;
             validate_non_negative_index("gamma_par", "(1 - gamma_fix_flg)", (1 - gamma_fix_flg));
             num_params_r__ += (1 * (1 - gamma_fix_flg));
-            current_statement_begin__ = 42;
+            current_statement_begin__ = 45;
             num_params_r__ += 1;
         } catch (const std::exception& e) {
             stan::lang::rethrow_located(e, current_statement_begin__, prog_reader__());
@@ -358,25 +377,7 @@ public:
         std::vector<double> vals_r__;
         std::vector<int> vals_i__;
 
-        current_statement_begin__ = 36;
-        if (!(context__.contains_r("emax")))
-            stan::lang::rethrow_located(std::runtime_error(std::string("Variable emax missing")), current_statement_begin__, prog_reader__());
-        vals_r__ = context__.vals_r("emax");
-        pos__ = 0U;
-        validate_non_negative_index("emax", "n_covlev_emax", n_covlev_emax);
-        context__.validate_dims("parameter initialization", "emax", "vector_d", context__.to_vec(n_covlev_emax));
-        Eigen::Matrix<double, Eigen::Dynamic, 1> emax(n_covlev_emax);
-        size_t emax_j_1_max__ = n_covlev_emax;
-        for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
-            emax(j_1__) = vals_r__[pos__++];
-        }
-        try {
-            writer__.vector_unconstrain(emax);
-        } catch (const std::exception& e) {
-            stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable emax: ") + e.what()), current_statement_begin__, prog_reader__());
-        }
-
-        current_statement_begin__ = 37;
+        current_statement_begin__ = 39;
         if (!(context__.contains_r("ec50")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable ec50 missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("ec50");
@@ -394,7 +395,7 @@ public:
             stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable ec50: ") + e.what()), current_statement_begin__, prog_reader__());
         }
 
-        current_statement_begin__ = 39;
+        current_statement_begin__ = 41;
         if (!(context__.contains_r("e0_par")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable e0_par missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("e0_par");
@@ -422,7 +423,35 @@ public:
             }
         }
 
-        current_statement_begin__ = 40;
+        current_statement_begin__ = 42;
+        if (!(context__.contains_r("emax_par")))
+            stan::lang::rethrow_located(std::runtime_error(std::string("Variable emax_par missing")), current_statement_begin__, prog_reader__());
+        vals_r__ = context__.vals_r("emax_par");
+        pos__ = 0U;
+        validate_non_negative_index("emax_par", "n_covlev_emax", n_covlev_emax);
+        validate_non_negative_index("emax_par", "(1 - emax_fix_flg)", (1 - emax_fix_flg));
+        context__.validate_dims("parameter initialization", "emax_par", "double", context__.to_vec(n_covlev_emax,(1 - emax_fix_flg)));
+        std::vector<std::vector<double> > emax_par(n_covlev_emax, std::vector<double>((1 - emax_fix_flg), double(0)));
+        size_t emax_par_k_0_max__ = n_covlev_emax;
+        size_t emax_par_k_1_max__ = (1 - emax_fix_flg);
+        for (size_t k_1__ = 0; k_1__ < emax_par_k_1_max__; ++k_1__) {
+            for (size_t k_0__ = 0; k_0__ < emax_par_k_0_max__; ++k_0__) {
+                emax_par[k_0__][k_1__] = vals_r__[pos__++];
+            }
+        }
+        size_t emax_par_i_0_max__ = n_covlev_emax;
+        size_t emax_par_i_1_max__ = (1 - emax_fix_flg);
+        for (size_t i_0__ = 0; i_0__ < emax_par_i_0_max__; ++i_0__) {
+            for (size_t i_1__ = 0; i_1__ < emax_par_i_1_max__; ++i_1__) {
+                try {
+                    writer__.scalar_unconstrain(emax_par[i_0__][i_1__]);
+                } catch (const std::exception& e) {
+                    stan::lang::rethrow_located(std::runtime_error(std::string("Error transforming variable emax_par: ") + e.what()), current_statement_begin__, prog_reader__());
+                }
+            }
+        }
+
+        current_statement_begin__ = 43;
         if (!(context__.contains_r("gamma_par")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable gamma_par missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("gamma_par");
@@ -443,7 +472,7 @@ public:
             }
         }
 
-        current_statement_begin__ = 42;
+        current_statement_begin__ = 45;
         if (!(context__.contains_r("sigma")))
             stan::lang::rethrow_located(std::runtime_error(std::string("Variable sigma missing")), current_statement_begin__, prog_reader__());
         vals_r__ = context__.vals_r("sigma");
@@ -489,15 +518,7 @@ public:
             stan::io::reader<local_scalar_t__> in__(params_r__, params_i__);
 
             // model parameters
-            current_statement_begin__ = 36;
-            Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> emax;
-            (void) emax;  // dummy to suppress unused var warning
-            if (jacobian__)
-                emax = in__.vector_constrain(n_covlev_emax, lp__);
-            else
-                emax = in__.vector_constrain(n_covlev_emax);
-
-            current_statement_begin__ = 37;
+            current_statement_begin__ = 39;
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> ec50;
             (void) ec50;  // dummy to suppress unused var warning
             if (jacobian__)
@@ -505,7 +526,7 @@ public:
             else
                 ec50 = in__.vector_lb_constrain(0, n_covlev_ec50);
 
-            current_statement_begin__ = 39;
+            current_statement_begin__ = 41;
             std::vector<std::vector<local_scalar_t__> > e0_par;
             size_t e0_par_d_0_max__ = n_covlev_e0;
             size_t e0_par_d_1_max__ = (1 - e0_fix_flg);
@@ -520,7 +541,22 @@ public:
                 }
             }
 
-            current_statement_begin__ = 40;
+            current_statement_begin__ = 42;
+            std::vector<std::vector<local_scalar_t__> > emax_par;
+            size_t emax_par_d_0_max__ = n_covlev_emax;
+            size_t emax_par_d_1_max__ = (1 - emax_fix_flg);
+            emax_par.resize(emax_par_d_0_max__);
+            for (size_t d_0__ = 0; d_0__ < emax_par_d_0_max__; ++d_0__) {
+                emax_par[d_0__].reserve(emax_par_d_1_max__);
+                for (size_t d_1__ = 0; d_1__ < emax_par_d_1_max__; ++d_1__) {
+                    if (jacobian__)
+                        emax_par[d_0__].push_back(in__.scalar_constrain(lp__));
+                    else
+                        emax_par[d_0__].push_back(in__.scalar_constrain());
+                }
+            }
+
+            current_statement_begin__ = 43;
             std::vector<local_scalar_t__> gamma_par;
             size_t gamma_par_d_0_max__ = (1 - gamma_fix_flg);
             gamma_par.reserve(gamma_par_d_0_max__);
@@ -531,7 +567,7 @@ public:
                     gamma_par.push_back(in__.scalar_lb_constrain(0));
             }
 
-            current_statement_begin__ = 42;
+            current_statement_begin__ = 45;
             local_scalar_t__ sigma;
             (void) sigma;  // dummy to suppress unused var warning
             if (jacobian__)
@@ -540,93 +576,107 @@ public:
                 sigma = in__.scalar_lb_constrain(0);
 
             // transformed parameters
-            current_statement_begin__ = 46;
+            current_statement_begin__ = 49;
             validate_non_negative_index("respHat", "N", N);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> respHat(N);
             stan::math::initialize(respHat, DUMMY_VAR__);
             stan::math::fill(respHat, DUMMY_VAR__);
 
-            current_statement_begin__ = 47;
+            current_statement_begin__ = 50;
             validate_non_negative_index("exposure_exp", "N", N);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> exposure_exp(N);
             stan::math::initialize(exposure_exp, DUMMY_VAR__);
             stan::math::fill(exposure_exp, DUMMY_VAR__);
 
-            current_statement_begin__ = 49;
+            current_statement_begin__ = 52;
             local_scalar_t__ gamma;
             (void) gamma;  // dummy to suppress unused var warning
             stan::math::initialize(gamma, DUMMY_VAR__);
             stan::math::fill(gamma, DUMMY_VAR__);
 
-            current_statement_begin__ = 50;
+            current_statement_begin__ = 53;
             validate_non_negative_index("e0", "n_covlev_e0", n_covlev_e0);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> e0(n_covlev_e0);
             stan::math::initialize(e0, DUMMY_VAR__);
             stan::math::fill(e0, DUMMY_VAR__);
 
-            current_statement_begin__ = 52;
+            current_statement_begin__ = 54;
+            validate_non_negative_index("emax", "n_covlev_emax", n_covlev_emax);
+            Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> emax(n_covlev_emax);
+            stan::math::initialize(emax, DUMMY_VAR__);
+            stan::math::fill(emax, DUMMY_VAR__);
+
+            current_statement_begin__ = 56;
             validate_non_negative_index("emaxvec", "N", N);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> emaxvec(N);
             stan::math::initialize(emaxvec, DUMMY_VAR__);
             stan::math::fill(emaxvec, DUMMY_VAR__);
 
-            current_statement_begin__ = 53;
+            current_statement_begin__ = 57;
             validate_non_negative_index("ec50vec", "N", N);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> ec50vec(N);
             stan::math::initialize(ec50vec, DUMMY_VAR__);
             stan::math::fill(ec50vec, DUMMY_VAR__);
 
-            current_statement_begin__ = 54;
+            current_statement_begin__ = 58;
             validate_non_negative_index("ec50vec_exp", "N", N);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> ec50vec_exp(N);
             stan::math::initialize(ec50vec_exp, DUMMY_VAR__);
             stan::math::fill(ec50vec_exp, DUMMY_VAR__);
 
-            current_statement_begin__ = 55;
+            current_statement_begin__ = 59;
             validate_non_negative_index("e0vec", "N", N);
             Eigen::Matrix<local_scalar_t__, Eigen::Dynamic, 1> e0vec(N);
             stan::math::initialize(e0vec, DUMMY_VAR__);
             stan::math::fill(e0vec, DUMMY_VAR__);
 
             // transformed parameters block statements
-            current_statement_begin__ = 58;
+            current_statement_begin__ = 62;
             stan::math::assign(gamma, (gamma_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(gamma_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par, 1, "gamma_par", 1)) ));
-            current_statement_begin__ = 59;
+            current_statement_begin__ = 63;
             for (int i = 1; i <= n_covlev_e0; ++i) {
-                current_statement_begin__ = 59;
+                current_statement_begin__ = 63;
                 stan::model::assign(e0, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             (e0_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(get_base1(e0_par, i, "e0_par", 1), 1, "e0_par", 2)) ), 
                             "assigning variable e0");
             }
-            current_statement_begin__ = 62;
-            stan::math::assign(emaxvec, stan::model::rvalue(emax, stan::model::cons_list(stan::model::index_multi(covemax), stan::model::nil_index_list()), "emax"));
-            current_statement_begin__ = 63;
-            stan::math::assign(ec50vec, stan::model::rvalue(ec50, stan::model::cons_list(stan::model::index_multi(covec50), stan::model::nil_index_list()), "ec50"));
             current_statement_begin__ = 64;
+            for (int i = 1; i <= n_covlev_emax; ++i) {
+                current_statement_begin__ = 64;
+                stan::model::assign(emax, 
+                            stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
+                            (emax_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(emax_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(get_base1(emax_par, i, "emax_par", 1), 1, "emax_par", 2)) ), 
+                            "assigning variable emax");
+            }
+            current_statement_begin__ = 67;
+            stan::math::assign(emaxvec, stan::model::rvalue(emax, stan::model::cons_list(stan::model::index_multi(covemax), stan::model::nil_index_list()), "emax"));
+            current_statement_begin__ = 68;
+            stan::math::assign(ec50vec, stan::model::rvalue(ec50, stan::model::cons_list(stan::model::index_multi(covec50), stan::model::nil_index_list()), "ec50"));
+            current_statement_begin__ = 69;
             stan::math::assign(e0vec, stan::model::rvalue(e0, stan::model::cons_list(stan::model::index_multi(cove0), stan::model::nil_index_list()), "e0"));
-            current_statement_begin__ = 66;
+            current_statement_begin__ = 71;
             for (int i = 1; i <= N; ++i) {
 
-                current_statement_begin__ = 67;
+                current_statement_begin__ = 72;
                 stan::model::assign(exposure_exp, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             pow(get_base1(exposure, i, "exposure", 1), gamma), 
                             "assigning variable exposure_exp");
-                current_statement_begin__ = 68;
+                current_statement_begin__ = 73;
                 stan::model::assign(ec50vec_exp, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             pow(get_base1(ec50vec, i, "ec50vec", 1), gamma), 
                             "assigning variable ec50vec_exp");
             }
-            current_statement_begin__ = 71;
+            current_statement_begin__ = 76;
             stan::math::assign(respHat, add(e0vec, elt_divide(elt_multiply(emaxvec, exposure_exp), add(ec50vec_exp, exposure_exp))));
 
             // validate transformed parameters
             const char* function__ = "validate transformed params";
             (void) function__;  // dummy to suppress unused var warning
 
-            current_statement_begin__ = 46;
+            current_statement_begin__ = 49;
             size_t respHat_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < respHat_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(respHat(j_1__))) {
@@ -635,7 +685,7 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable respHat: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 47;
+            current_statement_begin__ = 50;
             size_t exposure_exp_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < exposure_exp_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(exposure_exp(j_1__))) {
@@ -644,13 +694,13 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable exposure_exp: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 49;
+            current_statement_begin__ = 52;
             if (stan::math::is_uninitialized(gamma)) {
                 std::stringstream msg__;
                 msg__ << "Undefined transformed parameter: gamma";
                 stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable gamma: ") + msg__.str()), current_statement_begin__, prog_reader__());
             }
-            current_statement_begin__ = 50;
+            current_statement_begin__ = 53;
             size_t e0_j_1_max__ = n_covlev_e0;
             for (size_t j_1__ = 0; j_1__ < e0_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(e0(j_1__))) {
@@ -659,7 +709,16 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable e0: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 52;
+            current_statement_begin__ = 54;
+            size_t emax_j_1_max__ = n_covlev_emax;
+            for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
+                if (stan::math::is_uninitialized(emax(j_1__))) {
+                    std::stringstream msg__;
+                    msg__ << "Undefined transformed parameter: emax" << "(" << j_1__ << ")";
+                    stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable emax: ") + msg__.str()), current_statement_begin__, prog_reader__());
+                }
+            }
+            current_statement_begin__ = 56;
             size_t emaxvec_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < emaxvec_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(emaxvec(j_1__))) {
@@ -668,7 +727,7 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable emaxvec: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 53;
+            current_statement_begin__ = 57;
             size_t ec50vec_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < ec50vec_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(ec50vec(j_1__))) {
@@ -677,7 +736,7 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable ec50vec: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 54;
+            current_statement_begin__ = 58;
             size_t ec50vec_exp_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < ec50vec_exp_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(ec50vec_exp(j_1__))) {
@@ -686,7 +745,7 @@ public:
                     stan::lang::rethrow_located(std::runtime_error(std::string("Error initializing variable ec50vec_exp: ") + msg__.str()), current_statement_begin__, prog_reader__());
                 }
             }
-            current_statement_begin__ = 55;
+            current_statement_begin__ = 59;
             size_t e0vec_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < e0vec_j_1_max__; ++j_1__) {
                 if (stan::math::is_uninitialized(e0vec(j_1__))) {
@@ -698,21 +757,25 @@ public:
 
             // model body
 
-            current_statement_begin__ = 75;
-            lp_accum__.add(normal_log<propto__>(response, respHat, sigma));
-            current_statement_begin__ = 77;
-            lp_accum__.add(normal_log<propto__>(emax, prior_emax_mu, prior_emax_sig));
-            current_statement_begin__ = 78;
-            lp_accum__.add(normal_log<propto__>(ec50, prior_ec50_mu, prior_ec50_sig));
-            current_statement_begin__ = 79;
-            lp_accum__.add(normal_log<propto__>(gamma_par, prior_gamma_mu, prior_gamma_sig));
             current_statement_begin__ = 80;
+            lp_accum__.add(normal_log<propto__>(response, respHat, sigma));
+            current_statement_begin__ = 83;
+            lp_accum__.add(normal_log<propto__>(ec50, prior_ec50_mu, prior_ec50_sig));
+            current_statement_begin__ = 84;
+            lp_accum__.add(normal_log<propto__>(gamma_par, prior_gamma_mu, prior_gamma_sig));
+            current_statement_begin__ = 85;
             lp_accum__.add(normal_log<propto__>(sigma, prior_sigma_mu, prior_sigma_sig));
-            current_statement_begin__ = 81;
+            current_statement_begin__ = 86;
             for (int i = 1; i <= n_covlev_e0; ++i) {
 
-                current_statement_begin__ = 82;
+                current_statement_begin__ = 87;
                 lp_accum__.add(normal_log<propto__>(get_base1(e0_par, i, "e0_par", 1), prior_e0_mu, prior_e0_sig));
+            }
+            current_statement_begin__ = 89;
+            for (int i = 1; i <= n_covlev_emax; ++i) {
+
+                current_statement_begin__ = 90;
+                lp_accum__.add(normal_log<propto__>(get_base1(emax_par, i, "emax_par", 1), prior_emax_mu, prior_emax_sig));
             }
 
         } catch (const std::exception& e) {
@@ -740,15 +803,16 @@ public:
 
     void get_param_names(std::vector<std::string>& names__) const {
         names__.resize(0);
-        names__.push_back("emax");
         names__.push_back("ec50");
         names__.push_back("e0_par");
+        names__.push_back("emax_par");
         names__.push_back("gamma_par");
         names__.push_back("sigma");
         names__.push_back("respHat");
         names__.push_back("exposure_exp");
         names__.push_back("gamma");
         names__.push_back("e0");
+        names__.push_back("emax");
         names__.push_back("emaxvec");
         names__.push_back("ec50vec");
         names__.push_back("ec50vec_exp");
@@ -761,14 +825,15 @@ public:
         dimss__.resize(0);
         std::vector<size_t> dims__;
         dims__.resize(0);
-        dims__.push_back(n_covlev_emax);
-        dimss__.push_back(dims__);
-        dims__.resize(0);
         dims__.push_back(n_covlev_ec50);
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(n_covlev_e0);
         dims__.push_back((1 - e0_fix_flg));
+        dimss__.push_back(dims__);
+        dims__.resize(0);
+        dims__.push_back(n_covlev_emax);
+        dims__.push_back((1 - emax_fix_flg));
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back((1 - gamma_fix_flg));
@@ -785,6 +850,9 @@ public:
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(n_covlev_e0);
+        dimss__.push_back(dims__);
+        dims__.resize(0);
+        dims__.push_back(n_covlev_emax);
         dimss__.push_back(dims__);
         dims__.resize(0);
         dims__.push_back(N);
@@ -819,12 +887,6 @@ public:
         (void) function__;  // dummy to suppress unused var warning
 
         // read-transform, write parameters
-        Eigen::Matrix<double, Eigen::Dynamic, 1> emax = in__.vector_constrain(n_covlev_emax);
-        size_t emax_j_1_max__ = n_covlev_emax;
-        for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
-            vars__.push_back(emax(j_1__));
-        }
-
         Eigen::Matrix<double, Eigen::Dynamic, 1> ec50 = in__.vector_lb_constrain(0, n_covlev_ec50);
         size_t ec50_j_1_max__ = n_covlev_ec50;
         for (size_t j_1__ = 0; j_1__ < ec50_j_1_max__; ++j_1__) {
@@ -846,6 +908,24 @@ public:
         for (size_t k_1__ = 0; k_1__ < e0_par_k_1_max__; ++k_1__) {
             for (size_t k_0__ = 0; k_0__ < e0_par_k_0_max__; ++k_0__) {
                 vars__.push_back(e0_par[k_0__][k_1__]);
+            }
+        }
+
+        std::vector<std::vector<double> > emax_par;
+        size_t emax_par_d_0_max__ = n_covlev_emax;
+        size_t emax_par_d_1_max__ = (1 - emax_fix_flg);
+        emax_par.resize(emax_par_d_0_max__);
+        for (size_t d_0__ = 0; d_0__ < emax_par_d_0_max__; ++d_0__) {
+            emax_par[d_0__].reserve(emax_par_d_1_max__);
+            for (size_t d_1__ = 0; d_1__ < emax_par_d_1_max__; ++d_1__) {
+                emax_par[d_0__].push_back(in__.scalar_constrain());
+            }
+        }
+        size_t emax_par_k_0_max__ = n_covlev_emax;
+        size_t emax_par_k_1_max__ = (1 - emax_fix_flg);
+        for (size_t k_1__ = 0; k_1__ < emax_par_k_1_max__; ++k_1__) {
+            for (size_t k_0__ = 0; k_0__ < emax_par_k_0_max__; ++k_0__) {
+                vars__.push_back(emax_par[k_0__][k_1__]);
             }
         }
 
@@ -874,86 +954,100 @@ public:
 
         try {
             // declare and define transformed parameters
-            current_statement_begin__ = 46;
+            current_statement_begin__ = 49;
             validate_non_negative_index("respHat", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> respHat(N);
             stan::math::initialize(respHat, DUMMY_VAR__);
             stan::math::fill(respHat, DUMMY_VAR__);
 
-            current_statement_begin__ = 47;
+            current_statement_begin__ = 50;
             validate_non_negative_index("exposure_exp", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> exposure_exp(N);
             stan::math::initialize(exposure_exp, DUMMY_VAR__);
             stan::math::fill(exposure_exp, DUMMY_VAR__);
 
-            current_statement_begin__ = 49;
+            current_statement_begin__ = 52;
             double gamma;
             (void) gamma;  // dummy to suppress unused var warning
             stan::math::initialize(gamma, DUMMY_VAR__);
             stan::math::fill(gamma, DUMMY_VAR__);
 
-            current_statement_begin__ = 50;
+            current_statement_begin__ = 53;
             validate_non_negative_index("e0", "n_covlev_e0", n_covlev_e0);
             Eigen::Matrix<double, Eigen::Dynamic, 1> e0(n_covlev_e0);
             stan::math::initialize(e0, DUMMY_VAR__);
             stan::math::fill(e0, DUMMY_VAR__);
 
-            current_statement_begin__ = 52;
+            current_statement_begin__ = 54;
+            validate_non_negative_index("emax", "n_covlev_emax", n_covlev_emax);
+            Eigen::Matrix<double, Eigen::Dynamic, 1> emax(n_covlev_emax);
+            stan::math::initialize(emax, DUMMY_VAR__);
+            stan::math::fill(emax, DUMMY_VAR__);
+
+            current_statement_begin__ = 56;
             validate_non_negative_index("emaxvec", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> emaxvec(N);
             stan::math::initialize(emaxvec, DUMMY_VAR__);
             stan::math::fill(emaxvec, DUMMY_VAR__);
 
-            current_statement_begin__ = 53;
+            current_statement_begin__ = 57;
             validate_non_negative_index("ec50vec", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> ec50vec(N);
             stan::math::initialize(ec50vec, DUMMY_VAR__);
             stan::math::fill(ec50vec, DUMMY_VAR__);
 
-            current_statement_begin__ = 54;
+            current_statement_begin__ = 58;
             validate_non_negative_index("ec50vec_exp", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> ec50vec_exp(N);
             stan::math::initialize(ec50vec_exp, DUMMY_VAR__);
             stan::math::fill(ec50vec_exp, DUMMY_VAR__);
 
-            current_statement_begin__ = 55;
+            current_statement_begin__ = 59;
             validate_non_negative_index("e0vec", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> e0vec(N);
             stan::math::initialize(e0vec, DUMMY_VAR__);
             stan::math::fill(e0vec, DUMMY_VAR__);
 
             // do transformed parameters statements
-            current_statement_begin__ = 58;
+            current_statement_begin__ = 62;
             stan::math::assign(gamma, (gamma_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(gamma_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(gamma_par, 1, "gamma_par", 1)) ));
-            current_statement_begin__ = 59;
+            current_statement_begin__ = 63;
             for (int i = 1; i <= n_covlev_e0; ++i) {
-                current_statement_begin__ = 59;
+                current_statement_begin__ = 63;
                 stan::model::assign(e0, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             (e0_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(e0_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(get_base1(e0_par, i, "e0_par", 1), 1, "e0_par", 2)) ), 
                             "assigning variable e0");
             }
-            current_statement_begin__ = 62;
-            stan::math::assign(emaxvec, stan::model::rvalue(emax, stan::model::cons_list(stan::model::index_multi(covemax), stan::model::nil_index_list()), "emax"));
-            current_statement_begin__ = 63;
-            stan::math::assign(ec50vec, stan::model::rvalue(ec50, stan::model::cons_list(stan::model::index_multi(covec50), stan::model::nil_index_list()), "ec50"));
             current_statement_begin__ = 64;
+            for (int i = 1; i <= n_covlev_emax; ++i) {
+                current_statement_begin__ = 64;
+                stan::model::assign(emax, 
+                            stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
+                            (emax_fix_flg ? stan::math::promote_scalar<local_scalar_t__>(emax_fix_value) : stan::math::promote_scalar<local_scalar_t__>(get_base1(get_base1(emax_par, i, "emax_par", 1), 1, "emax_par", 2)) ), 
+                            "assigning variable emax");
+            }
+            current_statement_begin__ = 67;
+            stan::math::assign(emaxvec, stan::model::rvalue(emax, stan::model::cons_list(stan::model::index_multi(covemax), stan::model::nil_index_list()), "emax"));
+            current_statement_begin__ = 68;
+            stan::math::assign(ec50vec, stan::model::rvalue(ec50, stan::model::cons_list(stan::model::index_multi(covec50), stan::model::nil_index_list()), "ec50"));
+            current_statement_begin__ = 69;
             stan::math::assign(e0vec, stan::model::rvalue(e0, stan::model::cons_list(stan::model::index_multi(cove0), stan::model::nil_index_list()), "e0"));
-            current_statement_begin__ = 66;
+            current_statement_begin__ = 71;
             for (int i = 1; i <= N; ++i) {
 
-                current_statement_begin__ = 67;
+                current_statement_begin__ = 72;
                 stan::model::assign(exposure_exp, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             pow(get_base1(exposure, i, "exposure", 1), gamma), 
                             "assigning variable exposure_exp");
-                current_statement_begin__ = 68;
+                current_statement_begin__ = 73;
                 stan::model::assign(ec50vec_exp, 
                             stan::model::cons_list(stan::model::index_uni(i), stan::model::nil_index_list()), 
                             pow(get_base1(ec50vec, i, "ec50vec", 1), gamma), 
                             "assigning variable ec50vec_exp");
             }
-            current_statement_begin__ = 71;
+            current_statement_begin__ = 76;
             stan::math::assign(respHat, add(e0vec, elt_divide(elt_multiply(emaxvec, exposure_exp), add(ec50vec_exp, exposure_exp))));
 
             if (!include_gqs__ && !include_tparams__) return;
@@ -976,6 +1070,10 @@ public:
                 for (size_t j_1__ = 0; j_1__ < e0_j_1_max__; ++j_1__) {
                     vars__.push_back(e0(j_1__));
                 }
+                size_t emax_j_1_max__ = n_covlev_emax;
+                for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
+                    vars__.push_back(emax(j_1__));
+                }
                 size_t emaxvec_j_1_max__ = N;
                 for (size_t j_1__ = 0; j_1__ < emaxvec_j_1_max__; ++j_1__) {
                     vars__.push_back(emaxvec(j_1__));
@@ -995,16 +1093,16 @@ public:
             }
             if (!include_gqs__) return;
             // declare and define generated quantities
-            current_statement_begin__ = 87;
+            current_statement_begin__ = 95;
             validate_non_negative_index("log_lik", "N", N);
             Eigen::Matrix<double, Eigen::Dynamic, 1> log_lik(N);
             stan::math::initialize(log_lik, DUMMY_VAR__);
             stan::math::fill(log_lik, DUMMY_VAR__);
 
             // generated quantities statements
-            current_statement_begin__ = 88;
+            current_statement_begin__ = 96;
             for (int n = 1; n <= N; ++n) {
-                current_statement_begin__ = 88;
+                current_statement_begin__ = 96;
                 stan::model::assign(log_lik, 
                             stan::model::cons_list(stan::model::index_uni(n), stan::model::nil_index_list()), 
                             normal_log(get_base1(response, n, "response", 1), get_base1(respHat, n, "respHat", 1), sigma), 
@@ -1012,7 +1110,7 @@ public:
             }
 
             // validate, write generated quantities
-            current_statement_begin__ = 87;
+            current_statement_begin__ = 95;
             size_t log_lik_j_1_max__ = N;
             for (size_t j_1__ = 0; j_1__ < log_lik_j_1_max__; ++j_1__) {
                 vars__.push_back(log_lik(j_1__));
@@ -1052,12 +1150,6 @@ public:
                                  bool include_tparams__ = true,
                                  bool include_gqs__ = true) const {
         std::stringstream param_name_stream__;
-        size_t emax_j_1_max__ = n_covlev_emax;
-        for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
-            param_name_stream__.str(std::string());
-            param_name_stream__ << "emax" << '.' << j_1__ + 1;
-            param_names__.push_back(param_name_stream__.str());
-        }
         size_t ec50_j_1_max__ = n_covlev_ec50;
         for (size_t j_1__ = 0; j_1__ < ec50_j_1_max__; ++j_1__) {
             param_name_stream__.str(std::string());
@@ -1070,6 +1162,15 @@ public:
             for (size_t k_0__ = 0; k_0__ < e0_par_k_0_max__; ++k_0__) {
                 param_name_stream__.str(std::string());
                 param_name_stream__ << "e0_par" << '.' << k_0__ + 1 << '.' << k_1__ + 1;
+                param_names__.push_back(param_name_stream__.str());
+            }
+        }
+        size_t emax_par_k_0_max__ = n_covlev_emax;
+        size_t emax_par_k_1_max__ = (1 - emax_fix_flg);
+        for (size_t k_1__ = 0; k_1__ < emax_par_k_1_max__; ++k_1__) {
+            for (size_t k_0__ = 0; k_0__ < emax_par_k_0_max__; ++k_0__) {
+                param_name_stream__.str(std::string());
+                param_name_stream__ << "emax_par" << '.' << k_0__ + 1 << '.' << k_1__ + 1;
                 param_names__.push_back(param_name_stream__.str());
             }
         }
@@ -1105,6 +1206,12 @@ public:
             for (size_t j_1__ = 0; j_1__ < e0_j_1_max__; ++j_1__) {
                 param_name_stream__.str(std::string());
                 param_name_stream__ << "e0" << '.' << j_1__ + 1;
+                param_names__.push_back(param_name_stream__.str());
+            }
+            size_t emax_j_1_max__ = n_covlev_emax;
+            for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
+                param_name_stream__.str(std::string());
+                param_name_stream__ << "emax" << '.' << j_1__ + 1;
                 param_names__.push_back(param_name_stream__.str());
             }
             size_t emaxvec_j_1_max__ = N;
@@ -1147,12 +1254,6 @@ public:
                                    bool include_tparams__ = true,
                                    bool include_gqs__ = true) const {
         std::stringstream param_name_stream__;
-        size_t emax_j_1_max__ = n_covlev_emax;
-        for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
-            param_name_stream__.str(std::string());
-            param_name_stream__ << "emax" << '.' << j_1__ + 1;
-            param_names__.push_back(param_name_stream__.str());
-        }
         size_t ec50_j_1_max__ = n_covlev_ec50;
         for (size_t j_1__ = 0; j_1__ < ec50_j_1_max__; ++j_1__) {
             param_name_stream__.str(std::string());
@@ -1165,6 +1266,15 @@ public:
             for (size_t k_0__ = 0; k_0__ < e0_par_k_0_max__; ++k_0__) {
                 param_name_stream__.str(std::string());
                 param_name_stream__ << "e0_par" << '.' << k_0__ + 1 << '.' << k_1__ + 1;
+                param_names__.push_back(param_name_stream__.str());
+            }
+        }
+        size_t emax_par_k_0_max__ = n_covlev_emax;
+        size_t emax_par_k_1_max__ = (1 - emax_fix_flg);
+        for (size_t k_1__ = 0; k_1__ < emax_par_k_1_max__; ++k_1__) {
+            for (size_t k_0__ = 0; k_0__ < emax_par_k_0_max__; ++k_0__) {
+                param_name_stream__.str(std::string());
+                param_name_stream__ << "emax_par" << '.' << k_0__ + 1 << '.' << k_1__ + 1;
                 param_names__.push_back(param_name_stream__.str());
             }
         }
@@ -1200,6 +1310,12 @@ public:
             for (size_t j_1__ = 0; j_1__ < e0_j_1_max__; ++j_1__) {
                 param_name_stream__.str(std::string());
                 param_name_stream__ << "e0" << '.' << j_1__ + 1;
+                param_names__.push_back(param_name_stream__.str());
+            }
+            size_t emax_j_1_max__ = n_covlev_emax;
+            for (size_t j_1__ = 0; j_1__ < emax_j_1_max__; ++j_1__) {
+                param_name_stream__.str(std::string());
+                param_name_stream__ << "emax" << '.' << j_1__ + 1;
                 param_names__.push_back(param_name_stream__.str());
             }
             size_t emaxvec_j_1_max__ = N;

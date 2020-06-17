@@ -5,13 +5,17 @@
 #' @export
 #' @param formula a symbolic description of variables for Emax model fit.
 #' @param data an optional data frame containing the variables in the model.
-#' @param gamma.fix a numeric or NULL to specify gamma (Hill coefficient) in the sigmoidal Emax model.
+#' @param gamma.fix a (positive) numeric or NULL to specify gamma (Hill coefficient) in the sigmoidal Emax model.
 #' If NULL, gamma will be estimated from the data.
 #' If numeric, gamma is fixed at the number provided.
 #' Default = 1 (normal Emax model).
 #' @param e0.fix a numeric or NULL to specify E0 in the Emax model.
 #' If NULL, E0 will be estimated from the data.
 #' If numeric, E0 is fixed at the number provided.
+#' Default = NULL (estimate from the data).
+#' @param emax.fix a numeric or NULL to specify Emax in the Emax model.
+#' If NULL, Emax will be estimated from the data.
+#' If numeric, Emax is fixed at the number provided.
 #' Default = NULL (estimate from the data).
 #' @param priors a named list specifying priors of parameters (ec50, emax, e0, gamma, sigma).
 #' Each list item should be length 2 numeric vector, one corresponding to mean and
@@ -41,6 +45,7 @@
 #'                   chains = 1, iter = 500, seed = 12345)
 #' print(fit2)
 #'
+#' data(exposure.response.sample.test)
 #' # Specify covariates
 #' fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.test,
 #'                   param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
@@ -52,10 +57,10 @@
 
 # Remove NA data, show warning
 stan_emax <- function(formula, data,
-                      gamma.fix = 1, e0.fix = NULL,
+                      gamma.fix = 1, e0.fix = NULL, emax.fix = NULL,
                       priors = NULL, param.cov = NULL, ...){
 
-  out.prep <- stan_emax_prep(formula, data, gamma.fix, e0.fix, param.cov)
+  out.prep <- stan_emax_prep(formula, data, gamma.fix, e0.fix, emax.fix, param.cov)
 
   standata <- set_prior(out.prep$standata, priors)
 
@@ -70,7 +75,7 @@ stan_emax <- function(formula, data,
 
 # Parse formula and put together stan data object
 stan_emax_prep <- function(formula, data,
-                           gamma.fix = 1, e0.fix = NULL, param.cov = NULL){
+                           gamma.fix = 1, e0.fix = NULL, emax.fix = NULL, param.cov = NULL){
 
 
   check_param_cov(param.cov)
@@ -79,7 +84,7 @@ stan_emax_prep <- function(formula, data,
 
 
   standata <-
-    create_standata(df.model, gamma.fix, e0.fix)
+    create_standata(df.model, gamma.fix, e0.fix, emax.fix)
 
 
   out.prep <- list()
@@ -123,7 +128,7 @@ stan_emax_run <- function(stanmodel, standata, ...){
 }
 
 
-create_standata <- function(df.model, gamma.fix = 1, e0.fix = NULL){
+create_standata <- function(df.model, gamma.fix = 1, e0.fix = NULL, emax.fix = NULL){
 
   out <- list(exposure = df.model$exposure,
               response = df.model$response,
@@ -137,10 +142,13 @@ create_standata <- function(df.model, gamma.fix = 1, e0.fix = NULL){
               gamma_fix_flg = 1,
               gamma_fix_value = 1,
               e0_fix_flg = 0,
-              e0_fix_value = 0)
+              e0_fix_value = 0,
+              emax_fix_flg = 0,
+              emax_fix_value = 0)
 
   if(!is.null(gamma.fix) && !is.na(gamma.fix)){
     if(!is.numeric(gamma.fix)) stop("gamma.fix must be NULL or numeric")
+    if(gamma.fix <= 0) stop("gamma.fix must be NULL or positive numeric")
 
     out$gamma_fix_flg <- 1
     out$gamma_fix_value <- gamma.fix
@@ -155,6 +163,15 @@ create_standata <- function(df.model, gamma.fix = 1, e0.fix = NULL){
     out$e0_fix_value <-  e0.fix
   } else {
     out$e0_fix_flg <- 0
+  }
+
+  if(!is.null(emax.fix) && !is.na(emax.fix)){
+    if(!is.numeric(emax.fix)) stop("emax.fix must be NULL or numeric")
+
+    out$emax_fix_flg <- 1
+    out$emax_fix_value <-  emax.fix
+  } else {
+    out$emax_fix_flg <- 0
   }
 
   return(out)

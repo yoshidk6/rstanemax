@@ -124,8 +124,11 @@ extract_param_fit <- function(stanfit){
   param.extract.2 <- rstan::extract(stanfit, pars = c("gamma", "sigma"))
 
   extract_params_covs <- function(k){
+    vec.param <- param.extract.1[[k]]
+    colnames(vec.param) <- paste0("V", 1:ncol(vec.param))
+
     out <-
-      dplyr::as_tibble(param.extract.1[[k]]) %>%
+      dplyr::as_tibble(vec.param, .name_repair = "unique") %>%
       dplyr::mutate(mcmcid = dplyr::row_number()) %>%
       tidyr::pivot_longer(-mcmcid,
                           names_to = paste0("cov", k),
@@ -143,7 +146,7 @@ extract_param_fit <- function(stanfit){
 
   param.fit  <-
     param.extract.2 %>%
-    dplyr::as_tibble() %>%
+    dplyr::as_tibble(.name_repair = "unique") %>%
     dplyr::mutate(mcmcid = dplyr::row_number()) %>%
     dplyr::full_join(param.fit.withcov, ., by = "mcmcid")
 

@@ -4,7 +4,8 @@
 \name{exposure.response.sample.test}
 \alias{exposure.response.sample.test}
 \title{Sample simulated data for exposure-response with covariates for package testing}
-\format{A data frame with columns:
+\format{
+A data frame with columns:
 \describe{
 \item{dose}{Dose levels used for simulation of pharmacokinetics}
 \item{conc}{Simulated exposure}
@@ -13,7 +14,8 @@
 \item{cov2}{Covariate 2 for emax}
 \item{cov3}{Covariate 3 for ec50 (data type factor)}
 \item{cov3num}{Covariate 3 for ec50 (data type numeric)}
-}}
+}
+}
 \usage{
 exposure.response.sample.test
 }
