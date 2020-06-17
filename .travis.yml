@@ -31,26 +31,25 @@ repos:
 r_packages:
   - Rcpp
   - RcppEigen
+  - RcppArmadillo
+  - BH
   - mvtnorm
   - rstan
   - StanHeaders
-  # - LaplacesDemon
-  # - logspline
+  - rstantools
+  - dplyr
+  - tidyr
+  - tibble
+  - ggplot2
+  - rlang
+  - vctrs
   - testthat
   - devtools
   - remotes
   - knitr
   - rmarkdown
-  # - coda
-  - rstantools
-  # - bridgesampling
-  # - BH
-  # -
   - mrgsolve
 
-r_github_packages:
-  - jimhester/lintr
-  - r-lib/covr
 
 before_install:
   - mkdir -p ~/.R
@@ -70,12 +69,6 @@ script:
 after_script:
   - tar -ztvf rstanemax_*.tar.gz
   - echo ${NOT_CRAN}
-
-after_success:
-  - Rscript -e 'covr::codecov()'
-  - Rscript -e 'covr::coveralls()'
-  - R CMD INSTALL $PKG_TARBALL
-  - Rscript -e 'lintr::lint_package()'
 
 after_failure:
   - cat rstanemax.Rcheck/00*

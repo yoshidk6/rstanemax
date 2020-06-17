@@ -118,14 +118,14 @@ pp_calc <- function(stanfit, df.model){
 
 extract_param_fit <- function(stanfit){
 
-  param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
+  # param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
 
   param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
   param.extract.2 <- rstan::extract(stanfit, pars = c("gamma", "sigma"))
 
   extract_params_covs <- function(k){
     vec.param <- param.extract.1[[k]]
-    colnames(vec.param) <- paste0("V", 1:ncol(vec.param))
+    colnames(vec.param) <- paste0("V", seq_len(ncol(vec.param)))
 
     out <-
       dplyr::as_tibble(vec.param, .name_repair = "unique") %>%
@@ -186,7 +186,3 @@ posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.
     dplyr::ungroup() %>%
     dplyr::select(-dataid)
 }
-
-
-
-
