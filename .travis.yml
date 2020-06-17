@@ -62,8 +62,20 @@ notifications:
   on_success: change
   on_failure: change
 
+script:
+  - |
+    travis_wait 42 R CMD build .
+    travis_wait 59 R CMD check rstanemax*tar.gz
+
+after_script:
+  - tar -ztvf rstanemax_*.tar.gz
+  - echo ${NOT_CRAN}
+
 after_success:
   - Rscript -e 'covr::codecov()'
   - Rscript -e 'covr::coveralls()'
   - R CMD INSTALL $PKG_TARBALL
   - Rscript -e 'lintr::lint_package()'
+
+after_failure:
+  - cat rstanemax.Rcheck/00*
