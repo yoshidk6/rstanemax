@@ -100,8 +100,11 @@ extract_obs_mod_frame <- function(x) {
 #' credible interval of posterior prediction. Default TRUE.
 #' @param show.pi An logical specifying if the output figure include
 #' prediction interval. Default FALSE.
+#' @param ci Credible interval range.
+#' @param pi Prediction interval range.
 #' @param ... Additional arguments passed to methods.
-plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
+plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE,
+                          ci = 0.9, pi = 0.9, ...) {
 
   obs <- x$prminput$df.model
 
@@ -116,7 +119,8 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE, ...) {
 
   newdata <- tidyr::crossing(exposure.range, cov.list.2)
 
-  pred.quantile <- posterior_predict_quantile(x, newdata = newdata, newDataType = "modelframe")
+  pred.quantile <- posterior_predict_quantile(x, newdata = newdata, newDataType = "modelframe",
+                                              ci = ci, pi = pi)
 
 
   if(is.null(x$prminput$param.cov)){

@@ -199,11 +199,12 @@
 <div id="fix-parameter-values-in-emax-model" class="section level1">
 <h1 class="hasAnchor">
 <a href="#fix-parameter-values-in-emax-model" class="anchor"></a>Fix parameter values in Emax model</h1>
-<p>You can fix parameter values in Emax model for E0 and/or gamma (Hill coefficient). See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details. The default is to fix gamma at 1 and to estimate E0 from data.</p>
+<p>You can fix parameter values in Emax model for Emax, E0 and/or gamma (Hill coefficient). See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details. The default is to fix gamma at 1 and to estimate Emax and E0 from data.</p>
 <p>Below is the example of estimating gamma from data.</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="no">exposure.response.sample</span>)
 
-<span class="no">fit.emax.sigmoidal</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/stan_emax.html">stan_emax</a></span>(<span class="no">response</span> ~ <span class="no">exposure</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">exposure.response.sample</span>, <span class="kw">gamma.fix</span> <span class="kw">=</span> <span class="kw">NULL</span>,
+<span class="no">fit.emax.sigmoidal</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/stan_emax.html">stan_emax</a></span>(<span class="no">response</span> ~ <span class="no">exposure</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">exposure.response.sample</span>,
+                                <span class="kw">gamma.fix</span> <span class="kw">=</span> <span class="kw">NULL</span>,
                                 <span class="co"># the next line is only to make the example go fast enough</span>
                                 <span class="kw">chains</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">iter</span> <span class="kw">=</span> <span class="fl">1000</span>, <span class="kw">seed</span> <span class="kw">=</span> <span class="fl">12345</span>)
 <span class="co">#&gt; Warning: The largest R-hat is NA, indicating chains have not mixed.</span>

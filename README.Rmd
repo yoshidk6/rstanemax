@@ -84,3 +84,7 @@ fit.emax
 plot(fit.emax)
 ```
 
+## References
+
+[Fitting the Emax Model in R](https://www.kristianbrock.com/post/emax-intro/) has nice intro on Emax (with kindly introducing this package). __brms__ implementation of the same model can be found [here](https://rpubs.com/mvuorre/emax-brms).
+

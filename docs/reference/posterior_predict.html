@@ -192,12 +192,14 @@ Mostly used for internal purposes and users can usually leave at default.</p></t
     <p>An object that contain predicted response with posterior distribution of parameters.
 The default is a matrix containing predicted response.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.</p>
-<p>If either _dataframe_ or _tibble_ is specified, the function returns a data frame or tibble object in a long format -
+<p>If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.</p>
 <p>Two types of predictions are generated with this function.
-_respHat_ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-_response_ include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
+`respHat` corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+`response` include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
 <p>The return object also contains exposure and parameter values used for calculation.</p>
+<p>With `posterior_predict_quantile()` function, you can obtain quantiles
+of `respHat` and `response` as specified by `ci` and `pi`.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Run <code><a href='../articles/emaxmodel.html'>vignette("emaxmodel", package = "rstanemax")</a></code> to see

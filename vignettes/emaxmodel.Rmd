@@ -100,16 +100,17 @@ ggplot(resp.pred.quantile, aes(exposure, ci_med)) +
 
 # Fix parameter values in Emax model
 
-You can fix parameter values in Emax model  for E0 and/or gamma (Hill coefficient).
+You can fix parameter values in Emax model for Emax, E0 and/or gamma (Hill coefficient).
 See help of `stan_emax()` for the details.
-The default is to fix gamma at 1 and to estimate E0 from data.
+The default is to fix gamma at 1 and to estimate Emax and E0 from data.
 
 Below is the example of estimating gamma from data.
 
 ```{r, results="hide"}
 data(exposure.response.sample)
 
-fit.emax.sigmoidal <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+fit.emax.sigmoidal <- stan_emax(response ~ exposure, data = exposure.response.sample, 
+                                gamma.fix = NULL,
                                 # the next line is only to make the example go fast enough
                                 chains = 2, iter = 1000, seed = 12345)
 ```
@@ -148,7 +149,6 @@ ggplot(pred, aes(exposure, ci_med, color = model, fill = model)) +
 
  
 ```
-
 
 
 
@@ -199,4 +199,5 @@ quantile(delta.emax.posterior, probs = c(0.025, 0.05, 0.5, 0.95, 0.975))
 sum(delta.emax.posterior < 0) / length(delta.emax.posterior)
 
 ```
+
 

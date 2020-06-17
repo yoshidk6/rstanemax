@@ -21,12 +21,12 @@
 #' The default is a matrix containing predicted response.
 #' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 #'
-#' If either _dataframe_ or _tibble_ is specified, the function returns a data frame or tibble object in a long format -
+#' If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
 #' each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
 #'
 #' Two types of predictions are generated with this function.
-#' _respHat_ corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-#' _response_ include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+#' `respHat` corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+#' `response` include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 #'
 #' The return object also contains exposure and parameter values used for calculation.
 #'
@@ -158,6 +158,8 @@ extract_param_fit <- function(stanfit){
 #' @export
 #' @param ci Credible interval of the response without residual variability.
 #' @param pi Prediction interval of the response with residual variability.
+#' @return With `posterior_predict_quantile()` function, you can obtain quantiles
+#' of `respHat` and `response` as specified by `ci` and `pi`.
 #'
 posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9,
                                        newDataType = c("raw", "modelframe")){

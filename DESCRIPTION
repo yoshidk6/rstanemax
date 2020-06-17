@@ -33,9 +33,7 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    spelling,
-    mrgsolve,
-    PKNCA
+    spelling
 VignetteBuilder: knitr
 Language: en-US
 URL: https://github.com/yoshidk6/rstanemax
