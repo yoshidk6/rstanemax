@@ -23,7 +23,7 @@ posterior_predict_quantile(
 )
 }
 \arguments{
-\item{object}{A `stanemax` class object}
+\item{object}{A \code{stanemax} class object}
 
 \item{newdata}{An optional data frame that contains columns needed for model to run (exposure and covariates).
 If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.}
@@ -45,17 +45,17 @@ An object that contain predicted response with posterior distribution of paramet
 The default is a matrix containing predicted response.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 
-If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
+If either \code{dataframe} or \code{tibble} is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
 
 Two types of predictions are generated with this function.
-`respHat` corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-`response` include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+\code{respHat} corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+\code{response} include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 
 The return object also contains exposure and parameter values used for calculation.
 
-With `posterior_predict_quantile()` function, you can obtain quantiles
-of `respHat` and `response` as specified by `ci` and `pi`.
+With \code{\link[=posterior_predict_quantile]{posterior_predict_quantile()}} function, you can obtain quantiles
+of \code{respHat} and \code{response} as specified by \code{ci} and \code{pi}.
 }
 \description{
 Compute outcome predictions using posterior samples.

@@ -94,8 +94,8 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> 
 #> SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+#> Chain 1: Gradient evaluation took 0.00014 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.4 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -112,10 +112,16 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.209 seconds (Warm-up)
-#> Chain 1:                0.058 seconds (Sampling)
-#> Chain 1:                0.267 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.121053 seconds (Warm-up)
+#> Chain 1:                0.046308 seconds (Sampling)
+#> Chain 1:                0.167361 seconds (Total)
 #> Chain 1:
+#> Warning: The largest R-hat is NA, indicating chains have not mixed.
+#> Running the chains for more iterations may help. See
+#> http://mc-stan.org/misc/warnings.html#r-hat
+#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
+#> Running the chains for more iterations may help. See
+#> http://mc-stan.org/misc/warnings.html#bulk-ess
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> http://mc-stan.org/misc/warnings.html#tail-ess
@@ -126,11 +132,11 @@ fit.emax
 #> ---- Emax model fit with rstanemax ----
 #> 
 #>        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
-#> emax  91.49    0.44  5.25 80.22 88.70 91.89 95.10 101.16 142.50    1
-#> e0     6.15    0.36  4.39 -3.92  3.32  6.65  8.91  14.47 147.29    1
-#> ec50  77.34    2.09 23.13 43.30 61.41 73.25 90.19 129.59 122.61    1
+#> emax  92.01    0.47  6.49 79.08 87.94 92.11 96.35 103.43 188.95    1
+#> e0     5.69    0.35  4.92 -2.87  2.13  5.90  9.07  15.00 192.44    1
+#> ec50  75.78    1.23 19.37 44.51 62.88 72.26 85.34 124.31 246.47    1
 #> gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN
-#> sigma 16.40    0.12  1.45 13.99 15.34 16.30 17.21  19.40 151.88    1
+#> sigma 16.65    0.13  1.66 13.77 15.47 16.55 17.55  20.20 157.45    1
 #> 
 #> * Use `extract_stanfit()` function to extract raw stanfit object
 #> * Use `plot()` function to visualize model fit
@@ -145,3 +151,10 @@ plot(fit.emax)
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
+
+## References
+
+[Fitting the Emax Model in
+R](https://www.kristianbrock.com/post/emax-intro/) has nice intro on
+Emax (with kindly introducing this package). **brms** implementation of
+the same model can be found [here](https://rpubs.com/mvuorre/emax-brms).

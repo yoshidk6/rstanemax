@@ -43,10 +43,10 @@ Currently only supports normal distribution for priors.}
 \item{param.cov}{a named list specifying categorical covariates on parameters (ec50, emax, e0).
 Convert a column into factor if specific order of covariates are needed.}
 
-\item{...}{Arguments passed to `rstan::sampling` (e.g. iter, chains).}
+\item{...}{Arguments passed to \link[rstan:sampling]{rstan::sampling} (e.g. iter, chains).}
 }
 \value{
-An object of class `stanemax`
+An object of class \code{stanemax}
 }
 \description{
 Run sigmoidal Emax model fit with formula notation

@@ -156,7 +156,7 @@ Exposure data for prediction can be either original data used for model fit or n
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>object</th>
-      <td><p>A `stanemax` class object</p></td>
+      <td><p>A <code>stanemax</code> class object</p></td>
     </tr>
     <tr>
       <th>newdata</th>
@@ -192,14 +192,14 @@ Mostly used for internal purposes and users can usually leave at default.</p></t
     <p>An object that contain predicted response with posterior distribution of parameters.
 The default is a matrix containing predicted response.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.</p>
-<p>If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
+<p>If either <code>dataframe</code> or <code>tibble</code> is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.</p>
 <p>Two types of predictions are generated with this function.
-`respHat` corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-`response` include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
+<code>respHat</code> corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+<code>response</code> include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p>
 <p>The return object also contains exposure and parameter values used for calculation.</p>
-<p>With `posterior_predict_quantile()` function, you can obtain quantiles
-of `respHat` and `response` as specified by `ci` and `pi`.</p>
+<p>With <code>posterior_predict_quantile()</code> function, you can obtain quantiles
+of <code>respHat</code> and <code>response</code> as specified by <code>ci</code> and <code>pi</code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Run <code><a href='../articles/emaxmodel.html'>vignette("emaxmodel", package = "rstanemax")</a></code> to see

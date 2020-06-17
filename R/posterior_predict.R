@@ -158,7 +158,7 @@ extract_param_fit <- function(stanfit){
 #' @export
 #' @param ci Credible interval of the response without residual variability.
 #' @param pi Prediction interval of the response with residual variability.
-#' @return With `posterior_predict_quantile()` function, you can obtain quantiles
+#' @return With [posterior_predict_quantile()] function, you can obtain quantiles
 #' of `respHat` and `response` as specified by `ci` and `pi`.
 #'
 posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9,

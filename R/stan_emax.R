@@ -23,7 +23,7 @@
 #' Currently only supports normal distribution for priors.
 #' @param param.cov a named list specifying categorical covariates on parameters (ec50, emax, e0).
 #' Convert a column into factor if specific order of covariates are needed.
-#' @param ... Arguments passed to `rstan::sampling` (e.g. iter, chains).
+#' @param ... Arguments passed to [rstan::sampling] (e.g. iter, chains).
 #' @return An object of class `stanemax`
 #' @details The following structure is used for the Emax model:
 #' \deqn{Response = e_0 + e_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma} + exposure ^ {\gamma}) + \epsilon}{Response = e0 + emax * exposure ^ gamma / (ec50 ^ gamma + exposure ^ gamma)  + epsilon}
