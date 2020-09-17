@@ -29,7 +29,7 @@ LinkingTo:
 SystemRequirements: GNU make
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0.9000
+RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     knitr,
