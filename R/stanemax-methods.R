@@ -143,7 +143,7 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE,
   g <- g + ggplot2::geom_line()
 
 
-  print(g)
+  g
 
 }
 
