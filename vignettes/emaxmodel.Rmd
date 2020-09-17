@@ -52,6 +52,14 @@ fit.emax
 plot(fit.emax)
 ```
 
+Output is a `ggplot` object, so you can apply additional settings as you would do in `ggplot2`.  
+Here is an example of using log scale for x axis (note that exposure == 0 is hanging at the very left, making the curve a bit weird).
+
+```{r plot_example_log, fig.show='hold'}
+plot(fit.emax) + scale_x_log10() + expand_limits(x = 1)
+```
+
+
 Raw output from `rstan` is stored in the output variable, and you can access it with `extract_stanfit()` function.
 
 ```{r}
