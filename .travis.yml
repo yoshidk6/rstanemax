@@ -14,6 +14,7 @@ addons:
       - libgdal-dev
       - libproj-dev
       - libmpfr-dev
+      - libv8-dev
 
 env:
   global:
