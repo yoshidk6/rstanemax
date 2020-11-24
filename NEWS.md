@@ -1,7 +1,15 @@
 
-# rstanemax 0.1.3 (in development)
+# rstanemax 0.1.4 (in development)
 
 ## Minor changes
+
+
+# rstanemax 0.1.3
+
+## Minor changes
+
+* Bug fix - disable `options(lifecycle_verbosity = "error")` to avoid unnecessary errors
+
 
 # rstanemax 0.1.2
 
