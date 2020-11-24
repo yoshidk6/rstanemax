@@ -74,7 +74,7 @@ devtools::install_github("yoshidk6/rstanemax")
 
 ## Example
 
-[This GitHub pages](https://yoshidk6.github.io/rstanemax) contains
+[This GitHub pages](https://yoshidk6.github.io/rstanemax/) contains
 function references and
 [vignette](https://yoshidk6.github.io/rstanemax/articles/emaxmodel.html).
 
@@ -94,8 +94,8 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> 
 #> SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 0.00014 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 1.4 seconds.
+#> Chain 1: Gradient evaluation took 5.4e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.54 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -112,16 +112,10 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.121053 seconds (Warm-up)
-#> Chain 1:                0.046308 seconds (Sampling)
-#> Chain 1:                0.167361 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.094091 seconds (Warm-up)
+#> Chain 1:                0.042437 seconds (Sampling)
+#> Chain 1:                0.136528 seconds (Total)
 #> Chain 1:
-#> Warning: The largest R-hat is NA, indicating chains have not mixed.
-#> Running the chains for more iterations may help. See
-#> http://mc-stan.org/misc/warnings.html#r-hat
-#> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-#> Running the chains for more iterations may help. See
-#> http://mc-stan.org/misc/warnings.html#bulk-ess
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
 #> http://mc-stan.org/misc/warnings.html#tail-ess

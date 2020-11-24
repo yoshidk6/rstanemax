@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
     </div>
 
@@ -132,16 +132,16 @@
     <p>Run sigmoidal Emax model fit with formula notation</p>
     </div>
 
-    <pre class="usage"><span class='fu'>stan_emax</span>(
-  <span class='no'>formula</span>,
-  <span class='no'>data</span>,
-  <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>e0.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>emax.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+    <pre class="usage"><span class='fu'>stan_emax</span><span class='op'>(</span>
+  <span class='va'>formula</span>,
+  <span class='va'>data</span>,
+  gamma.fix <span class='op'>=</span> <span class='fl'>1</span>,
+  e0.fix <span class='op'>=</span> <span class='cn'>NULL</span>,
+  emax.fix <span class='op'>=</span> <span class='cn'>NULL</span>,
+  priors <span class='op'>=</span> <span class='cn'>NULL</span>,
+  param.cov <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,29 +203,31 @@ $$Response = e_0 + e_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma} + exposur
 $$\epsilon \sim N(0, \sigma^2)$$</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>exposure.response.sample</span>)
-<span class='no'>fit1</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>,
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>exposure.response.sample</span><span class='op'>)</span>
+<span class='va'>fit1</span> <span class='op'>&lt;-</span> <span class='fu'>stan_emax</span><span class='op'>(</span><span class='va'>response</span> <span class='op'>~</span> <span class='va'>exposure</span>, data <span class='op'>=</span> <span class='va'>exposure.response.sample</span>,
                   <span class='co'># the next line is only to make the example go fast enough</span>
-                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit1</span>)
+                  chains <span class='op'>=</span> <span class='fl'>1</span>, iter <span class='op'>=</span> <span class='fl'>500</span>, seed <span class='op'>=</span> <span class='fl'>12345</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>fit1</span><span class='op'>)</span>
 
 <span class='co'># Set priors manually, also estimate gamma instead of the default of fix to 1</span>
-<span class='no'>fit2</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='no'>response</span> ~ <span class='no'>exposure</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample</span>, <span class='kw'>gamma.fix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                  <span class='kw'>priors</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>ec50</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>emax</span>  <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>100</span>, <span class='fl'>30</span>), <span class='kw'>e0</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>10</span>, <span class='fl'>5</span>),
-                                <span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>3</span>), <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>30</span>)),
+<span class='va'>fit2</span> <span class='op'>&lt;-</span> <span class='fu'>stan_emax</span><span class='op'>(</span><span class='va'>response</span> <span class='op'>~</span> <span class='va'>exposure</span>, data <span class='op'>=</span> <span class='va'>exposure.response.sample</span>, gamma.fix <span class='op'>=</span> <span class='cn'>NULL</span>,
+                  priors <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>ec50  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>30</span><span class='op'>)</span>, emax  <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>100</span>, <span class='fl'>30</span><span class='op'>)</span>, e0 <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>10</span>, <span class='fl'>5</span><span class='op'>)</span>,
+                                gamma <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>3</span><span class='op'>)</span>, sigma <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>30</span><span class='op'>)</span><span class='op'>)</span>,
                   <span class='co'># the next line is only to make the example go fast enough</span>
-                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit2</span>)
+                  chains <span class='op'>=</span> <span class='fl'>1</span>, iter <span class='op'>=</span> <span class='fl'>500</span>, seed <span class='op'>=</span> <span class='fl'>12345</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>fit2</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>exposure.response.sample.test</span>)
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>exposure.response.sample.test</span><span class='op'>)</span>
 <span class='co'># Specify covariates</span>
-<span class='no'>fit3</span> <span class='kw'>&lt;-</span> <span class='fu'>stan_emax</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>resp</span> ~ <span class='no'>conc</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>exposure.response.sample.test</span>,
-                  <span class='kw'>param.cov</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>emax</span> <span class='kw'>=</span> <span class='st'>"cov2"</span>, <span class='kw'>ec50</span> <span class='kw'>=</span> <span class='st'>"cov3"</span>, <span class='kw'>e0</span> <span class='kw'>=</span> <span class='st'>"cov1"</span>),
+<span class='va'>fit3</span> <span class='op'>&lt;-</span> <span class='fu'>stan_emax</span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>resp</span> <span class='op'>~</span> <span class='va'>conc</span>, data <span class='op'>=</span> <span class='va'>exposure.response.sample.test</span>,
+                  param.cov <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>emax <span class='op'>=</span> <span class='st'>"cov2"</span>, ec50 <span class='op'>=</span> <span class='st'>"cov3"</span>, e0 <span class='op'>=</span> <span class='st'>"cov1"</span><span class='op'>)</span>,
                   <span class='co'># the next line is only to make the example go fast enough</span>
-                  <span class='kw'>chains</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iter</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>12345</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>(<span class='no'>fit3</span>)
-}</div></pre>
+                  chains <span class='op'>=</span> <span class='fl'>1</span>, iter <span class='op'>=</span> <span class='fl'>500</span>, seed <span class='op'>=</span> <span class='fl'>12345</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>fit3</span><span class='op'>)</span>
+<span class='op'>}</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -241,7 +243,7 @@ $$\epsilon \sim N(0, \sigma^2)$$</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -60,7 +60,7 @@ devtools::install_github("yoshidk6/rstanemax")
 
 ## Example
 
-[This GitHub pages](https://yoshidk6.github.io/rstanemax) contains function references and [vignette](https://yoshidk6.github.io/rstanemax/articles/emaxmodel.html).
+[This GitHub pages](https://yoshidk6.github.io/rstanemax/) contains function references and [vignette](https://yoshidk6.github.io/rstanemax/articles/emaxmodel.html).
 
 ```{r}
 # Load rstanemax
