@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 ```
 # rstanemax
 
-[![Travis-CI Build Status](https://travis-ci.org/yoshidk6/rstanemax.svg?branch=master)](https://travis-ci.org/yoshidk6/rstanemax)
 [![R build status](https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg)](https://github.com/yoshidk6/rstanemax/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/rstanemax)](https://cran.r-project.org/package=rstanemax)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/rstanemax)](https://CRAN.R-project.org/package=rstanemax)

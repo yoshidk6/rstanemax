@@ -3,8 +3,6 @@
 
 # rstanemax
 
-[![Travis-CI Build
-Status](https://travis-ci.org/yoshidk6/rstanemax.svg?branch=master)](https://travis-ci.org/yoshidk6/rstanemax)
 [![R build
 status](https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg)](https://github.com/yoshidk6/rstanemax/actions)
 [![CRAN
@@ -96,8 +94,8 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> 
 #> SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 6.9e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.69 seconds.
+#> Chain 1: Gradient evaluation took 7.2e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.72 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -114,9 +112,9 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.115503 seconds (Warm-up)
-#> Chain 1:                0.050034 seconds (Sampling)
-#> Chain 1:                0.165537 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.099622 seconds (Warm-up)
+#> Chain 1:                0.040821 seconds (Sampling)
+#> Chain 1:                0.140443 seconds (Total)
 #> Chain 1:
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
