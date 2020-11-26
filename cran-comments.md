@@ -1,6 +1,7 @@
 ## Test environments
-* local Mac install, R 4.0.2
-* ubuntu 16.04 (on travis-ci) (devel and release)
+
+* local Mac OSX install, R 4.0.2
+* Windows, macOS, Ubuntu 20.04 on Github actions (devel and release)
 * win-builder (devel and release)
 
 
