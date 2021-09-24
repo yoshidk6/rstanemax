@@ -218,9 +218,9 @@ $$\epsilon \sim N(0, \sigma^2)$$</p>
                   chains <span class='op'>=</span> <span class='fl'>1</span>, iter <span class='op'>=</span> <span class='fl'>500</span>, seed <span class='op'>=</span> <span class='fl'>12345</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>fit2</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>exposure.response.sample.test</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>exposure.response.sample.with.cov</span><span class='op'>)</span>
 <span class='co'># Specify covariates</span>
-<span class='va'>fit3</span> <span class='op'>&lt;-</span> <span class='fu'>stan_emax</span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>resp</span> <span class='op'>~</span> <span class='va'>conc</span>, data <span class='op'>=</span> <span class='va'>exposure.response.sample.test</span>,
+<span class='va'>fit3</span> <span class='op'>&lt;-</span> <span class='fu'>stan_emax</span><span class='op'>(</span>formula <span class='op'>=</span> <span class='va'>resp</span> <span class='op'>~</span> <span class='va'>conc</span>, data <span class='op'>=</span> <span class='va'>exposure.response.sample.with.cov</span>,
                   param.cov <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>emax <span class='op'>=</span> <span class='st'>"cov2"</span>, ec50 <span class='op'>=</span> <span class='st'>"cov3"</span>, e0 <span class='op'>=</span> <span class='st'>"cov1"</span><span class='op'>)</span>,
                   <span class='co'># the next line is only to make the example go fast enough</span>
                   chains <span class='op'>=</span> <span class='fl'>1</span>, iter <span class='op'>=</span> <span class='fl'>500</span>, seed <span class='op'>=</span> <span class='fl'>12345</span><span class='op'>)</span>

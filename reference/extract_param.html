@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Changelog • rstanemax</title>
+<title>Extract posterior draws of key parameters — extract_param • rstanemax</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Changelog" />
+<meta property="og:title" content="Extract posterior draws of key parameters — extract_param" />
+<meta property="og:description" content="Extract posterior draws of key parameters" />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-news">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -122,80 +123,39 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1 data-toc-skip>Changelog <small></small></h1>
-      <small>Source: <a href='https://github.com/yoshidk6/rstanemax/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
+    <h1>Extract posterior draws of key parameters</h1>
+    <small class="dont-index">Source: <a href='https://github.com/yoshidk6/rstanemax/blob/master/R/extract_param.R'><code>R/extract_param.R</code></a></small>
+    <div class="hidden name"><code>extract_param.Rd</code></div>
     </div>
 
-    <div id="rstanemax-014-in-development" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.4">
-<a href="#rstanemax-014-in-development" class="anchor"></a>rstanemax 0.1.4 (in development)<small> Unreleased </small>
-</h1>
-<div id="minor-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#minor-changes" class="anchor"></a>Minor changes</h2>
-<ul>
-<li>Added <code><a href="../reference/extract_param.html">extract_param()</a></code> function to easily retrieve posterior draws of key parameters</li>
-</ul>
-</div>
-</div>
-    <div id="rstanemax-013" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.3">
-<a href="#rstanemax-013" class="anchor"></a>rstanemax 0.1.3<small> 2020-11-24 </small>
-</h1>
-<div id="minor-changes-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#minor-changes-1" class="anchor"></a>Minor changes</h2>
-<ul>
-<li>Bug fix - disable <code><a href="https://rdrr.io/r/base/options.html">options(lifecycle_verbosity = "error")</a></code> to avoid unnecessary errors</li>
-</ul>
-</div>
-</div>
-    <div id="rstanemax-012" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.2">
-<a href="#rstanemax-012" class="anchor"></a>rstanemax 0.1.2<small> 2020-06-18 </small>
-</h1>
-<div id="minor-changes-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#minor-changes-2" class="anchor"></a>Minor changes</h2>
-<ul>
-<li>You can now fix Emax with <code>emax.fix</code> argument for <code><a href="../reference/stan_emax.html">stan_emax()</a></code> function.</li>
-</ul>
-</div>
-</div>
-    <div id="rstanemax-011" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.1">
-<a href="#rstanemax-011" class="anchor"></a>rstanemax 0.1.1<small> 2019-11-19 </small>
-</h1>
-<div id="breaking-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#breaking-changes" class="anchor"></a>Breaking changes</h2>
-<ul>
-<li>For posterior prediction, the column name of the newdata needs to be the same as the one in the original input data, instead of <code>exposure</code> in the previous version.</li>
-</ul>
-</div>
-<div id="major-changes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#major-changes" class="anchor"></a>Major changes</h2>
-<ul>
-<li>
-<code><a href="../reference/stan_emax.html">stan_emax()</a></code> can now incorporate categorical covariates in select parameters. See <code><a href="../articles/emaxmodel.html">vignette("emaxmodel")</a></code> for detail.</li>
-</ul>
-</div>
-</div>
-    <div id="rstanemax-010" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.0">
-<a href="#rstanemax-010" class="anchor"></a>rstanemax 0.1.0<small> 2019-05-31 </small>
-</h1>
-<p>Initial CRAN release</p>
-</div>
-  </div>
+    <div class="ref-description">
+    <p>Extract posterior draws of key parameters</p>
+    </div>
 
+    <pre class="usage"><span class='fu'>extract_param</span><span class='op'>(</span><span class='va'>object</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>A <code>stanemax</code> class object</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A tibble containing posterior draws of key parameters.
+If covariate(s) are included in the model, posterior draws for different combinations
+of covariates are supplied in a long format - e.g. if there are posterior draws of 100 samples
+and 4 levels of the covariates, the returned tibble will have the length of 400</p>
+
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
     </nav>
   </div>
-
 </div>
 
 
