@@ -11,7 +11,7 @@ Encoding: UTF-8
 License: GPL-3 | file LICENSE
 LazyData: true
 ByteCompile: true
-Depends: R (>= 3.4.0), methods,Rcpp (>= 1.0.0)
+Depends: R (>= 3.5.0), methods,Rcpp (>= 1.0.0)
 Imports: 
   rstan (>= 2.18.2), 
   rstantools (>= 1.5.1), 
