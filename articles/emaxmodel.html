@@ -300,24 +300,24 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <p><img src="emaxmodel_files/figure-html/plot_with_cov-1.png" width="576"></p>
 <p>You can extract MCMC samples from raw stanfit and evaluate differences between groups.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">emax.posterior</span> <span class="op">&lt;-</span> 
-  <span class="va">fit.cov</span> <span class="op">%&gt;%</span> 
-  <span class="fu"><a href="../reference/stanemax-methods.html">extract_stanfit</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="fu">rstan</span><span class="fu">::</span><span class="fu"><a href="https://mc-stan.org/rstan/reference/stanfit-method-extract.html">extract</a></span><span class="op">(</span>pars <span class="op">=</span> <span class="st">"emax"</span><span class="op">)</span> <span class="op">%&gt;%</span> 
-  <span class="va">.</span><span class="op">$</span><span class="va">emax</span>
+<code class="sourceCode R"><span class="va">fit.cov.posterior</span> <span class="op">&lt;-</span> 
+  <span class="fu"><a href="../reference/extract_param.html">extract_param</a></span><span class="op">(</span><span class="va">fit.cov</span><span class="op">)</span>
 
-<span class="co"># delta = emax[FEMALE] - emax[MALE]</span>
-<span class="va">delta.emax.posterior</span> <span class="op">&lt;-</span> <span class="va">emax.posterior</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="va">emax.posterior</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>
+<span class="va">emax.posterior</span> <span class="op">&lt;-</span> 
+  <span class="va">fit.cov.posterior</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">mcmcid</span>, <span class="va">SEX</span>, <span class="va">emax</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_wider.html">pivot_wider</a></span><span class="op">(</span>names_from <span class="op">=</span> <span class="va">SEX</span>, values_from <span class="op">=</span> <span class="va">emax</span><span class="op">)</span> <span class="op">%&gt;%</span> 
+  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>delta <span class="op">=</span> <span class="va">FEMALE</span> <span class="op">-</span> <span class="va">MALE</span><span class="op">)</span>
 
-<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html">qplot</a></span><span class="op">(</span><span class="va">delta.emax.posterior</span>, bins <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">+</span>
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html">qplot</a></span><span class="op">(</span><span class="va">delta</span>, data <span class="op">=</span> <span class="va">emax.posterior</span>, bins <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"emax[FEMALE] - emax[MALE]"</span><span class="op">)</span>
 
 <span class="co"># Credible interval of delta</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">delta.emax.posterior</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/quantile.html">quantile</a></span><span class="op">(</span><span class="va">emax.posterior</span><span class="op">$</span><span class="va">delta</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt;       2.5%         5%        50%        95%      97.5% </span>
 <span class="co">#&gt; -15.852381 -14.230554  -6.308733   1.566904   3.164968</span>
 <span class="co"># Posterior probability of emax[FEMALE] &lt; emax[MALE]</span>
-<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">delta.emax.posterior</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">delta.emax.posterior</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">emax.posterior</span><span class="op">$</span><span class="va">delta</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">emax.posterior</span><span class="op">)</span>
 <span class="co">#&gt; [1] 0.897</span></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/compare_emax-1.png" width="700"></p>
 </div>
