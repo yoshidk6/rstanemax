@@ -50,12 +50,16 @@ emax <- 90
 ec50 <- 100
 sd.response <- 10
 
-exposure.response.sample.test <-
+exposure.response.sample.with.cov <-
   dose.conc.cov %>%
   mutate(cov3num = as.numeric(as.character(cov3)),
          resp =
            (e0 + cov1 * 10) + (emax - cov2 * 5) * conc / ((ec50 + cov3num * 50) + conc) +
-           rnorm(conc, 0, sd.response))
+           rnorm(conc, 0, sd.response)) %>%
+  mutate(cov1 = paste0("A", cov1),
+         cov2 = paste0("B", cov2),
+         cov3 = paste0("C", cov3),
+         cov3 = factor(cov3, levels = c("C1", "C0")))
 
 
-save(exposure.response.sample.test, file = "data/exposure.response.sample.test.rda")
+save(exposure.response.sample.with.cov, file = "data/exposure.response.sample.with.cov.rda")

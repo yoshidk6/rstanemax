@@ -35,7 +35,7 @@ if(getRversion() >= "2.15.1"){
 
 
 
-#' Sample simulated data for exposure-response with covariates for package testing
+#' Sample simulated data for exposure-response with covariates
 #'
 #' @format A data frame with columns:
 #' \describe{
@@ -49,4 +49,4 @@ if(getRversion() >= "2.15.1"){
 #' }
 #' @examples
 #' exposure.response.sample
-"exposure.response.sample.test"
+"exposure.response.sample.with.cov"

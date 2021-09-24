@@ -1,6 +1,6 @@
 library(dplyr)
 
-test.data <- exposure.response.sample.test
+test.data <- exposure.response.sample.with.cov
 
 set.seed(123)
 

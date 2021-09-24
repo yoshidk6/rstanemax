@@ -3,6 +3,8 @@
 
 ## Minor changes
 
+* Added `extract_param()` function to easily retrieve posterior draws of key parameters 
+
 
 # rstanemax 0.1.3
 

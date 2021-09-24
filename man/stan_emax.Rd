@@ -72,9 +72,9 @@ fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fi
                   chains = 1, iter = 500, seed = 12345)
 print(fit2)
 
-data(exposure.response.sample.test)
+data(exposure.response.sample.with.cov)
 # Specify covariates
-fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.test,
+fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.with.cov,
                   param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
                   # the next line is only to make the example go fast enough
                   chains = 1, iter = 500, seed = 12345)

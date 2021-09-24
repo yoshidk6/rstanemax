@@ -23,6 +23,7 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
   print(round(s, digits_summary))
   cat("\n")
   cat("* Use `extract_stanfit()` function to extract raw stanfit object\n")
+  cat("* Use `extract_param()` function to extract posterior draws of key parameters\n")
   cat("* Use `plot()` function to visualize model fit\n")
   cat("* Use `posterior_predict()` or `posterior_predict_quantile()` function to get\n")
   cat("  raw predictions or make predictions on new data\n")

@@ -167,11 +167,11 @@ See help of `stan_emax()` for the details.
 
 
 ```{r, results="hide"}
-data(exposure.response.sample.test)
+data(exposure.response.sample.with.cov)
 
 test.data <-
-  mutate(exposure.response.sample.test,
-         SEX = ifelse(cov2 == 0, "MALE", "FEMALE"))
+  mutate(exposure.response.sample.with.cov,
+         SEX = ifelse(cov2 == "B0", "MALE", "FEMALE"))
 
 fit.cov <- stan_emax(formula = resp ~ conc, data = test.data,
                      param.cov = list(emax = "SEX"),

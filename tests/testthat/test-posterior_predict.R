@@ -2,7 +2,7 @@ library(dplyr)
 
 set.seed(123)
 
-test.data <- exposure.response.sample.test
+test.data <- exposure.response.sample.with.cov
 test.data.short <- sample_n(test.data, 30)
 
 
