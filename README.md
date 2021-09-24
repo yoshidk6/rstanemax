@@ -94,8 +94,8 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> 
 #> SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 7.2e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.72 seconds.
+#> Chain 1: Gradient evaluation took 8.1e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -112,9 +112,9 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.099622 seconds (Warm-up)
-#> Chain 1:                0.040821 seconds (Sampling)
-#> Chain 1:                0.140443 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.158951 seconds (Warm-up)
+#> Chain 1:                0.065293 seconds (Sampling)
+#> Chain 1:                0.224244 seconds (Total)
 #> Chain 1:
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
@@ -133,6 +133,7 @@ fit.emax
 #> sigma 16.65    0.13  1.66 13.77 15.47 16.55 17.55  20.20 157.45    1
 #> 
 #> * Use `extract_stanfit()` function to extract raw stanfit object
+#> * Use `extract_param()` function to extract posterior draws of key parameters
 #> * Use `plot()` function to visualize model fit
 #> * Use `posterior_predict()` or `posterior_predict_quantile()` function to get
 #>   raw predictions or make predictions on new data
