@@ -25,11 +25,12 @@ LinkingTo:
   rstan (>= 2.18.2), 
   BH (>= 1.69.0-1), 
   Rcpp (>= 1.0.0), 
-  RcppEigen (>= 0.3.3.5.0)
+  RcppEigen (>= 0.3.3.5.0), 
+  RcppParallel (>= 5.0.2)
 SystemRequirements: GNU make
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     testthat,
     knitr,
