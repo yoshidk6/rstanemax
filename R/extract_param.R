@@ -20,6 +20,24 @@ extract_param <- function(object){
   param.cov <- object$prminput$param.cov
   cov.levels <- object$prminput$cov.levels
 
+  if(is.null(param.cov)){
+    posterior.draws.raw.2 <- posterior.draws.raw
+  } else {
+    posterior.draws.raw.2 <-
+      append_cov_for_extract_param(posterior.draws.raw, param.cov, cov.levels)
+  }
+
+  # Merge them to generate a return object
+  posterior.draws.raw.2 %>%
+    dplyr::select(-covemax, -cove0, -covec50) %>%
+    dplyr::relocate(emax, e0, ec50, gamma, sigma, .after = dplyr::last_col())
+
+}
+
+
+
+append_cov_for_extract_param <- function(posterior.draws.raw, param.cov, cov.levels){
+
   ## Get a list of covariate levels
   cov.name.levels.list <- list()
 
@@ -51,14 +69,8 @@ extract_param <- function(object){
                        by = param.cov[[k]])
   }
 
-  # Merge them to generate a return object
-  posterior.draws.raw %>%
-    dplyr::inner_join(prm.cov.df, by = paste0("cov", names(param.cov))) %>%
-    dplyr::select(-covemax, -cove0, -covec50) %>%
-    dplyr::relocate(emax, e0, ec50, gamma, sigma, .after = dplyr::last_col())
-
+  posterior.draws.raw.2 <-
+    posterior.draws.raw %>%
+    dplyr::inner_join(prm.cov.df, by = paste0("cov", names(param.cov)))
 }
-
-
-
 

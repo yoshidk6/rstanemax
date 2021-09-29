@@ -104,6 +104,13 @@ ggplot(resp.pred.quantile, aes(exposure, ci_med)) +
   labs(y = "response")
 ```
 
+Posterior draws of Emax model parameters can be extracted with `extract_param()` function.
+
+```{r}
+posterior.fit.emax <- extract_param(fit.emax)
+posterior.fit.emax
+```
+
 
 
 # Fix parameter values in Emax model
