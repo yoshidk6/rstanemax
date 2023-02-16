@@ -9,8 +9,8 @@
 
 0 errors | 0 warnings | 1 notes
 
-* checking for GNU extensions in Makefiles ... NOTE
-  GNU make is a SystemRequirements.
+* checking C++ specification ... NOTE
+  Specified C++14: please drop specification unless essential
   
   
 * Email address change
