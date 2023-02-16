@@ -3,7 +3,7 @@ Version: 0.1.4
 Title: Emax Model Analysis with 'Stan'
 Description: Perform sigmoidal Emax model fit using 'Stan' in a formula notation, without writing 'Stan' model code.
 Authors@R: c(
-    person("Kenta", "Yoshida", , "6.kurabupasu@gmail.com", c("aut", "cre"), 
+    person("Kenta", "Yoshida", , "yoshida.kenta.6@gmail.com", c("aut", "cre"), 
       comment = c(ORCID = "0000-0003-4967-3831")),
     person("Trustees of Columbia University", role = "cph", 
       comment="src/init.cpp, tools/make_cc.R, R/stanmodels.R"))
@@ -30,7 +30,7 @@ LinkingTo:
 SystemRequirements: GNU make
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Suggests: 
     testthat,
     knitr,

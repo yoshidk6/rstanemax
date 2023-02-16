@@ -35,7 +35,7 @@ set_prior <- function(standata, priors = NULL){
 
 
 check_prior <- function(x){
-  if(class(x) != "numeric" | length(x) !=2)
+  if(!inherits(x, "numeric") | length(x) !=2)
     stop("Priors need to be defined with length 2 numeric vectors")
 }
 
