@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,18 +33,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -64,8 +60,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/yoshidk6/rstanemax/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/yoshidk6/rstanemax/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -81,157 +77,161 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="rstanemax" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#rstanemax" class="anchor"></a>rstanemax</h1></div>
-
+<div class="section level1">
+<div class="page-header"><h1 id="rstanemax">rstanemax<a class="anchor" aria-label="anchor" href="#rstanemax"></a>
+</h1></div>
+<p><a href="https://github.com/yoshidk6/rstanemax/actions" class="external-link"><img src="https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://cran.r-project.org/package=rstanemax" class="external-link"><img src="https://www.r-pkg.org/badges/version/rstanemax" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=rstanemax" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rstanemax" alt="downloads"></a></p>
 <p>This small package performs simple sigmoidal Emax model fit using Stan, without the need of (1) writing Stan model code and (2) setting up an environment to compile Stan model, inspired by <strong>rstanarm</strong> package.</p>
-<p><strong>rstanarm</strong> package (<a href="https://mc-stan.org/users/interfaces/rstanarm">link</a>) is a very flexible, general purpose tool to perform various Bayesian modeling with formula notations, such as generalized mixed effect models or joint models. One small gap it has is in nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with <code>SS</code> prefixes (<a href="http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer">link</a>). Unfortunately the (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions. The <strong>rstanarm</strong> package also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects. <strong>brms</strong> is another great general purpose package that allows formula notation, but it requires users to compile generated Stan models. The need for setting up an environment for compiling Stan code can be daunting for beginners, especially with Windows.</p>
+<p><strong>rstanarm</strong> package (<a href="https://mc-stan.org/users/interfaces/rstanarm" class="external-link">link</a>) is a very flexible, general purpose tool to perform various Bayesian modeling with formula notations, such as generalized mixed effect models or joint models. One small gap it has is in nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with <code>SS</code> prefixes (<a href="http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer" class="external-link">link</a>). Unfortunately the (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions. The <strong>rstanarm</strong> package also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects. <strong>brms</strong> is another great general purpose package that allows formula notation, but it requires users to compile generated Stan models. The need for setting up an environment for compiling Stan code can be daunting for beginners, especially with Windows.</p>
 <p>I hope this <strong>rstanemax</strong> package will fill the niche gap, allow for easier implementation of Emax model in Bayesian framework, and enable routine uses in the pharmacokinetic/pharmacodynamic field.</p>
-<p>This package was build using <strong>rstantools</strong> (<a href="https://mc-stan.org/rstantools/">link</a>) following a very helpful step-by-step guide (<a href="https://mc-stan.org/rstantools/articles/minimal-rstan-package.html">link</a>) on creating a package that depends on RStan.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div id="from-cran" class="section level3">
-<h3 class="hasAnchor">
-<a href="#from-cran" class="anchor"></a>From CRAN</h3>
-<p>You can install the released version of rstanemax from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<p>This package was build using <strong>rstantools</strong> (<a href="https://mc-stan.org/rstantools/" class="external-link">link</a>) following a very helpful step-by-step guide (<a href="https://mc-stan.org/rstantools/articles/minimal-rstan-package.html" class="external-link">link</a>) on creating a package that depends on RStan.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<div class="section level3">
+<h3 id="from-cran">From CRAN<a class="anchor" aria-label="anchor" href="#from-cran"></a>
+</h3>
+<p>You can install the released version of rstanemax from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"rstanemax"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rstanemax"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="from-source" class="section level3">
-<h3 class="hasAnchor">
-<a href="#from-source" class="anchor"></a>From source</h3>
+<div class="section level3">
+<h3 id="from-source">From source<a class="anchor" aria-label="anchor" href="#from-source"></a>
+</h3>
 <p>You can alternatively install the package from source.<br>
-Before doing so, you first have to install RStan and C++ Toolchain.<br><a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started">RStan Getting Started</a><br>
-Also, you have to follow the instruction below if you are using Windows PC.<br><a href="https://github.com/stan-dev/rstan/wiki/Installing-RStan-from-source-on-Windows">Installing RStan from source on Windows</a></p>
+Before doing so, you first have to install RStan and C++ Toolchain.<br><a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started" class="external-link">RStan Getting Started</a><br>
+Also, you have to follow the instruction below if you are using Windows PC.<br><a href="https://github.com/stan-dev/rstan/wiki/Installing-RStan-from-source-on-Windows" class="external-link">Installing RStan from source on Windows</a></p>
 <p>After this step you should be able to install the package from GitHub using <strong>devtools</strong>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/">devtools</a></span><span class="op">)</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"yoshidk6/rstanemax"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"yoshidk6/rstanemax"</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<p><a href="https://yoshidk6.github.io/rstanemax/">This GitHub pages</a> contains function references and <a href="https://yoshidk6.github.io/rstanemax/articles/emaxmodel.html">vignette</a>.</p>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<p><a href="https://yoshidk6.github.io/rstanemax/" class="external-link">This GitHub pages</a> contains function references and <a href="https://yoshidk6.github.io/rstanemax/articles/emaxmodel.html" class="external-link">vignette</a>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Load rstanemax</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yoshidk6/rstanemax">rstanemax</a></span><span class="op">)</span>
-<span class="co">#&gt; Loading required package: Rcpp</span>
-
-<span class="co"># Run model with a sample dataset</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">exposure.response.sample</span><span class="op">)</span>
-
-<span class="va">fit.emax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stan_emax.html">stan_emax</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">exposure</span>, data <span class="op">=</span> <span class="va">exposure.response.sample</span>,
-                      <span class="co"># the next line is only to make the output short</span>
-                      chains <span class="op">=</span> <span class="fl">1</span>, iter <span class="op">=</span> <span class="fl">500</span>, seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Gradient evaluation took 5.4e-05 seconds</span>
-<span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.54 seconds.</span>
-<span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)</span>
-<span class="co">#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)</span>
-<span class="co">#&gt; Chain 1: </span>
-<span class="co">#&gt; Chain 1:  Elapsed Time: 0.094091 seconds (Warm-up)</span>
-<span class="co">#&gt; Chain 1:                0.042437 seconds (Sampling)</span>
-<span class="co">#&gt; Chain 1:                0.136528 seconds (Total)</span>
-<span class="co">#&gt; Chain 1:</span>
-<span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span>
-<span class="co">#&gt; Running the chains for more iterations may help. See</span>
-<span class="co">#&gt; http://mc-stan.org/misc/warnings.html#tail-ess</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Load rstanemax</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yoshidk6/rstanemax" class="external-link">rstanemax</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Loading required package: Rcpp</span></span>
+<span></span>
+<span><span class="co"># Run model with a sample dataset</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">exposure.response.sample</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">fit.emax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stan_emax.html">stan_emax</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">exposure</span>, data <span class="op">=</span> <span class="va">exposure.response.sample</span>,</span>
+<span>                      <span class="co"># the next line is only to make the output short</span></span>
+<span>                      chains <span class="op">=</span> <span class="fl">1</span>, iter <span class="op">=</span> <span class="fl">500</span>, seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 8.1e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:   1 / 500 [  0%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration:  50 / 500 [ 10%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 100 / 500 [ 20%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 150 / 500 [ 30%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 200 / 500 [ 40%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 250 / 500 [ 50%]  (Warmup)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 251 / 500 [ 50%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 300 / 500 [ 60%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 350 / 500 [ 70%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 400 / 500 [ 80%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1: </span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.158951 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.065293 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.224244 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:</span></span>
+<span><span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span></span>
+<span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
+<span><span class="co">#&gt; http://mc-stan.org/misc/warnings.html#tail-ess</span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">fit.emax</span>
-<span class="co">#&gt; ---- Emax model fit with rstanemax ----</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span>
-<span class="co">#&gt; emax  92.01    0.47  6.49 79.08 87.94 92.11 96.35 103.43 188.95    1</span>
-<span class="co">#&gt; e0     5.69    0.35  4.92 -2.87  2.13  5.90  9.07  15.00 192.44    1</span>
-<span class="co">#&gt; ec50  75.78    1.23 19.37 44.51 62.88 72.26 85.34 124.31 246.47    1</span>
-<span class="co">#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN</span>
-<span class="co">#&gt; sigma 16.65    0.13  1.66 13.77 15.47 16.55 17.55  20.20 157.45    1</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span>
-<span class="co">#&gt; * Use `plot()` function to visualize model fit</span>
-<span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span>
-<span class="co">#&gt;   raw predictions or make predictions on new data</span>
-<span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span>
-<span class="co">#&gt;   in a processed format (useful for plotting)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">fit.emax</span></span>
+<span><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span></span>
+<span><span class="co">#&gt; emax  92.01    0.47  6.49 79.08 87.94 92.11 96.35 103.43 188.95    1</span></span>
+<span><span class="co">#&gt; e0     5.69    0.35  4.92 -2.87  2.13  5.90  9.07  15.00 192.44    1</span></span>
+<span><span class="co">#&gt; ec50  75.78    1.23 19.37 44.51 62.88 72.26 85.34 124.31 246.47    1</span></span>
+<span><span class="co">#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN</span></span>
+<span><span class="co">#&gt; sigma 16.65    0.13  1.66 13.77 15.47 16.55 17.55  20.20 157.45    1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></span>
+<span><span class="co">#&gt; * Use `extract_param()` function to extract posterior draws of key parameters</span></span>
+<span><span class="co">#&gt; * Use `plot()` function to visualize model fit</span></span>
+<span><span class="co">#&gt; * Use `posterior_predict()` or `posterior_predict_quantile()` function to get</span></span>
+<span><span class="co">#&gt;   raw predictions or make predictions on new data</span></span>
+<span><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></span>
+<span><span class="co">#&gt;   in a processed format (useful for plotting)</span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
-<p><a href="https://www.kristianbrock.com/post/emax-intro/">Fitting the Emax Model in R</a> has nice intro on Emax (with kindly introducing this package). <strong>brms</strong> implementation of the same model can be found <a href="https://rpubs.com/mvuorre/emax-brms">here</a>.</p>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<p><a href="https://www.kristianbrock.com/post/emax-intro/" class="external-link">Fitting the Emax Model in R</a> has nice intro on Emax (with kindly introducing this package). <strong>brms</strong> implementation of the same model can be found <a href="https://rpubs.com/mvuorre/emax-brms" class="external-link">here</a>.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=rstanemax">https://​cloud.r-project.org/​package=rstanemax</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/yoshidk6/rstanemax/">https://​github.com/​yoshidk6/​rstanemax/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/yoshidk6/rstanemax/issues">https://​github.com/​yoshidk6/​rstanemax/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li>
-<a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a> | file <a href="LICENSE-text.html">LICENSE</a>
-</li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Kenta Yoshida <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-4967-3831" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=rstanemax" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/yoshidk6/rstanemax/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/yoshidk6/rstanemax/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/yoshidk6/rstanemax"><img src="https://travis-ci.org/yoshidk6/rstanemax.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://cran.r-project.org/package=rstanemax"><img src="https://www.r-pkg.org/badges/version/rstanemax" alt="CRAN status"></a></li>
-<li><a href="https://CRAN.R-project.org/package=rstanemax"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rstanemax" alt="downloads"></a></li>
+<li>
+<a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a> | file <a href="LICENSE-text.html">LICENSE</a>
+</li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing rstanemax</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Kenta Yoshida <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-4967-3831" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Kenta Yoshida.</p>
+  <p></p>
+<p>Developed by Kenta Yoshida.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -239,6 +239,8 @@ Also, you have to follow the instruction below if you are using Windows PC.<br><
 
   
 
+
+  
 
   </body>
 </html>

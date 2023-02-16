@@ -1,9 +1,10 @@
 
-# rstanemax 0.1.4 (in development)
+# rstanemax 0.1.4
 
 ## Minor changes
 
 * Added `extract_param()` function to easily retrieve posterior draws of key parameters 
+* Delegate installation to `rstantools` (@andrjohns)
 
 
 # rstanemax 0.1.3
