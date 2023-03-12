@@ -14,7 +14,7 @@ ByteCompile: true
 Depends: R (>= 3.5.0), methods,Rcpp (>= 1.0.0)
 Imports: 
   rstan (>= 2.18.2), 
-  rstantools (>= 1.5.1), 
+  rstantools (>= 2.3.0), 
   magrittr (>= 1.5), 
   dplyr (>= 0.8.0), 
   tidyr (>= 1.0.0), 
