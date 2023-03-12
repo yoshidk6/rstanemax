@@ -7,10 +7,7 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 2 notes
-
-* checking C++ specification ... NOTE
-  Specified C++14: please drop specification unless essential
+0 errors | 0 warnings | 1 notes
   
 * Email address change
 Maintainer: 'Kenta Yoshida <yoshida.kenta.6@gmail.com>'
