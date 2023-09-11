@@ -1,4 +1,10 @@
 
+# rstanemax 0.1.5
+
+## Minor changes
+
+* Update deprecated syntax for future rstan compatibility  (@andrjohns)
+
 # rstanemax 0.1.4
 
 ## Minor changes
