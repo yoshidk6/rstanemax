@@ -4,9 +4,9 @@ data{
   vector[N] response;
 
   // Covariates
-  int<lower = 1> covemax[N];
-  int<lower = 1> covec50[N];
-  int<lower = 1> cove0[N];
+  array[N] int<lower = 1> covemax;
+  array[N] int<lower = 1> covec50;
+  array[N] int<lower = 1> cove0;
   int<lower = 1> n_covlev_emax;
   int<lower = 1> n_covlev_ec50;
   int<lower = 1> n_covlev_e0;
@@ -37,10 +37,10 @@ data{
 parameters{
   // vector[n_covlev_emax] emax;
   vector<lower = 0>[n_covlev_ec50] ec50;
-  // vector[n_covlev_e0] e0_par[1-e0_fix_flg];
-  real e0_par[n_covlev_e0, 1-e0_fix_flg];
-  real emax_par[n_covlev_emax, 1-emax_fix_flg];
-  real<lower = 0> gamma_par[1-gamma_fix_flg];
+  // array[1-e0_fix_flg] vector[n_covlev_e0] e0_par;
+  array[n_covlev_e0, 1-e0_fix_flg] real e0_par;
+  array[n_covlev_emax, 1-emax_fix_flg] real emax_par;
+  array[1-gamma_fix_flg] real<lower = 0> gamma_par;
 
   real<lower = 0> sigma;
 }
