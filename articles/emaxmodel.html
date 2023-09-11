@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rstanemax</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.5</span>
       </span>
     </div>
 
@@ -75,13 +75,14 @@
 
       
 
-      </header><script src="emaxmodel_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Simple Emax model fit with Stan</h1>
-                        <h4 data-toc-skip class="author">Kenta Yoshida</h4>
+                        <h4 data-toc-skip class="author">Kenta
+Yoshida</h4>
             
-            <h4 data-toc-skip class="date">2023-03-12</h4>
+            <h4 data-toc-skip class="date">2023-09-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/yoshidk6/rstanemax/blob/HEAD/vignettes/emaxmodel.Rmd" class="external-link"><code>vignettes/emaxmodel.Rmd</code></a></small>
       <div class="hidden name"><code>emaxmodel.Rmd</code></div>
@@ -95,14 +96,21 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span></code></pre></div>
-<p>This vignette provide an overview of the workflow of Emax model analysis using this package.</p>
+<p>This vignette provide an overview of the workflow of Emax model
+analysis using this package.</p>
 <div class="section level2">
 <h2 id="typical-workflow">Typical workflow<a class="anchor" aria-label="anchor" href="#typical-workflow"></a>
 </h2>
 <div class="section level3">
 <h3 id="model-run-with-stan_emax-function">Model run with <code>stan_emax</code> function<a class="anchor" aria-label="anchor" href="#model-run-with-stan_emax-function"></a>
 </h3>
-<p><code><a href="../reference/stan_emax.html">stan_emax()</a></code> is the main function of this package to perform Emax model analysis on the data. This function requires minimum two input arguments - <code>formula</code> and <code>data</code>. In the <code>formula</code> argument, you will specify which columns of <code>data</code> will be used as exposure and response data, in a format similar to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code> function, e.g. <code>response ~ exposure</code>.</p>
+<p><code><a href="../reference/stan_emax.html">stan_emax()</a></code> is the main function of this package to
+perform Emax model analysis on the data. This function requires minimum
+two input arguments - <code>formula</code> and <code>data</code>. In the
+<code>formula</code> argument, you will specify which columns of
+<code>data</code> will be used as exposure and response data, in a
+format similar to <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code> function,
+e.g. <code>response ~ exposure</code>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">exposure.response.sample</span><span class="op">)</span></span>
 <span></span>
@@ -114,11 +122,11 @@
 <span><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span></span>
-<span><span class="co">#&gt; emax  91.58    0.23  5.89 79.91 87.81 91.52 95.44 102.47 661.77    1</span></span>
-<span><span class="co">#&gt; e0     6.00    0.19  4.61 -3.51  2.93  6.18  8.95  14.88 593.95    1</span></span>
-<span><span class="co">#&gt; ec50  75.46    0.77 19.59 45.32 61.35 72.00 86.30 122.67 639.71    1</span></span>
+<span><span class="co">#&gt; emax  92.25    0.36  6.00 80.19 88.36 92.39 96.14 103.66 280.65 1.00</span></span>
+<span><span class="co">#&gt; e0     5.72    0.30  4.65 -2.89  2.63  5.47  8.51  15.49 248.72 1.00</span></span>
+<span><span class="co">#&gt; ec50  75.46    0.85 19.88 45.00 61.41 72.92 87.02 118.99 545.68 1.01</span></span>
 <span><span class="co">#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN</span></span>
-<span><span class="co">#&gt; sigma 16.67    0.08  1.69 13.89 15.50 16.49 17.52  20.89 510.02    1</span></span>
+<span><span class="co">#&gt; sigma 16.60    0.07  1.63 13.79 15.47 16.52 17.60  20.03 585.62 1.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></span>
 <span><span class="co">#&gt; * Use `extract_param()` function to extract posterior draws of key parameters</span></span>
@@ -127,19 +135,24 @@
 <span><span class="co">#&gt;   raw predictions or make predictions on new data</span></span>
 <span><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></span>
 <span><span class="co">#&gt;   in a processed format (useful for plotting)</span></span></code></pre></div>
-<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function shows the estimated Emax model curve with 95% credible intervals of parameters.</p>
+<p><code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function shows the estimated Emax model curve
+with 95% credible intervals of parameters.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span></span></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_example-1.png" width="700"></p>
-<p>Output of <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function (for <code>stanemax</code> object) is a <code>ggplot</code> object, so you can apply additional settings as you would do in <code>ggplot2</code>.<br>
-Here is an example of using log scale for x axis (note that exposure == 0 is hanging at the very left, making the curve a bit weird).</p>
+<p>Output of <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function (for <code>stanemax</code>
+object) is a <code>ggplot</code> object, so you can apply additional
+settings as you would do in <code>ggplot2</code>.<br>
+Here is an example of using log scale for x axis (note that exposure ==
+0 is hanging at the very left, making the curve a bit weird).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html" class="external-link">scale_x_log10</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/expand_limits.html" class="external-link">expand_limits</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: Transformation introduced infinite values in continuous x-axis</span></span>
 <span><span class="co">#&gt; Transformation introduced infinite values in continuous x-axis</span></span>
 <span><span class="co">#&gt; Transformation introduced infinite values in continuous x-axis</span></span></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_example_log-1.png" width="700"></p>
-<p>Raw output from <code>rstan</code> is stored in the output variable, and you can access it with <code><a href="../reference/stanemax-methods.html">extract_stanfit()</a></code> function.</p>
+<p>Raw output from <code>rstan</code> is stored in the output variable,
+and you can access it with <code><a href="../reference/stanemax-methods.html">extract_stanfit()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu"><a href="../reference/stanemax-methods.html">extract_stanfit</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "stanfit"</span></span>
@@ -149,7 +162,14 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <div class="section level3">
 <h3 id="prediction-of-response-with-new-exposure-data">Prediction of response with new exposure data<a class="anchor" aria-label="anchor" href="#prediction-of-response-with-new-exposure-data"></a>
 </h3>
-<p><code><a href="../reference/posterior_predict.html">posterior_predict()</a></code> function allows users to predict the response using new exposure data. If <code>newdata</code> is not provided, the function returns the prediction on the exposures in original data. The default output is a matrix of posterior predictions, but you can also specify “dataframe” or “tibble” that contain posterior predictions in a long format. See help of <code><a href="../reference/posterior_predict.html">rstanemax::posterior_predict()</a></code> for the description of two predictions, <code>respHat</code> and <code>response</code>.</p>
+<p><code><a href="../reference/posterior_predict.html">posterior_predict()</a></code> function allows users to predict the
+response using new exposure data. If <code>newdata</code> is not
+provided, the function returns the prediction on the exposures in
+original data. The default output is a matrix of posterior predictions,
+but you can also specify “dataframe” or “tibble” that contain posterior
+predictions in a long format. See help of
+<code><a href="../reference/posterior_predict.html">rstanemax::posterior_predict()</a></code> for the description of two
+predictions, <code>respHat</code> and <code>response</code>.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">response.pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/posterior_predict.html">posterior_predict</a></span><span class="op">(</span><span class="va">fit.emax</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span>, <span class="fl">1000</span><span class="op">)</span>, returnType <span class="op">=</span> <span class="st">"tibble"</span><span class="op">)</span></span>
 <span></span>
@@ -157,39 +177,43 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,000 × 4</span></span></span>
 <span><span class="co">#&gt;    mcmcid exposure   respHat response</span></span>
 <span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl[1d]&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1        0    14.6     17.2  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      1      100    61.1     93.5  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1     <span style="text-decoration: underline;">1</span>000    98.4     90.0  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      2        0    13.1      0.779</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      2      100    55.1     52.0  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      2     <span style="text-decoration: underline;">1</span>000    88.6     82.0  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      3        0     0.681  -<span style="color: #BB0000;">15.6</span>  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      3      100    60.8     60.9  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      3     <span style="text-decoration: underline;">1</span>000    92.1     84.6  </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      4        0     0.217   36.1  </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 2,990 more rows</span></span></span></code></pre></div>
-<p>You can also get quantiles of predictions with <code><a href="../reference/posterior_predict.html">posterior_predict_quantile()</a></code> function.</p>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1        0     11.8      14.1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      1      100     55.4      84.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      1     <span style="text-decoration: underline;">1</span>000     88.0      80.4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      2        0     -<span style="color: #BB0000;">2.84</span>    -<span style="color: #BB0000;">17.0</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      2      100     61.2      57.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      2     <span style="text-decoration: underline;">1</span>000     90.8      83.3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      3        0      4.01    -<span style="color: #BB0000;">10.1</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      3      100     57.5      57.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      3     <span style="text-decoration: underline;">1</span>000     92.1      85.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      4        0      6.34     42.3</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2,990 more rows</span></span></span></code></pre></div>
+<p>You can also get quantiles of predictions with
+<code><a href="../reference/posterior_predict.html">posterior_predict_quantile()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">resp.pred.quantile</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/posterior_predict.html">posterior_predict_quantile</a></span><span class="op">(</span><span class="va">fit.emax</span>, newdata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">5000</span>, by <span class="op">=</span> <span class="fl">100</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">resp.pred.quantile</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 51 × 11</span></span></span>
 <span><span class="co">#&gt;    exposure covemax covec50 cove0 Covariates ci_low ci_med ci_high pi_low pi_med</span></span>
 <span><span class="co">#&gt;       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        0 1       1       1     <span style="color: #949494;">""</span>          -<span style="color: #BB0000;">1.54</span>   6.18    13.5  -<span style="color: #BB0000;">23.4</span>   6.46</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      100 1       1       1     <span style="color: #949494;">""</span>          52.6   58.9     64.2   30.3  58.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      200 1       1       1     <span style="color: #949494;">""</span>          67.8   72.9     77.4   45.6  72.9 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      300 1       1       1     <span style="color: #949494;">""</span>          74.8   79.4     84.1   51.6  79.1 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      400 1       1       1     <span style="color: #949494;">""</span>          78.4   83.2     88.0   56.8  83.5 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      500 1       1       1     <span style="color: #949494;">""</span>          80.8   85.7     90.6   58.9  87.0 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      600 1       1       1     <span style="color: #949494;">""</span>          82.4   87.4     92.4   61.0  87.5 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      700 1       1       1     <span style="color: #949494;">""</span>          83.7   88.7     93.8   59.4  88.2 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      800 1       1       1     <span style="color: #949494;">""</span>          84.5   89.7     95.0   62.5  88.5 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      900 1       1       1     <span style="color: #949494;">""</span>          85.1   90.5     96.0   62.4  90.9 </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 41 more rows, and 1 more variable: pi_high &lt;dbl&gt;</span></span></span></code></pre></div>
-<p>Input data can be obtained in a same format with <code><a href="../reference/stanemax-methods.html">extract_obs_mod_frame()</a></code> function.</p>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>        0 1       1       1     <span style="color: #949494;">""</span>          -<span style="color: #BB0000;">1.71</span>   5.47    13.9  -<span style="color: #BB0000;">22.3</span>   5.59</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      100 1       1       1     <span style="color: #949494;">""</span>          52.8   58.9     64.8   30.0  58.4 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      200 1       1       1     <span style="color: #949494;">""</span>          68.0   73.0     77.9   45.9  73.4 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      300 1       1       1     <span style="color: #949494;">""</span>          75.2   79.6     84.2   51.4  79.5 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      400 1       1       1     <span style="color: #949494;">""</span>          79.0   83.4     88.1   56.9  83.7 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      500 1       1       1     <span style="color: #949494;">""</span>          81.2   85.9     90.8   60.1  87.4 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      600 1       1       1     <span style="color: #949494;">""</span>          82.7   87.7     92.9   60.5  88.0 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      700 1       1       1     <span style="color: #949494;">""</span>          83.8   89.1     94.5   60.8  88.9 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      800 1       1       1     <span style="color: #949494;">""</span>          84.6   90.1     95.7   62.9  89.4 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>      900 1       1       1     <span style="color: #949494;">""</span>          85.4   90.8     96.6   62.9  91.7 </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 41 more rows</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 1 more variable: pi_high &lt;dbl&gt;</span></span></span></code></pre></div>
+<p>Input data can be obtained in a same format with
+<code><a href="../reference/stanemax-methods.html">extract_obs_mod_frame()</a></code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">obs.formatted</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stanemax-methods.html">extract_obs_mod_frame</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span></span></code></pre></div>
-<p>These are particularly useful when you want to plot the estimated Emax curve.</p>
+<p>These are particularly useful when you want to plot the estimated
+Emax curve.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">resp.pred.quantile</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">exposure</span>, <span class="va">ci_med</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -199,30 +223,34 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span>             <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">response</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>y <span class="op">=</span> <span class="st">"response"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_with_pp-1.png" width="700"></p>
-<p>Posterior draws of Emax model parameters can be extracted with <code><a href="../reference/extract_param.html">extract_param()</a></code> function.</p>
+<p>Posterior draws of Emax model parameters can be extracted with
+<code><a href="../reference/extract_param.html">extract_param()</a></code> function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">posterior.fit.emax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/extract_param.html">extract_param</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span></span>
 <span><span class="va">posterior.fit.emax</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,000 × 6</span></span></span>
-<span><span class="co">#&gt;    mcmcid  emax     e0  ec50     gamma     sigma</span></span>
-<span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl[1d]&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1  92.1 14.6    98.1         1      20.1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      2  82.8 13.1    97.2         1      14.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      3  97.1  0.681  61.4         1      15.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      4  94.8  0.217  53.4         1      16.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      5 103.   4.48  114.          1      16.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      6  85.1  9.96   61.5         1      13.8</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      7  93.6  4.50   70.8         1      18.0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      8  93.9  6.54   81.7         1      16.3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      9  88.1 12.3    87.4         1      15.4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     10  89.6  9.45   95.2         1      14.7</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># … with 990 more rows</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    mcmcid  emax    e0  ec50     gamma     sigma</span></span>
+<span><span class="co">#&gt;     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl[1d]&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl[1d]&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>      1  83.1 11.8   90.6         1      18.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>      2  98.7 -<span style="color: #BB0000;">2.84</span>  54.0         1      17.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>      3  95.0  4.01  77.4         1      13.7</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>      4  92.4  6.34  60.6         1      16.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>      5  91.6 10.7   65.1         1      16.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>      6 100.   4.21  72.4         1      16.2</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>      7  91.8  3.87  59.6         1      15.5</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>      8  86.2  6.69  54.2         1      20.6</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>      9  97.4  2.26  59.3         1      18.0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     10  85.1  8.93  54.5         1      17.5</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 990 more rows</span></span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="fix-parameter-values-in-emax-model">Fix parameter values in Emax model<a class="anchor" aria-label="anchor" href="#fix-parameter-values-in-emax-model"></a>
 </h2>
-<p>You can fix parameter values in Emax model for Emax, E0 and/or gamma (Hill coefficient). See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details. The default is to fix gamma at 1 and to estimate Emax and E0 from data.</p>
+<p>You can fix parameter values in Emax model for Emax, E0 and/or gamma
+(Hill coefficient). See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the
+details. The default is to fix gamma at 1 and to estimate Emax and E0
+from data.</p>
 <p>Below is the example of estimating gamma from data.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">exposure.response.sample</span><span class="op">)</span></span>
@@ -236,11 +264,11 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span></span>
-<span><span class="co">#&gt; emax  89.79    0.58 10.16 72.22 83.58 88.82 95.17 112.35 303.50    1</span></span>
-<span><span class="co">#&gt; e0     6.90    0.24  5.16 -2.58  3.24  6.82 10.12  18.70 467.41    1</span></span>
-<span><span class="co">#&gt; ec50  78.29    1.74 30.82 45.43 61.49 72.01 87.37 148.57 312.42    1</span></span>
-<span><span class="co">#&gt; gamma  1.17    0.02  0.35  0.65  0.93  1.12  1.35   1.99 398.55    1</span></span>
-<span><span class="co">#&gt; sigma 16.74    0.07  1.78 13.83 15.42 16.63 17.92  20.60 739.06    1</span></span>
+<span><span class="co">#&gt; emax  89.84    0.53 10.40 72.48 82.81 89.04 95.36 112.20 386.81    1</span></span>
+<span><span class="co">#&gt; e0     6.94    0.23  5.03 -3.04  3.60  7.17 10.48  16.42 466.98    1</span></span>
+<span><span class="co">#&gt; ec50  77.66    1.30 28.75 44.93 59.51 71.15 88.38 148.94 488.32    1</span></span>
+<span><span class="co">#&gt; gamma  1.18    0.02  0.36  0.63  0.94  1.13  1.35   2.05 445.01    1</span></span>
+<span><span class="co">#&gt; sigma 16.79    0.07  1.62 13.97 15.64 16.61 17.76  20.19 488.02    1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></span>
 <span><span class="co">#&gt; * Use `extract_param()` function to extract posterior draws of key parameters</span></span>
@@ -249,7 +277,8 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span><span class="co">#&gt;   raw predictions or make predictions on new data</span></span>
 <span><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></span>
 <span><span class="co">#&gt;   in a processed format (useful for plotting)</span></span></code></pre></div>
-<p>You can compare the difference of posterior predictions between two models (in this case they are very close to each other):</p>
+<p>You can compare the difference of posterior predictions between two
+models (in this case they are very close to each other):</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">exposure_pred</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">exposure.response.sample</span><span class="op">$</span><span class="va">exposure</span><span class="op">)</span>,</span>
@@ -282,7 +311,8 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <div class="section level2">
 <h2 id="set-covariates">Set covariates<a class="anchor" aria-label="anchor" href="#set-covariates"></a>
 </h2>
-<p>You can specify categorical covariates for Emax, EC50, and E0. See help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details.</p>
+<p>You can specify categorical covariates for Emax, EC50, and E0. See
+help of <code><a href="../reference/stan_emax.html">stan_emax()</a></code> for the details.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">exposure.response.sample.with.cov</span><span class="op">)</span></span>
 <span></span>
@@ -299,12 +329,12 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;                mean se_mean    sd  2.5%   25%    50%    75%  97.5%  n_eff Rhat</span></span>
-<span><span class="co">#&gt; emax[FEMALE]  81.07    0.15  4.00 73.35 78.19  81.07  83.68  88.75 684.98 1.00</span></span>
-<span><span class="co">#&gt; emax[MALE]    87.33    0.20  5.34 76.94 83.97  87.13  90.78  98.17 716.08 1.00</span></span>
-<span><span class="co">#&gt; e0            15.36    0.11  2.35 10.44 13.73  15.42  16.94  19.77 498.08 1.00</span></span>
-<span><span class="co">#&gt; ec50         108.09    0.85 22.14 70.16 92.95 106.86 120.37 158.03 671.68 1.00</span></span>
+<span><span class="co">#&gt; emax[FEMALE]  81.26    0.16  3.81 73.53 78.70  81.14  83.70  88.79 552.80 1.01</span></span>
+<span><span class="co">#&gt; emax[MALE]    87.64    0.20  5.19 77.54 84.15  87.63  91.21  98.17 667.62 1.01</span></span>
+<span><span class="co">#&gt; e0            15.20    0.09  2.30 10.40 13.72  15.22  16.69  19.66 705.42 1.01</span></span>
+<span><span class="co">#&gt; ec50         107.65    0.78 21.27 67.63 93.17 106.98 121.07 151.35 742.54 1.00</span></span>
 <span><span class="co">#&gt; gamma          1.00     NaN  0.00  1.00  1.00   1.00   1.00   1.00    NaN  NaN</span></span>
-<span><span class="co">#&gt; sigma         10.52    0.04  1.06  8.68  9.78  10.43  11.14  12.92 722.55 1.01</span></span>
+<span><span class="co">#&gt; sigma         10.51    0.03  1.00  8.84  9.77  10.44  11.15  12.70 871.21 1.00</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></span>
 <span><span class="co">#&gt; * Use `extract_param()` function to extract posterior draws of key parameters</span></span>
@@ -315,7 +345,8 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span><span class="co">#&gt;   in a processed format (useful for plotting)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit.cov</span><span class="op">)</span></span></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/plot_with_cov-1.png" width="576"></p>
-<p>You can extract MCMC samples from raw stanfit and evaluate differences between groups.</p>
+<p>You can extract MCMC samples from raw stanfit and evaluate
+differences between groups.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">fit.cov.posterior</span> <span class="op">&lt;-</span> </span>
@@ -330,15 +361,18 @@ Here is an example of using log scale for x axis (note that exposure == 0 is han
 <span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="va">delta</span>, data <span class="op">=</span> <span class="va">emax.posterior</span>, bins <span class="op">=</span> <span class="fl">30</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"emax[FEMALE] - emax[MALE]"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: `qplot()` was deprecated in ggplot2 3.4.0.</span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">This warning is displayed once every 8 hours.</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">Call `lifecycle::last_lifecycle_warnings()` to see where this warning was</span></span></span>
+<span><span class="co">#&gt; <span style="color: #555555;">generated.</span></span></span>
 <span></span>
 <span><span class="co"># Credible interval of delta</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">emax.posterior</span><span class="op">$</span><span class="va">delta</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.025</span>, <span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>, <span class="fl">0.975</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       2.5%         5%        50%        95%      97.5% </span></span>
-<span><span class="co">#&gt; -15.852381 -14.230554  -6.308733   1.566904   3.164968</span></span>
+<span><span class="co">#&gt; -16.117172 -14.467374  -6.249869   1.593632   2.551678</span></span>
 <span></span>
 <span><span class="co"># Posterior probability of emax[FEMALE] &lt; emax[MALE]</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">emax.posterior</span><span class="op">$</span><span class="va">delta</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">emax.posterior</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.897</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 0.903</span></span></code></pre></div>
 <p><img src="emaxmodel_files/figure-html/compare_emax-1.png" width="700"></p>
 </div>
   </div>
