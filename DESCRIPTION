@@ -30,12 +30,13 @@ LinkingTo:
 SystemRequirements: GNU make
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests: 
     testthat,
     knitr,
     rmarkdown,
-    spelling
+    spelling,
+    posterior
 VignetteBuilder: knitr
 Language: en-US
 URL: https://github.com/yoshidk6/rstanemax

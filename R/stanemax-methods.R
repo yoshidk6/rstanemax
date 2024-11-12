@@ -32,6 +32,56 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
 }
 
 
+#' Convert stanemax object to a posterior draws object
+#'
+#' @param x An object of class stanemax
+#' @param ... Arguments passed to next method
+#'
+#' @return A draws object of the appropriate subclass
+#' @examples
+#' data(exposure.response.sample)
+#' fit <- stan_emax(response ~ exposure, exposure.response.sample)
+#' if(require(posterior, quietly = TRUE)) {
+#'   posterior::as_draws_list(fit)
+#'   posterior::as_draws_array(fit)
+#'   posterior::as_draws_df(fit)
+#'   posterior::as_draws_matrix(fit)
+#'   posterior::as_draws_rvars(fit)
+#' }
+#' @name as_draws
+NULL
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_list
+as_draws_list.stanemax <- function(x, ...) {
+  posterior::as_draws_list(x$stanfit, ...)
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_array
+as_draws_array.stanemax <- function(x, ...) {
+  posterior::as_draws_array(x$stanfit, ...)
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_df
+as_draws_df.stanemax <- function(x, ...) {
+  posterior::as_draws_df(x$stanfit, ...)
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_matrix
+as_draws_matrix.stanemax <- function(x, ...) {
+  posterior::as_draws_matrix(x$stanfit, ...)
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_rvars
+as_draws_rvars.stanemax <- function(x, ...) {
+  posterior::as_draws_rvars(x$stanfit, ...)
+}
+
+
 replace_prm_names <- function(x, pars) {
 
   # x <- test.fit.cov
