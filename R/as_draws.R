@@ -55,8 +55,8 @@ as_draws_list.stanemax <- function(x, variable = NULL, regex = FALSE,
 as_draws_array.stanemax <- function(x, variable = NULL, regex = FALSE,
                                     inc_warmup = FALSE, ...) {
   posterior::as_draws_array(
-    as_draws_list(
-      x,
+    .as_draws_list(
+      x$stanfit,
       variable = variable,
       regex = regex,
       inc_warmup = inc_warmup,
@@ -70,8 +70,8 @@ as_draws_array.stanemax <- function(x, variable = NULL, regex = FALSE,
 as_draws_df.stanemax <- function(x, variable = NULL, regex = FALSE,
                                  inc_warmup = FALSE, ...) {
   posterior::as_draws_df(
-    as_draws_list(
-      x,
+    .as_draws_list(
+      x$stanfit,
       variable = variable,
       regex = regex,
       inc_warmup = inc_warmup,
@@ -85,8 +85,8 @@ as_draws_df.stanemax <- function(x, variable = NULL, regex = FALSE,
 as_draws_matrix.stanemax <- function(x, variable = NULL, regex = FALSE,
                                      inc_warmup = FALSE, ...) {
   posterior::as_draws_matrix(
-    as_draws_list(
-      x,
+    .as_draws_list(
+      x$stanfit,
       variable = variable,
       regex = regex,
       inc_warmup = inc_warmup,
@@ -100,8 +100,8 @@ as_draws_matrix.stanemax <- function(x, variable = NULL, regex = FALSE,
 as_draws_rvars.stanemax <- function(x, variable = NULL, regex = FALSE,
                                     inc_warmup = FALSE, ...) {
   posterior::as_draws_rvars(
-    as_draws_list(
-      x,
+    .as_draws_list(
+      x$stanfit,
       variable = variable,
       regex = regex,
       inc_warmup = inc_warmup,
@@ -117,11 +117,12 @@ as_draws_rvars.stanemax <- function(x, variable = NULL, regex = FALSE,
   if (!length(x@sim$samples)) {
     stop("The model does not contain posterior draws.", call. = FALSE)
   }
-  out <- as_draws_list(x@sim$samples)
-
-  # first subset variables then remove warmup as removing warmup
-  # will take a lot of time when extracting many variables
-  out <- subset_draws(out, variable = variable, regex = regex)
+  out <- posterior::as_draws_list(x@sim$samples)
+  out <- posterior::subset_draws(
+    out,
+    variable = variable,
+    regex = regex
+  )
   if (!inc_warmup) {
     nwarmup <- x@sim$warmup2[1] %||% 0
     warmup_ids <- seq_len(nwarmup)
