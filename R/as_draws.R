@@ -124,7 +124,7 @@ as_draws_rvars.stanemax <- function(x, variable = NULL, regex = FALSE,
     regex = regex
   )
   if (!inc_warmup) {
-    nwarmup <- x@sim$warmup2[1] %||% 0
+    nwarmup <- if(is.null(x@sim$warmup2[1])) 0 else x@sim$warmup2[1]
     warmup_ids <- seq_len(nwarmup)
     iteration_ids <- posterior::iteration_ids(out)
     if (length(warmup_ids)) {
