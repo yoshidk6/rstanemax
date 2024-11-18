@@ -12,13 +12,11 @@
 #' @examples
 #' data(exposure.response.sample)
 #' fit <- stan_emax(response ~ exposure, exposure.response.sample)
-#' if(require(posterior, quietly = TRUE)) {
-#'   posterior::as_draws_list(fit)
-#'   posterior::as_draws_array(fit)
-#'   posterior::as_draws_df(fit)
-#'   posterior::as_draws_matrix(fit)
-#'   posterior::as_draws_rvars(fit)
-#' }
+#' posterior::as_draws_list(fit)
+#' posterior::as_draws_array(fit)
+#' posterior::as_draws_df(fit)
+#' posterior::as_draws_matrix(fit)
+#' posterior::as_draws_rvars(fit)
 #' @seealso \code{\link[posterior:draws]{draws}}
 #'   \code{\link[posterior:subset_draws]{subset_draws}}
 #' @name as_draws
@@ -26,111 +24,67 @@ NULL
 
 #' @rdname as_draws
 #' @exportS3Method posterior::as_draws
-as_draws.stanemax <- function(x, variable = NULL, regex = FALSE,
-                              inc_warmup = FALSE, ...) {
-  .as_draws_list(
-    x$stanfit,
-    variable = variable,
-    regex = regex,
-    inc_warmup = inc_warmup,
-    ...
-  )
+as_draws.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
 #' @rdname as_draws
 #' @exportS3Method posterior::as_draws_list
-as_draws_list.stanemax <- function(x, variable = NULL, regex = FALSE,
-                                   inc_warmup = FALSE, ...) {
-  .as_draws_list(
-    x$stanfit,
-    variable = variable,
-    regex = regex,
-    inc_warmup = inc_warmup,
-    ...
-  )
+as_draws_list.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
 #' @rdname as_draws
 #' @exportS3Method posterior::as_draws_array
-as_draws_array.stanemax <- function(x, variable = NULL, regex = FALSE,
-                                    inc_warmup = FALSE, ...) {
-  posterior::as_draws_array(
-    .as_draws_list(
-      x$stanfit,
-      variable = variable,
-      regex = regex,
-      inc_warmup = inc_warmup,
-      ...
-    )
-  )
+as_draws_array.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_array(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
 #' @exportS3Method posterior::as_draws_df
-as_draws_df.stanemax <- function(x, variable = NULL, regex = FALSE,
-                                 inc_warmup = FALSE, ...) {
-  posterior::as_draws_df(
-    .as_draws_list(
-      x$stanfit,
-      variable = variable,
-      regex = regex,
-      inc_warmup = inc_warmup,
-      ...
-    )
-  )
+as_draws_df.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_df(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
 #' @exportS3Method posterior::as_draws_matrix
-as_draws_matrix.stanemax <- function(x, variable = NULL, regex = FALSE,
-                                     inc_warmup = FALSE, ...) {
-  posterior::as_draws_matrix(
-    .as_draws_list(
-      x$stanfit,
-      variable = variable,
-      regex = regex,
-      inc_warmup = inc_warmup,
-      ...
-    )
-  )
+as_draws_matrix.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_matrix(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
 #' @exportS3Method posterior::as_draws_rvars
-as_draws_rvars.stanemax <- function(x, variable = NULL, regex = FALSE,
-                                    inc_warmup = FALSE, ...) {
-  posterior::as_draws_rvars(
-    .as_draws_list(
-      x$stanfit,
-      variable = variable,
-      regex = regex,
-      inc_warmup = inc_warmup,
-      ...
-    )
-  )
+as_draws_rvars.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_rvars(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
+# regex to match "emax", "emax[1]", "emax[1,1]", but not "emaxvec", etc.
+.draws_vars_regex <- "((emax)|(ec50)|(e0)|(sigma)|(gamma))(\\[|$)"
+
 # mirror the approach in brms, converting a stanfit object to draws_list
-.as_draws_list <- function(x, variable = NULL, regex = FALSE,
-                           inc_warmup = FALSE, ...) {
-  stopifnot(inherits(x, "stanfit"))
-  if (!length(x@sim$samples)) {
+.as_draws_list <- function(x, inc_warmup = FALSE, ...) {
+
+  # verify the input object
+  stopifnot(inherits(x[["stanfit"]], "stanfit"))
+  if (!length(x$stanfit@sim$samples)) {
     stop("The model does not contain posterior draws.", call. = FALSE)
   }
-  out <- posterior::as_draws_list(x@sim$samples)
-  out <- posterior::subset_draws(
-    out,
-    variable = variable,
-    regex = regex
-  )
+
+  # construct draws list for emax model parameters only
+  out <- posterior::as_draws_list(x$stanfit@sim$samples)
+  out <- posterior::subset_draws(out, variable = .draws_vars_regex, regex = TRUE)
+
+  # rename emax model parameters using covariate levels
+
+  # remove warmup samples, if requested
   if (!inc_warmup) {
-    nwarmup <- if(is.null(x@sim$warmup2[1])) 0 else x@sim$warmup2[1]
-    warmup_ids <- seq_len(nwarmup)
-    iteration_ids <- posterior::iteration_ids(out)
-    if (length(warmup_ids)) {
-      iteration_ids <- iteration_ids[-warmup_ids]
+    n_warmup <- x$stanfit@sim$warmup2[1]
+    if (!is.null(n_warmup) & n_warmup > 0) {
+      iteration_ids <- posterior::iteration_ids(out)
+      iteration_ids <- iteration_ids[-seq_len(n_warmup)]
+      out <- posterior::subset_draws(out, iteration = iteration_ids)
     }
-    out <- posterior::subset_draws(out, iteration = iteration_ids)
   }
+
   out
 }

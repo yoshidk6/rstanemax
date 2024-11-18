@@ -10,20 +10,24 @@
 \alias{as_draws_rvars.stanemax}
 \title{Convert stanemax object to a posterior draws object}
 \usage{
-\method{as_draws}{stanemax}(x, variable = NULL, regex = FALSE, inc_warmup = FALSE, ...)
+\method{as_draws}{stanemax}(x, inc_warmup = FALSE, ...)
 
-\method{as_draws_list}{stanemax}(x, variable = NULL, regex = FALSE, inc_warmup = FALSE, ...)
+\method{as_draws_list}{stanemax}(x, inc_warmup = FALSE, ...)
 
-\method{as_draws_array}{stanemax}(x, variable = NULL, regex = FALSE, inc_warmup = FALSE, ...)
+\method{as_draws_array}{stanemax}(x, inc_warmup = FALSE, ...)
 
-\method{as_draws_df}{stanemax}(x, variable = NULL, regex = FALSE, inc_warmup = FALSE, ...)
+\method{as_draws_df}{stanemax}(x, inc_warmup = FALSE, ...)
 
-\method{as_draws_matrix}{stanemax}(x, variable = NULL, regex = FALSE, inc_warmup = FALSE, ...)
+\method{as_draws_matrix}{stanemax}(x, inc_warmup = FALSE, ...)
 
-\method{as_draws_rvars}{stanemax}(x, variable = NULL, regex = FALSE, inc_warmup = FALSE, ...)
+\method{as_draws_rvars}{stanemax}(x, inc_warmup = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class stanemax.}
+
+\item{inc_warmup}{Should warmup draws be included? Defaults to \code{FALSE}.}
+
+\item{...}{Arguments passed to individual methods (if applicable).'}
 
 \item{variable}{A character vector providing the variables to extract.
 By default, all variables are extracted.}
@@ -31,10 +35,6 @@ By default, all variables are extracted.}
 \item{regex}{Logical; Should variable should be treated as a (vector of)
 regular expressions? Any variable in \code{x} matching at least one of the
 regular expressions will be selected. Defaults to \code{FALSE}.}
-
-\item{inc_warmup}{Should warmup draws be included? Defaults to \code{FALSE}.}
-
-\item{...}{Arguments passed to individual methods (if applicable).'}
 }
 \value{
 A draws object of the appropriate subclass
@@ -45,13 +45,11 @@ Convert stanemax object to a posterior draws object
 \examples{
 data(exposure.response.sample)
 fit <- stan_emax(response ~ exposure, exposure.response.sample)
-if(require(posterior, quietly = TRUE)) {
-  posterior::as_draws_list(fit)
-  posterior::as_draws_array(fit)
-  posterior::as_draws_df(fit)
-  posterior::as_draws_matrix(fit)
-  posterior::as_draws_rvars(fit)
-}
+posterior::as_draws_list(fit)
+posterior::as_draws_array(fit)
+posterior::as_draws_df(fit)
+posterior::as_draws_matrix(fit)
+posterior::as_draws_rvars(fit)
 }
 \seealso{
 \code{\link[posterior:draws]{draws}}
