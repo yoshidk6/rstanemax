@@ -5,6 +5,7 @@
 #' @param ... Arguments passed to individual methods (if applicable).'
 #' @return A draws object of the appropriate subclass
 #' @examples
+#' \dontrun{
 #' data(exposure.response.sample)
 #' fit <- stan_emax(response ~ exposure, exposure.response.sample)
 #' posterior::as_draws_list(fit)
@@ -12,6 +13,7 @@
 #' posterior::as_draws_df(fit)
 #' posterior::as_draws_matrix(fit)
 #' posterior::as_draws_rvars(fit)
+#' }
 #' @seealso \code{\link[posterior:draws]{draws}}
 #'   \code{\link[posterior:subset_draws]{subset_draws}}
 #' @name as_draws
