@@ -138,8 +138,10 @@ extract_param_fit <- function(stanfit){
 
   param.fit.withcov <-
     dplyr::full_join(extract_params_covs("emax"),
-                     extract_params_covs("e0"), by = "mcmcid") %>%
-    dplyr::full_join(extract_params_covs("ec50"), by = "mcmcid") %>%
+                     extract_params_covs("e0"), by = "mcmcid",
+                     relationship = "many-to-many") %>%
+    dplyr::full_join(extract_params_covs("ec50"), by = "mcmcid",
+                     relationship = "many-to-many") %>%
     dplyr::mutate(covemax = as.numeric(covemax),
                   covec50 = as.numeric(covec50),
                   cove0   = as.numeric(cove0))

@@ -31,7 +31,6 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
   cat("  in a processed format (useful for plotting)\n")
 }
 
-
 replace_prm_names <- function(x, pars) {
 
   # x <- test.fit.cov
