@@ -75,6 +75,7 @@ as_draws_rvars.stanemax <- function(x, inc_warmup = FALSE, ...) {
   out <- posterior::subset_draws(out, variable = .draws_vars_regex, regex = TRUE)
 
   # rename emax model parameters using covariate levels
+  out <- .add_covariate_labels(out, x$prminput$cov.levels)
 
   # remove warmup samples, if requested
   if (!inc_warmup) {
@@ -88,3 +89,33 @@ as_draws_rvars.stanemax <- function(x, inc_warmup = FALSE, ...) {
 
   out
 }
+
+.add_covariate_labels <- function(draws_list, labels) {
+
+  # build old and new labels, stripping indices if scalar
+  old_l <- list()
+  new_l <- list()
+  param <- names(labels)
+  for(i in seq_along(param)) {
+    p <- param[i]
+    if (is.null(labels[[p]])) {
+      old_l[[i]] <- paste0(p, "[1]")
+      new_l[[i]] <- p
+    } else {
+      old_l[[i]] <- paste0(p, "[", seq_along(labels[[p]]), "]")
+      new_l[[i]] <- paste0(p, "[", labels[[p]], "]")
+    }
+  }
+  old_l <- unlist(old_l)
+  new_l <- unlist(new_l)
+
+  # apply new labels to draws list and return
+  var_names <- names(draws_list[[1]])
+  names(var_names) <- var_names
+  var_names[old_l] <- new_l
+  for(i in seq_along(draws_list)) {
+    names(draws_list[[i]]) <- var_names
+  }
+  draws_list
+}
+
