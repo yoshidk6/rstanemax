@@ -1,4 +1,4 @@
 url: https://yoshidk6.github.io/rstanemax/
 template:
   bootstrap: 5
-
+  math-rendering: mathjax
