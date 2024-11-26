@@ -28,13 +28,6 @@
 \item{inc_warmup}{Should warmup draws be included? Defaults to \code{FALSE}.}
 
 \item{...}{Arguments passed to individual methods (if applicable).'}
-
-\item{variable}{A character vector providing the variables to extract.
-By default, all variables are extracted.}
-
-\item{regex}{Logical; Should variable should be treated as a (vector of)
-regular expressions? Any variable in \code{x} matching at least one of the
-regular expressions will be selected. Defaults to \code{FALSE}.}
 }
 \value{
 A draws object of the appropriate subclass

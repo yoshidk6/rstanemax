@@ -1,11 +1,6 @@
 #' Convert stanemax object to a posterior draws object
 #'
 #' @param x An object of class stanemax.
-#' @param variable A character vector providing the variables to extract.
-#'   By default, all variables are extracted.
-#' @param regex Logical; Should variable should be treated as a (vector of)
-#'   regular expressions? Any variable in \code{x} matching at least one of the
-#'   regular expressions will be selected. Defaults to \code{FALSE}.
 #' @param inc_warmup Should warmup draws be included? Defaults to \code{FALSE}.
 #' @param ... Arguments passed to individual methods (if applicable).'
 #' @return A draws object of the appropriate subclass
