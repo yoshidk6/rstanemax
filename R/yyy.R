@@ -50,3 +50,21 @@ if(getRversion() >= "2.15.1"){
 #' @examples
 #' exposure.response.sample
 "exposure.response.sample.with.cov"
+
+#' Sample simulated data for exposure-response for binary endpoint
+#'
+#' @format A data frame with columns:
+#' \describe{
+#' \item{conc}{Simulated exposure}
+#' \item{y_logit}{Simulated logit(p)}
+#' \item{y_prob}{Simulated p}
+#' \item{y}{Simulated event (1 or 0)}
+#' \item{y_logit}{Simulated logit(p) for model with covariate}
+#' \item{y_prob}{Simulated p for model with covariate}
+#' \item{y}{Simulated event (1 or 0) for model with covariate}
+#' \item{sex_num}{1 or 0}
+#' \item{sex}{female or male}
+#' }
+#' @examples
+#' exposure.response.sample
+"exposure.response.sample.binary"

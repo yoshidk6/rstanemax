@@ -9,11 +9,8 @@
 #'
 
 extract_param <- function(object){
-  # object <- fit3
-  # object <- fit4
-
   # Obtain relevant posteriors
-  posterior.draws.raw <- extract_param_fit(object$stanfit)
+  posterior.draws.raw <- extract_param_fit(object$stanfit, mod_type = class(object))
 
   # Create a wide data-frame defining covariate levels
 
@@ -30,7 +27,8 @@ extract_param <- function(object){
   # Merge them to generate a return object
   posterior.draws.raw.2 %>%
     dplyr::select(-covemax, -cove0, -covec50) %>%
-    dplyr::relocate(emax, e0, ec50, gamma, sigma, .after = dplyr::last_col())
+    dplyr::relocate(dplyr::any_of(c("emax", "e0", "ec50", "gamma", "sigma")),
+                    .after = dplyr::last_col())
 
 }
 

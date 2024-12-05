@@ -68,35 +68,49 @@ save(exposure.response.sample.with.cov, file = "data/exposure.response.sample.wi
 # Data for test binary --------------------------------------------
 
 set.seed(12345)
-inv_logit = function(p){
-  return(exp(p)/(1+exp(p)))
+
+conc <- 10^(seq(log10(1), log10(10000), length.out = 101))
+
+fun_emax <- function(x, e0, emax, ec50) e0 + ((emax * x) / (ec50+x))
+fun_emax_cov <- function(x, e0, emax, ec50, sex_num) {
+  emax <- emax + 1 * sex_num
+  e0 + ((emax * x) / (ec50+x))
 }
-
-emax.function <- function(e0, emax, ec50, x){
-  y = e0 + ((emax * x) / (ec50+x))
-  prob = inv_logit(y)
-  return(prob)
-}
-
-emax.function.covar <- function(e0, emax, ec50, covageemax, covsexemax, x, age, sex){
-  y = e0 + (( (emax + covageemax*age + covsexemax*sex ) * x) / (ec50+x))
-  prob = inv_logit(y)
-  return(prob)
-}
-
-n <- 200
-conc <- as.numeric(seq(0.2, 900, length.out = n))
-sim.sex <- rbinom(n, 1, prob = c(0.5,0.5))
-sim.age <- rnorm(n, 50)
-sim.gender <- ifelse(sim.sex == 1, "female", "male")
-
 
 exposure.response.sample.binary <-
-  tibble(conc =conc,
-    age = sim.age,
-    sex = sim.sex,
-    gender = sim.gender) %>%
-  mutate(response = as.numeric(rbinom(n,1, emax.function(e0 = -2, emax = 3,ec50 = 400, conc))),
-    response.covars = as.numeric(rbinom(n,1, emax.function.covar(-2, 2, 400, 0.002, -0.01, conc, age, sex))))
+  tibble(conc = conc) %>%
+  mutate(sex_num = rep(c(0, 1), length.out = length(conc)),
+         sex = ifelse(sex_num == 1, "female", "male")) %>%
+  mutate(y_logit = fun_emax(conc, e0 = -1.5, emax = 3, ec50 = 100),
+         y_prob = boot::inv.logit(y_logit),
+         y = rbinom(length(conc), 1, y_prob),
+         y_cov_logit = fun_emax_cov(conc, e0 = -1.5, emax = 2, ec50 = 100, sex_num = sex_num),
+         y_cov_prob = boot::inv.logit(y_cov_logit),
+         y_cov = rbinom(length(conc), 1, y_cov_prob))
+
+
+library(ggplot2)
+ggplot(exposure.response.sample.binary,
+       aes(conc, y_prob)) +
+  geom_line(color = "tomato") +
+  geom_jitter(aes(y = y), width = 0, height = 0.05, alpha = 0.5) +
+  scale_x_log10() +
+  coord_cartesian(ylim = c(-0.05, 1.05)) +
+  xgxr::xgx_stat_ci(bins = 4, conf_level = 0.95, distribution = "binomial",
+                    geom = c("point"), shape = 0, size = 4) +
+  xgxr::xgx_stat_ci(bins = 4, conf_level = 0.95, distribution = "binomial",
+                    geom = c("errorbar"), linewidth = 0.5)
+
+ggplot(exposure.response.sample.binary,
+       aes(conc, y_cov_prob)) +
+  geom_line(aes(color = sex)) +
+  geom_jitter(aes(y = y), width = 0, height = 0.05, alpha = 0.5) +
+  scale_x_log10() +
+  coord_cartesian(ylim = c(-0.05, 1.05)) +
+  xgxr::xgx_stat_ci(bins = 4, conf_level = 0.95, distribution = "binomial",
+                    geom = c("point"), shape = 0, size = 4) +
+  xgxr::xgx_stat_ci(bins = 4, conf_level = 0.95, distribution = "binomial",
+                    geom = c("errorbar"), linewidth = 0.5) +
+  facet_wrap(~sex)
 
 usethis::use_data(exposure.response.sample.binary, overwrite = TRUE)

@@ -21,7 +21,8 @@ Imports:
     tidyr (>= 1.0.0),
     purrr (>= 0.3.0),
     ggplot2 (>= 2.2.1),
-    posterior
+    posterior,
+    boot
 LinkingTo: 
   StanHeaders (>= 2.26.0), 
   rstan (>= 2.26.0), 

@@ -78,18 +78,19 @@ stan_emax <- function(formula, data,
 #' @examples
 #' \dontrun{
 #' data(exposure.response.sample.binary)
-#' fit1 <- stan_emax_binary(response ~ conc, data = exposure.response.sample.binary,
-#'                   # the next line is only to make the example go fast enough
-#'                   chains = 1, iter = 500, seed = 12345)
+#' fit1 <- stan_emax_binary(
+#'   y ~ conc, data = exposure.response.sample.binary,
+#'   # the next line is only to make the example go fast enough
+#'   chains = 2, iter = 500, seed = 12345)
 #' print(fit1)
 #'
-#' data(exposure.response.sample.with.cov)
 #' # Specify covariates
-#' fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.with.cov,
-#'                   param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
-#'                   # the next line is only to make the example go fast enough
-#'                   chains = 1, iter = 500, seed = 12345)
-#' print(fit3)
+#' fit2 <- stan_emax_binary(
+#'   formula = y ~ conc, data = exposure.response.sample.binary,
+#'   param.cov = list(emax = "sex"),
+#'   # the next line is only to make the example go fast enough
+#'   chains = 2, iter = 500, seed = 12345)
+#' print(fit2)
 #'}
 stan_emax_binary <- function(formula, data,
   gamma.fix = 1, e0.fix = NULL, emax.fix = NULL,
@@ -118,10 +119,8 @@ stan_emax_prep <- function(formula, data,
   cov.levels <- covs_get_levels(data, param.cov)
   df.model <- create_model_frame(formula, data, param.cov, cov.levels)
 
-
   standata <-
     create_standata(df.model, gamma.fix, e0.fix, emax.fix)
-
 
   out.prep <- list()
   out.prep$standata <- standata

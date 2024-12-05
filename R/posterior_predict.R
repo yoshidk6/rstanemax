@@ -28,6 +28,7 @@
 #' `respHat` corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
 #' `response` include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 #'
+#TODO explain output type for binary
 #' The return object also contains exposure and parameter values used for calculation.
 #'
 posterior_predict.stanemax <- function(
@@ -60,7 +61,8 @@ posterior_predict.stanemax <- function(
   }
 
 
-  pred.response.raw <- pp_calc(object$stanfit, df.model)
+  pred.response.raw <- pp_calc(object$stanfit, df.model,
+                               mod_type = class(object))
 
   cov.fct.numeric <-
     df.model %>%
@@ -94,9 +96,11 @@ posterior_predict.stanemax <- function(
 
 # Calculate posterior prediction from stanfit object and exposure data
 ## data.pp is a data frame with column named `exposure`
-pp_calc <- function(stanfit, df.model){
+pp_calc <- function(stanfit, df.model,
+                    mod_type = c("stanemax", "stanemaxbin")){
+  mod_type <- match.arg(mod_type)
 
-  param.fit <- extract_param_fit(stanfit)
+  param.fit <- extract_param_fit(stanfit, mod_type)
 
   df <-
     df.model %>%
@@ -106,21 +110,33 @@ pp_calc <- function(stanfit, df.model){
     tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
     dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
 
-  out <-
-    df %>%
-    dplyr::mutate(respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
-                  response= stats::rnorm(respHat, respHat, sigma)) %>%
-    dplyr::select(mcmcid, exposure, dplyr::everything())
-
+  if (mod_type == "stanemax"){
+    out <-
+      df %>%
+      dplyr::mutate(respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
+                    response= stats::rnorm(respHat, respHat, sigma)) %>%
+      dplyr::select(mcmcid, exposure, dplyr::everything())
+  } else if (mod_type == "stanemaxbin") {
+    out <-
+      df %>%
+      dplyr::mutate(.linpred = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
+                    .epred = 1/(1+exp(-.linpred))) %>%
+      dplyr::select(mcmcid, exposure, dplyr::everything())
+  }
 }
 
 
-extract_param_fit <- function(stanfit){
-
-  # param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
+extract_param_fit <- function(stanfit,
+                              mod_type = c("stanemax", "stanemaxbin")) {
+  mod_type <- match.arg(mod_type)
 
   param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
-  param.extract.2 <- rstan::extract(stanfit, pars = c("gamma", "sigma"))
+  if (mod_type == "stanemax"){
+    pars2 <- c("gamma", "sigma")
+  } else if (mod_type == "stanemaxbin") {
+    pars2 <- c("gamma")
+  }
+  param.extract.2 <- rstan::extract(stanfit, pars = pars2)
 
   extract_params_covs <- function(k){
     vec.param <- param.extract.1[[k]]
