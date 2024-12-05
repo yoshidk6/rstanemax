@@ -26,8 +26,20 @@ as_draws.stanemax <- function(x, inc_warmup = FALSE, ...) {
 }
 
 #' @rdname as_draws
+#' @exportS3Method posterior::as_draws
+as_draws.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
+  .as_draws_list(x, inc_warmup = inc_warmup, ...)
+}
+
+#' @rdname as_draws
 #' @exportS3Method posterior::as_draws_list
 as_draws_list.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  .as_draws_list(x, inc_warmup = inc_warmup, ...)
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_list
+as_draws_list.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
@@ -38,8 +50,20 @@ as_draws_array.stanemax <- function(x, inc_warmup = FALSE, ...) {
 }
 
 #' @rdname as_draws
+#' @exportS3Method posterior::as_draws_array
+as_draws_array.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_array(.as_draws_list(x, inc_warmup = inc_warmup, ...))
+}
+
+#' @rdname as_draws
 #' @exportS3Method posterior::as_draws_df
 as_draws_df.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_df(.as_draws_list(x, inc_warmup = inc_warmup, ...))
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_df
+as_draws_df.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_df(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
@@ -50,8 +74,20 @@ as_draws_matrix.stanemax <- function(x, inc_warmup = FALSE, ...) {
 }
 
 #' @rdname as_draws
+#' @exportS3Method posterior::as_draws_matrix
+as_draws_matrix.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_matrix(.as_draws_list(x, inc_warmup = inc_warmup, ...))
+}
+
+#' @rdname as_draws
 #' @exportS3Method posterior::as_draws_rvars
 as_draws_rvars.stanemax <- function(x, inc_warmup = FALSE, ...) {
+  posterior::as_draws_rvars(.as_draws_list(x, inc_warmup = inc_warmup, ...))
+}
+
+#' @rdname as_draws
+#' @exportS3Method posterior::as_draws_rvars
+as_draws_rvars.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_rvars(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 

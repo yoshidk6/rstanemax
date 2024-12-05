@@ -28,6 +28,18 @@ pars[[2]] <- c(
 pars_wo_index[[2]] <- c("ec50", "sigma", "gamma", "e0", "emax")
 
 
+mods[[3]] <- suppressWarnings(stan_emax_binary(
+  formula = y ~ conc,
+  data = exposure.response.sample.binary,
+  param.cov = list(emax = "sex"),
+  chains = 1, iter = 50, refresh = 0,
+  show_messages = FALSE
+))
+pars[[3]] <- c(
+  "ec50", "gamma", "e0", "emax[female]", "emax[male]"
+)
+pars_wo_index[[3]] <- c("ec50", "gamma", "e0", "emax")
+
 test_that("as_draws coercion works", {
 
   for(m in mods) {

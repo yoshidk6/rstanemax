@@ -7,6 +7,7 @@
 \alias{extract_stanfit}
 \alias{extract_obs_mod_frame}
 \alias{plot.stanemax}
+\alias{plot.stanemaxbin}
 \title{Methods for stanemax objects}
 \usage{
 \method{print}{stanemax}(x, digits_summary = 2, ...)
@@ -18,6 +19,8 @@ extract_stanfit(x)
 extract_obs_mod_frame(x)
 
 \method{plot}{stanemax}(x, show.ci = TRUE, show.pi = FALSE, ci = 0.9, pi = 0.9, ...)
+
+\method{plot}{stanemaxbin}(x, show.ci = TRUE, show.pi = FALSE, ci = 0.9, pi = 0.9, ...)
 }
 \arguments{
 \item{x}{An object of class \code{stanemax} or \code{stanemaxbin}}

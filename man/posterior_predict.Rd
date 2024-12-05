@@ -3,10 +3,19 @@
 \name{posterior_predict}
 \alias{posterior_predict}
 \alias{posterior_predict.stanemax}
+\alias{posterior_predict.stanemaxbin}
 \alias{posterior_predict_quantile}
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
 \method{posterior_predict}{stanemax}(
+  object,
+  newdata = NULL,
+  returnType = c("matrix", "dataframe", "tibble"),
+  newDataType = c("raw", "modelframe"),
+  ...
+)
+
+\method{posterior_predict}{stanemaxbin}(
   object,
   newdata = NULL,
   returnType = c("matrix", "dataframe", "tibble"),
@@ -48,9 +57,19 @@ Each row of the matrix is a vector of predictions generated using a single draw 
 If either \code{dataframe} or \code{tibble} is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
 
-Two types of predictions are generated with this function.
-\code{respHat} corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-\code{response} include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+Several types of predictions are generated with this function.
+
+For continuous endpoint model (\code{\link[=stan_emax]{stan_emax()}}),
+\itemize{
+\item \code{respHat}: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+\item \code{response}: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+}
+
+For binary endpoint model (\code{\link[=stan_emaxbin]{stan_emaxbin()}}),
+\itemize{
+\item \code{.linpred}: predicted probability on logit scale
+\item \code{.epred}: predicted probability on probability scale
+}
 
 The return object also contains exposure and parameter values used for calculation.
 

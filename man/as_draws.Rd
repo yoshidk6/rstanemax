@@ -3,24 +3,42 @@
 \name{as_draws}
 \alias{as_draws}
 \alias{as_draws.stanemax}
+\alias{as_draws.stanemaxbin}
 \alias{as_draws_list.stanemax}
+\alias{as_draws_list.stanemaxbin}
 \alias{as_draws_array.stanemax}
+\alias{as_draws_array.stanemaxbin}
 \alias{as_draws_df.stanemax}
+\alias{as_draws_df.stanemaxbin}
 \alias{as_draws_matrix.stanemax}
+\alias{as_draws_matrix.stanemaxbin}
 \alias{as_draws_rvars.stanemax}
+\alias{as_draws_rvars.stanemaxbin}
 \title{Convert stanemax object to a posterior draws object}
 \usage{
 \method{as_draws}{stanemax}(x, inc_warmup = FALSE, ...)
 
+\method{as_draws}{stanemaxbin}(x, inc_warmup = FALSE, ...)
+
 \method{as_draws_list}{stanemax}(x, inc_warmup = FALSE, ...)
+
+\method{as_draws_list}{stanemaxbin}(x, inc_warmup = FALSE, ...)
 
 \method{as_draws_array}{stanemax}(x, inc_warmup = FALSE, ...)
 
+\method{as_draws_array}{stanemaxbin}(x, inc_warmup = FALSE, ...)
+
 \method{as_draws_df}{stanemax}(x, inc_warmup = FALSE, ...)
+
+\method{as_draws_df}{stanemaxbin}(x, inc_warmup = FALSE, ...)
 
 \method{as_draws_matrix}{stanemax}(x, inc_warmup = FALSE, ...)
 
+\method{as_draws_matrix}{stanemaxbin}(x, inc_warmup = FALSE, ...)
+
 \method{as_draws_rvars}{stanemax}(x, inc_warmup = FALSE, ...)
+
+\method{as_draws_rvars}{stanemaxbin}(x, inc_warmup = FALSE, ...)
 }
 \arguments{
 \item{x}{An object of class stanemax.}
