@@ -37,9 +37,11 @@ In the `formula` argument, you will specify which columns of `data` will be used
 ```{r, results="hide"}
 data(exposure.response.sample)
 
-fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
-                      # the next line is only to make the example go fast enough
-                      chains = 2, iter = 1000, seed = 12345)
+fit.emax <- stan_emax(response ~ exposure,
+  data = exposure.response.sample,
+  # the next line is only to make the example go fast enough
+  chains = 2, iter = 1000, seed = 12345
+)
 ```
 
 ```{r}
@@ -96,11 +98,13 @@ These are particularly useful when you want to plot the estimated Emax curve.
 
 ```{r plot_with_pp, fig.show='hold'}
 ggplot(resp.pred.quantile, aes(exposure, ci_med)) +
-  geom_line() + 
-  geom_ribbon(aes(ymin=ci_low, ymax=ci_high), alpha = .5) +
-  geom_ribbon(aes(ymin=pi_low, ymax=pi_high), alpha = .2) +
-  geom_point(data = obs.formatted,
-             aes(y = response)) +
+  geom_line() +
+  geom_ribbon(aes(ymin = ci_low, ymax = ci_high), alpha = .5) +
+  geom_ribbon(aes(ymin = pi_low, ymax = pi_high), alpha = .2) +
+  geom_point(
+    data = obs.formatted,
+    aes(y = response)
+  ) +
   labs(y = "response")
 ```
 
@@ -124,10 +128,12 @@ Below is the example of estimating gamma from data.
 ```{r, results="hide"}
 data(exposure.response.sample)
 
-fit.emax.sigmoidal <- stan_emax(response ~ exposure, data = exposure.response.sample, 
-                                gamma.fix = NULL,
-                                # the next line is only to make the example go fast enough
-                                chains = 2, iter = 1000, seed = 12345)
+fit.emax.sigmoidal <- stan_emax(response ~ exposure,
+  data = exposure.response.sample,
+  gamma.fix = NULL,
+  # the next line is only to make the example go fast enough
+  chains = 2, iter = 1000, seed = 12345
+)
 ```
 
 ```{r}
@@ -137,32 +143,30 @@ fit.emax.sigmoidal
 You can compare the difference of posterior predictions between two models (in this case they are very close to each other):
 
 ```{r plot_with_gamma_fix, fig.width = 6, fig.height = 4, fig.show='hold'}
-
 exposure_pred <- seq(min(exposure.response.sample$exposure),
-                     max(exposure.response.sample$exposure),
-                     length.out = 100)
+  max(exposure.response.sample$exposure),
+  length.out = 100
+)
 
-pred1 <- 
-  posterior_predict_quantile(fit.emax, exposure_pred) %>% 
+pred1 <-
+  posterior_predict_quantile(fit.emax, exposure_pred) %>%
   mutate(model = "Emax")
-pred2 <- 
-  posterior_predict_quantile(fit.emax.sigmoidal, exposure_pred) %>% 
+pred2 <-
+  posterior_predict_quantile(fit.emax.sigmoidal, exposure_pred) %>%
   mutate(model = "Sigmoidal Emax")
 
 pred <- bind_rows(pred1, pred2)
 
 
 ggplot(pred, aes(exposure, ci_med, color = model, fill = model)) +
-  geom_line() + 
-  geom_ribbon(aes(ymin=ci_low, ymax=ci_high), alpha = .3) +
-  geom_ribbon(aes(ymin=pi_low, ymax=pi_high), alpha = .1, color = NA) +
-  geom_point(data=exposure.response.sample, aes(exposure, response), 
-             color = "black", fill = NA, size=2) +
+  geom_line() +
+  geom_ribbon(aes(ymin = ci_low, ymax = ci_high), alpha = .3) +
+  geom_ribbon(aes(ymin = pi_low, ymax = pi_high), alpha = .1, color = NA) +
+  geom_point(
+    data = exposure.response.sample, aes(exposure, response),
+    color = "black", fill = NA, size = 2
+  ) +
   labs(y = "response")
-
-
-
- 
 ```
 
 
@@ -178,12 +182,15 @@ data(exposure.response.sample.with.cov)
 
 test.data <-
   mutate(exposure.response.sample.with.cov,
-         SEX = ifelse(cov2 == "B0", "MALE", "FEMALE"))
+    SEX = ifelse(cov2 == "B0", "MALE", "FEMALE")
+  )
 
-fit.cov <- stan_emax(formula = resp ~ conc, data = test.data,
-                     param.cov = list(emax = "SEX"),
-                     # the next line is only to make the example go fast enough
-                     chains = 2, iter = 1000, seed = 12345)
+fit.cov <- stan_emax(
+  formula = resp ~ conc, data = test.data,
+  param.cov = list(emax = "SEX"),
+  # the next line is only to make the example go fast enough
+  chains = 2, iter = 1000, seed = 12345
+)
 ```
 
 ```{r plot_with_cov, fig.width = 6, fig.height = 4, fig.show='hold'}
@@ -195,14 +202,13 @@ plot(fit.cov)
 You can extract MCMC samples from raw stanfit and evaluate differences between groups.
 
 ```{r compare_emax, fig.show='hold'}
-
-fit.cov.posterior <- 
+fit.cov.posterior <-
   extract_param(fit.cov)
 
-emax.posterior <- 
-  fit.cov.posterior %>% 
-  select(mcmcid, SEX, emax) %>% 
-  tidyr::pivot_wider(names_from = SEX, values_from = emax) %>% 
+emax.posterior <-
+  fit.cov.posterior %>%
+  select(mcmcid, SEX, emax) %>%
+  tidyr::pivot_wider(names_from = SEX, values_from = emax) %>%
   mutate(delta = FEMALE - MALE)
 
 ggplot2::qplot(delta, data = emax.posterior, bins = 30) +
@@ -213,7 +219,6 @@ quantile(emax.posterior$delta, probs = c(0.025, 0.05, 0.5, 0.95, 0.975))
 
 # Posterior probability of emax[FEMALE] < emax[MALE]
 sum(emax.posterior$delta < 0) / nrow(emax.posterior)
-
 ```
 
 

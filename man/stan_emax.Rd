@@ -59,25 +59,33 @@ The following structure is used for the Emax model:
 \examples{
 \dontrun{
 data(exposure.response.sample)
-fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
-                  # the next line is only to make the example go fast enough
-                  chains = 1, iter = 500, seed = 12345)
+fit1 <- stan_emax(response ~ exposure,
+  data = exposure.response.sample,
+  # the next line is only to make the example go fast enough
+  chains = 1, iter = 500, seed = 12345
+)
 print(fit1)
 
 # Set priors manually, also estimate gamma instead of the default of fix to 1
-fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
-                  priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
-                                gamma = c(0, 3), sigma = c(0, 30)),
-                  # the next line is only to make the example go fast enough
-                  chains = 1, iter = 500, seed = 12345)
+fit2 <- stan_emax(response ~ exposure,
+  data = exposure.response.sample, gamma.fix = NULL,
+  priors = list(
+    ec50 = c(100, 30), emax = c(100, 30), e0 = c(10, 5),
+    gamma = c(0, 3), sigma = c(0, 30)
+  ),
+  # the next line is only to make the example go fast enough
+  chains = 1, iter = 500, seed = 12345
+)
 print(fit2)
 
 data(exposure.response.sample.with.cov)
 # Specify covariates
-fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.with.cov,
-                  param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
-                  # the next line is only to make the example go fast enough
-                  chains = 1, iter = 500, seed = 12345)
+fit3 <- stan_emax(
+  formula = resp ~ conc, data = exposure.response.sample.with.cov,
+  param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+  # the next line is only to make the example go fast enough
+  chains = 1, iter = 500, seed = 12345
+)
 print(fit3)
 }
 

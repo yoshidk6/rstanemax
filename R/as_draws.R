@@ -96,7 +96,6 @@ as_draws_rvars.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
 
 # mirror the approach in brms, converting a stanfit object to draws_list
 .as_draws_list <- function(x, inc_warmup = FALSE, ...) {
-
   # verify the input object
   stopifnot(inherits(x[["stanfit"]], "stanfit"))
   if (!length(x$stanfit@sim$samples)) {
@@ -113,7 +112,7 @@ as_draws_rvars.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   # remove warmup samples, if requested
   if (!inc_warmup) {
     n_warmup <- x$stanfit@sim$warmup2[1]
-    if (!is.null(n_warmup) & n_warmup > 0) {
+    if (!is.null(n_warmup) && n_warmup > 0) {
       iteration_ids <- posterior::iteration_ids(out)
       iteration_ids <- iteration_ids[-seq_len(n_warmup)]
       out <- posterior::subset_draws(out, iteration = iteration_ids)
@@ -124,12 +123,11 @@ as_draws_rvars.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
 }
 
 .add_covariate_labels <- function(draws_list, labels) {
-
   # build old and new labels, stripping indices if scalar
   old_l <- list()
   new_l <- list()
   param <- names(labels)
-  for(i in seq_along(param)) {
+  for (i in seq_along(param)) {
     p <- param[i]
     if (is.null(labels[[p]])) {
       old_l[[i]] <- paste0(p, "[1]")
@@ -146,9 +144,8 @@ as_draws_rvars.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   var_names <- names(draws_list[[1]])
   names(var_names) <- var_names
   var_names[old_l] <- new_l
-  for(i in seq_along(draws_list)) {
+  for (i in seq_along(draws_list)) {
     names(draws_list[[i]]) <- var_names
   }
   draws_list
 }
-

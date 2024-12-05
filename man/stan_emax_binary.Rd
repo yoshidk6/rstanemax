@@ -52,9 +52,11 @@ Bayesian Emax model fit with Stan for binary endpoint
 \dontrun{
 data(exposure.response.sample.binary)
 fit1 <- stan_emax_binary(
-  y ~ conc, data = exposure.response.sample.binary,
+  y ~ conc,
+  data = exposure.response.sample.binary,
   # the next line is only to make the example go fast enough
-  chains = 2, iter = 500, seed = 12345)
+  chains = 2, iter = 500, seed = 12345
+)
 print(fit1)
 
 # Specify covariates
@@ -62,7 +64,8 @@ fit2 <- stan_emax_binary(
   formula = y ~ conc, data = exposure.response.sample.binary,
   param.cov = list(emax = "sex"),
   # the next line is only to make the example go fast enough
-  chains = 2, iter = 500, seed = 12345)
+  chains = 2, iter = 500, seed = 12345
+)
 print(fit2)
 }
 }

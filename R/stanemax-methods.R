@@ -12,9 +12,7 @@ NULL
 #' effective sample size, which is always rounded to the nearest integer.
 #' @export
 print.stanemax <- function(x, digits_summary = 2, ...) {
-
   param.extract <- c("emax", "e0", "ec50", "gamma", "sigma")
-  # print(x$stanfit, pars = param.extract)
 
   s <- replace_prm_names(x, param.extract)
 
@@ -35,9 +33,7 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
 #' @rdname stanemax-methods
 #' @export
 print.stanemaxbin <- function(x, digits_summary = 2, ...) {
-
   param.extract <- c("emax", "e0", "ec50", "gamma")
-  # print(x$stanfit, pars = param.extract)
 
   s <- replace_prm_names(x, param.extract)
 
@@ -54,8 +50,6 @@ print.stanemaxbin <- function(x, digits_summary = 2, ...) {
 
 
 replace_prm_names <- function(x, pars) {
-
-  # x <- test.fit.cov
   s <- rstan::summary(x$stanfit, pars = pars)$summary
 
   stbl <- dplyr::as_tibble(s, rownames = "prmname")
@@ -73,14 +67,18 @@ replace_prm_names <- function(x, pars) {
 
   prm.cov.df.list <- list()
 
-  for(k in names(cov.levels)){
-    if(length(cov.levels[[k]]) > 1){
+  for (k in names(cov.levels)) {
+    if (length(cov.levels[[k]]) > 1) {
       prm.cov.df.list[[k]] <-
-        dplyr::tibble(prm = k,
-                      level = cov.levels[[k]]) %>%
-        dplyr::mutate(index = dplyr::row_number(),
-                      level = as.character(level))
-    } else{
+        dplyr::tibble(
+          prm = k,
+          level = cov.levels[[k]]
+        ) %>%
+        dplyr::mutate(
+          index = dplyr::row_number(),
+          level = as.character(level)
+        )
+    } else {
       prm.cov.df.list[[k]] <-
         dplyr::tibble(prm = k, index = 1, level = NA_character_)
     }
@@ -127,7 +125,6 @@ extract_obs_mod_frame <- function(x) {
 #' @param ... Additional arguments passed to methods.
 plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE,
                           ci = 0.9, pi = 0.9, ...) {
-
   obs <- x$prminput$df.model
 
   exposure.range <- create_exposure_range(x$standata)
@@ -141,17 +138,20 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE,
 
   newdata <- tidyr::crossing(exposure.range, cov.list.2)
 
-  pred.quantile <- posterior_predict_quantile(x, newdata = newdata, newDataType = "modelframe",
-                                              ci = ci, pi = pi)
+  pred.quantile <- posterior_predict_quantile(x,
+    newdata = newdata, newDataType = "modelframe",
+    ci = ci, pi = pi
+  )
 
 
-  if(is.null(x$prminput$param.cov)){
+  if (is.null(x$prminput$param.cov)) {
     g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med))
   } else {
     g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med,
-                                                     group = Covariates,
-                                                     color = Covariates,
-                                                     fill = Covariates))
+      group = Covariates,
+      color = Covariates,
+      fill = Covariates
+    ))
   }
 
   g <-
@@ -159,21 +159,19 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE,
     ggplot2::geom_point(data = obs, ggplot2::aes(y = response)) +
     ggplot2::labs(y = "response")
 
-  if(show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=ci_low, ymax=ci_high), alpha = .5, color = NA)
-  if(show.pi) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=pi_low, ymax=pi_high), alpha = .2, color = NA)
+  if (show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin = ci_low, ymax = ci_high), alpha = .5, color = NA)
+  if (show.pi) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin = pi_low, ymax = pi_high), alpha = .2, color = NA)
 
   g <- g + ggplot2::geom_line()
 
 
   g
-
 }
 
 #' @rdname stanemax-methods
 #' @export
 plot.stanemaxbin <- function(x, show.ci = TRUE, show.pi = FALSE,
-                          ci = 0.9, pi = 0.9, ...) {
-
+                             ci = 0.9, pi = 0.9, ...) {
   obs <- x$prminput$df.model
 
   exposure.range <- create_exposure_range(x$standata)
@@ -188,46 +186,49 @@ plot.stanemaxbin <- function(x, show.ci = TRUE, show.pi = FALSE,
   newdata <- tidyr::crossing(exposure.range, cov.list.2)
 
   pred.quantile <- posterior_predict_quantile(
-    x, newdata = newdata, newDataType = "modelframe",ci = ci)
+    x,
+    newdata = newdata, newDataType = "modelframe", ci = ci
+  )
 
-  if(is.null(x$prminput$param.cov)){
+  if (is.null(x$prminput$param.cov)) {
     g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med))
   } else {
     g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med,
-                                                     group = Covariates,
-                                                     color = Covariates,
-                                                     fill = Covariates))
+      group = Covariates,
+      color = Covariates,
+      fill = Covariates
+    ))
   }
 
   g <-
     g +
-    ggplot2::geom_jitter(data = obs, ggplot2::aes(y = response),
-                         width = 0, height = 0.05, alpha = 0.5) +
+    ggplot2::geom_jitter(
+      data = obs, ggplot2::aes(y = response),
+      width = 0, height = 0.05, alpha = 0.5
+    ) +
     ggplot2::coord_cartesian(ylim = c(-0.05, 1.05)) +
     ggplot2::labs(y = "response")
 
-  if(show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=ci_low, ymax=ci_high), alpha = .5, color = NA)
+  if (show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin = ci_low, ymax = ci_high), alpha = .5, color = NA)
 
   g <- g + ggplot2::geom_line()
 
   g
-
 }
 
 
-create_exposure_range <- function(standata, length.out = 50){
-
+create_exposure_range <- function(standata, length.out = 50) {
   min.newdata <- min(standata$exposure)
-  min.nozero.newdata <- min(standata$exposure[standata$exposure>0])
+  min.nozero.newdata <- min(standata$exposure[standata$exposure > 0])
   max.newdata <- max(standata$exposure)
 
   seq.normal.scale <- seq(min.newdata, max.newdata, length.out = length.out)
   seq.log.scale <- exp(seq(log(min.nozero.newdata),
-                           log(max.newdata),
-                           length.out = length.out))
+    log(max.newdata),
+    length.out = length.out
+  ))
 
   exposure.range <- dplyr::tibble(exposure = sort(c(seq.normal.scale, seq.log.scale)))
 
+  return(exposure.range)
 }
-
-

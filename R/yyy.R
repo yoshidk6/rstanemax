@@ -1,22 +1,24 @@
 # Set globalVariables to minimize R CMD check notes
 
 
-if(getRversion() >= "2.15.1"){
+if (getRversion() >= "2.15.1") {
   # General
-  utils::globalVariables(c('.'))
+  utils::globalVariables(c("."))
 
   # posterior predict
-  utils::globalVariables(c('e0', 'emax', 'emax', 'exposure', 'ec50', 'respHat', 'sigma', 'mcmcid', 'dataid'))
+  utils::globalVariables(c("e0", "emax", "emax", "exposure", "ec50", "respHat", "sigma", "mcmcid", "dataid", ".linpred", ".epred"))
 
   # plot.stanemax
-  utils::globalVariables(c('response', 'ci_low', 'ci_med', 'ci_high', 'pi_low', 'pi_high'))
+  utils::globalVariables(c("response", "ci_low", "ci_med", "ci_high", "pi_low", "pi_high"))
 
   # create cov groups
-  utils::globalVariables(c('covemax', 'covec50', 'cove0', 'covemaxstr', 'covec50str', 'cove0str',
-                           'covemaxfct', 'covec50fct', 'cove0fct', 'Covariates'))
+  utils::globalVariables(c(
+    "covemax", "covec50", "cove0", "covemaxstr", "covec50str", "cove0str",
+    "covemaxfct", "covec50fct", "cove0fct", "Covariates"
+  ))
 
   # replace_prm_names
-  utils::globalVariables(c('prmname', 'prmname2', 'index', 'prm', 'level'))
+  utils::globalVariables(c("prmname", "prmname2", "index", "prm", "level"))
 }
 
 
