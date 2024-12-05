@@ -3,21 +3,27 @@
 \name{stanemax-methods}
 \alias{stanemax-methods}
 \alias{print.stanemax}
+\alias{print.stanemaxbin}
 \alias{extract_stanfit}
 \alias{extract_obs_mod_frame}
 \alias{plot.stanemax}
+\alias{plot.stanemaxbin}
 \title{Methods for stanemax objects}
 \usage{
 \method{print}{stanemax}(x, digits_summary = 2, ...)
+
+\method{print}{stanemaxbin}(x, digits_summary = 2, ...)
 
 extract_stanfit(x)
 
 extract_obs_mod_frame(x)
 
 \method{plot}{stanemax}(x, show.ci = TRUE, show.pi = FALSE, ci = 0.9, pi = 0.9, ...)
+
+\method{plot}{stanemaxbin}(x, show.ci = TRUE, show.pi = FALSE, ci = 0.9, pi = 0.9, ...)
 }
 \arguments{
-\item{x}{An object of class \code{stanemax}}
+\item{x}{An object of class \code{stanemax} or \code{stanemaxbin}}
 
 \item{digits_summary}{The number of significant digits to use when printing
 the summary, defaulting to 2. Applies to the quantities other than the

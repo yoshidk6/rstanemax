@@ -1,4 +1,3 @@
-
 set.seed(123)
 
 mods <- list()
@@ -28,22 +27,30 @@ pars[[2]] <- c(
 pars_wo_index[[2]] <- c("ec50", "sigma", "gamma", "e0", "emax")
 
 
-test_that("as_draws coercion works", {
+mods[[3]] <- suppressWarnings(stan_emax_binary(
+  formula = y ~ conc,
+  data = exposure.response.sample.binary,
+  param.cov = list(emax = "sex"),
+  chains = 1, iter = 50, refresh = 0,
+  show_messages = FALSE
+))
+pars[[3]] <- c(
+  "ec50", "gamma", "e0", "emax[female]", "emax[male]"
+)
+pars_wo_index[[3]] <- c("ec50", "gamma", "e0", "emax")
 
-  for(m in mods) {
+test_that("as_draws coercion works", {
+  for (m in mods) {
     expect_s3_class(posterior::as_draws_list(m), "draws_list")
     expect_s3_class(posterior::as_draws_array(m), "draws_array")
     expect_s3_class(posterior::as_draws_df(m), "draws_df")
     expect_s3_class(posterior::as_draws_matrix(m), "draws_matrix")
     expect_s3_class(posterior::as_draws_rvars(m), "draws_rvars")
   }
-
 })
 
 test_that("as_draws preserves covariate labels", {
-
-  for(i in seq_along(mods)) {
-
+  for (i in seq_along(mods)) {
     expect_equal(
       object = posterior::variables(
         x = posterior::as_draws_list(mods[[i]]),
@@ -93,4 +100,3 @@ test_that("as_draws preserves covariate labels", {
     )
   }
 })
-

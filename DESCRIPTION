@@ -1,5 +1,5 @@
 Package: rstanemax
-Version: 0.1.5.900
+Version: 0.1.6
 Title: Emax Model Analysis with 'Stan'
 Description: Perform sigmoidal Emax model fit using 'Stan' in a formula notation, without writing 'Stan' model code.
 Authors@R: c(
@@ -21,14 +21,15 @@ Imports:
     tidyr (>= 1.0.0),
     purrr (>= 0.3.0),
     ggplot2 (>= 2.2.1),
-    posterior
+    posterior,
+    boot
 LinkingTo: 
-  StanHeaders (>= 2.26.0), 
-  rstan (>= 2.26.0), 
-  BH (>= 1.69.0-1), 
-  Rcpp (>= 1.0.0), 
-  RcppEigen (>= 0.3.3.5.0), 
-  RcppParallel (>= 5.0.2)
+    StanHeaders (>= 2.26.0), 
+    rstan (>= 2.26.0), 
+    BH (>= 1.69.0-1), 
+    Rcpp (>= 1.0.0), 
+    RcppEigen (>= 0.3.3.5.0), 
+    RcppParallel (>= 5.0.2)
 SystemRequirements: GNU make
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)

@@ -1,4 +1,11 @@
 
+# rstanemax 0.1.6
+
+## Major changes
+
+* `as_draws_*()` functions implemented (@djnavarro)
+* `stan_emax_binary()` function implemented to perform Emax model for binary endpoint
+
 # rstanemax 0.1.5
 
 ## Minor changes

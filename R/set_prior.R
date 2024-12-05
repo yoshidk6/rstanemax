@@ -1,32 +1,35 @@
+set_prior <- function(
+    standata, priors = NULL,
+    endpoint_type = c("continuous", "binary")) {
+  endpoint_type <- match.arg(endpoint_type)
 
-set_prior <- function(standata, priors = NULL){
   # First assign prior automatically
-  standata <- set_prior_auto(standata)
+  standata <- set_prior_auto(standata, endpoint_type)
 
   # Replace with manual priors if provided
-  if(!is.null(priors$ec50)){
+  if (!is.null(priors$ec50)) {
     check_prior(priors$ec50)
-    standata$prior_ec50_mu  <- priors$ec50[[1]]
+    standata$prior_ec50_mu <- priors$ec50[[1]]
     standata$prior_ec50_sig <- priors$ec50[[2]]
   }
-  if(!is.null(priors$emax)){
+  if (!is.null(priors$emax)) {
     check_prior(priors$emax)
-    standata$prior_emax_mu  <- priors$emax[[1]]
+    standata$prior_emax_mu <- priors$emax[[1]]
     standata$prior_emax_sig <- priors$emax[[2]]
   }
-  if(!is.null(priors$e0)){
+  if (!is.null(priors$e0)) {
     check_prior(priors$e0)
-    standata$prior_e0_mu  <- priors$e0[[1]]
+    standata$prior_e0_mu <- priors$e0[[1]]
     standata$prior_e0_sig <- priors$e0[[2]]
   }
-  if(!is.null(priors$gamma)){
+  if (!is.null(priors$gamma)) {
     check_prior(priors$gamma)
-    standata$prior_gamma_mu  <- priors$gamma[[1]]
+    standata$prior_gamma_mu <- priors$gamma[[1]]
     standata$prior_gamma_sig <- priors$gamma[[2]]
   }
-  if(!is.null(priors$sigma)){
+  if (!is.null(priors$sigma)) {
     check_prior(priors$sigma)
-    standata$prior_sigma_mu  <- priors$sigma[[1]]
+    standata$prior_sigma_mu <- priors$sigma[[1]]
     standata$prior_sigma_sig <- priors$sigma[[2]]
   }
 
@@ -34,27 +37,42 @@ set_prior <- function(standata, priors = NULL){
 }
 
 
-check_prior <- function(x){
-  if(!inherits(x, "numeric") | length(x) !=2)
+check_prior <- function(x) {
+  if (!inherits(x, "numeric") || length(x) != 2) {
     stop("Priors need to be defined with length 2 numeric vectors")
+  }
 }
 
 
-set_prior_auto <- function(standata){
-
+set_prior_auto <- function(standata, endpoint_type) {
   # EC50
-  standata$prior_ec50_mu  <- stats::median(standata$exposure)
+  standata$prior_ec50_mu <- stats::median(standata$exposure)
   standata$prior_ec50_sig <- stats::median(standata$exposure) * 2
 
+  # Gamma
+  standata$prior_gamma_mu <- 0
+  standata$prior_gamma_sig <- 5
+
+  # Binary case ----------------------------------------------
+  if (endpoint_type == "binary") {
+    standata$prior_emax_mu <- 0
+    standata$prior_emax_sig <- 2
+    standata$prior_e0_mu <- 0
+    standata$prior_e0_sig <- 2
+
+    return(standata)
+  }
+
+  # Continuous case ----------------------------------------------
   # Emax
   delta <- max(standata$response) - min(standata$response)
   coeflm <- stats::lm(response ~ exposure, data = standata) %>% stats::coef()
   slope <- coeflm[[2]]
 
-  if(slope > 0){
+  if (slope > 0) {
     standata$prior_emax_mu <- delta
   } else {
-    standata$prior_emax_mu <- - delta
+    standata$prior_emax_mu <- -delta
   }
   standata$prior_emax_sig <- delta
 
@@ -63,12 +81,8 @@ set_prior_auto <- function(standata){
   standata$prior_e0_mu <- stats::median(resp.low.exp)
   standata$prior_e0_sig <- abs(stats::median(resp.low.exp)) * 2
 
-  # Gamma
-  standata$prior_gamma_mu  <- 0
-  standata$prior_gamma_sig <- 5
-
   # Sigma
-  standata$prior_sigma_mu  <- 0
+  standata$prior_sigma_mu <- 0
   standata$prior_sigma_sig <- stats::sd(standata$response)
 
 
