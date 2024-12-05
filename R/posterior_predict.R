@@ -30,10 +30,11 @@
 #'
 #' The return object also contains exposure and parameter values used for calculation.
 #'
-posterior_predict.stanemax <- function(object, newdata = NULL,
-                                       returnType = c("matrix", "dataframe", "tibble"),
-                                       newDataType = c("raw", "modelframe"),
-                                       ...){
+posterior_predict.stanemax <- function(
+    object, newdata = NULL,
+    returnType = c("matrix", "dataframe", "tibble"),
+    newDataType = c("raw", "modelframe"),
+    ...){
 
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
@@ -57,8 +58,6 @@ posterior_predict.stanemax <- function(object, newdata = NULL,
                                      is.model.fit = FALSE)
     }
   }
-
-
 
 
   pred.response.raw <- pp_calc(object$stanfit, df.model)
@@ -163,11 +162,13 @@ extract_param_fit <- function(stanfit){
 #' @return With [posterior_predict_quantile()] function, you can obtain quantiles
 #' of `respHat` and `response` as specified by `ci` and `pi`.
 #'
-posterior_predict_quantile <- function(object, newdata = NULL, ci = 0.9, pi = 0.9,
+posterior_predict_quantile <-
+  function(object, newdata = NULL, ci = 0.9, pi = 0.9,
                                        newDataType = c("raw", "modelframe")){
 
-  pp.raw <- posterior_predict.stanemax(object, newdata,
-                                       returnType = c("tibble"), newDataType = newDataType)
+  pp.raw <-
+    posterior_predict.stanemax(
+      object, newdata, returnType = c("tibble"), newDataType = newDataType)
 
   ndata <-
     dplyr::filter(pp.raw, mcmcid == 1) %>%

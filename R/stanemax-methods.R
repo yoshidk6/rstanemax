@@ -6,7 +6,7 @@ NULL
 
 
 #' @rdname stanemax-methods
-#' @param x An object of class `stanemax`
+#' @param x An object of class `stanemax` or `stanemaxbin`
 #' @param digits_summary The number of significant digits to use when printing
 #' the summary, defaulting to 2. Applies to the quantities other than the
 #' effective sample size, which is always rounded to the nearest integer.
@@ -30,6 +30,28 @@ print.stanemax <- function(x, digits_summary = 2, ...) {
   cat("* Use `extract_obs_mod_frame()` function to extract raw data \n")
   cat("  in a processed format (useful for plotting)\n")
 }
+
+
+#' @rdname stanemax-methods
+#' @export
+print.stanemaxbin <- function(x, digits_summary = 2, ...) {
+
+  param.extract <- c("emax", "e0", "ec50", "gamma")
+  # print(x$stanfit, pars = param.extract)
+
+  s <- replace_prm_names(x, param.extract)
+
+  cat("---- Binary Emax model fit with rstanemax ----\n")
+  cat("\n")
+  print(round(s, digits_summary))
+  cat("\n")
+  cat("* Use `extract_stanfit()` function to extract raw stanfit object\n")
+  cat("* Use `extract_param()` function to extract posterior draws of key parameters\n")
+  cat("* Use `plot()` function to visualize model fit\n")
+  cat("* Use `extract_obs_mod_frame()` function to extract raw data \n")
+  cat("  in a processed format (useful for plotting)\n")
+}
+
 
 replace_prm_names <- function(x, pars) {
 
