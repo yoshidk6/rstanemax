@@ -5,7 +5,8 @@ Description: Perform sigmoidal Emax model fit using 'Stan' in a formula notation
 Authors@R: c(
     person("Kenta", "Yoshida", , "yoshida.kenta.6@gmail.com", c("aut", "cre"), 
       comment = c(ORCID = "0000-0003-4967-3831")),
-    person("Danielle", "Navarro", , "djnavarro@protonmail.com", c("aut")),
+    person("Danielle", "Navarro", , "djnavarro@protonmail.com", c("aut"),
+      comment = c(ORCID = "0000-0001-7648-6578")),
     person("Trustees of Columbia University", role = "cph", 
       comment="src/init.cpp, tools/make_cc.R, R/stanmodels.R"))
 Encoding: UTF-8
