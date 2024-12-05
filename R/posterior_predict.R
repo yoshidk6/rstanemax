@@ -1,3 +1,9 @@
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_predict
+#' @export
+rstantools::posterior_predict
+
+
 #' Outcome prediction from posterior distribution of parameters
 #'
 #' Compute outcome predictions using posterior samples.
@@ -17,7 +23,7 @@
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
 #' The default is a matrix containing predicted `response` for [stan_emax()] and
-#' `.epred` for [stan_emaxbin()].
+#' `.epred` for [stan_emax_binary()].
 #' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 #'
 #' If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
@@ -30,7 +36,7 @@
 #' - `respHat`: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
 #' - `response`: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
 #'
-#' For binary endpoint model ([stan_emaxbin()]),
+#' For binary endpoint model ([stan_emax_binary()]),
 #'
 #' - `.linpred`: predicted probability on logit scale
 #' - `.epred`: predicted probability on probability scale
@@ -40,6 +46,7 @@ NULL
 
 
 #' @rdname posterior_predict
+#' @importFrom rstantools posterior_predict
 #' @export
 posterior_predict.stanemax <- function(
     object, newdata = NULL,
@@ -111,6 +118,7 @@ posterior_predict.stanemax <- function(
 
 
 #' @rdname posterior_predict
+#' @importFrom rstantools posterior_predict
 #' @export
 posterior_predict.stanemaxbin <- function(
     object, newdata = NULL,

@@ -1,3 +1,34 @@
+#' @rdname as_draws
+#' @importFrom posterior as_draws
+#' @export
+posterior::as_draws
+
+#' @rdname as_draws
+#' @importFrom posterior as_draws_list
+#' @export
+posterior::as_draws_list
+
+#' @rdname as_draws
+#' @importFrom posterior as_draws_array
+#' @export
+posterior::as_draws_array
+
+#' @rdname as_draws
+#' @importFrom posterior as_draws_df
+#' @export
+posterior::as_draws_df
+
+#' @rdname as_draws
+#' @importFrom posterior as_draws_matrix
+#' @export
+posterior::as_draws_matrix
+
+#' @rdname as_draws
+#' @importFrom posterior as_draws_rvars
+#' @export
+posterior::as_draws_rvars
+
+
 #' Convert stanemax object to a posterior draws object
 #'
 #' @param x An object of class stanemax.
@@ -20,73 +51,73 @@
 NULL
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws
+#' @export
 as_draws.stanemax <- function(x, inc_warmup = FALSE, ...) {
   .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws
+#' @export
 as_draws.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_list
+#' @export
 as_draws_list.stanemax <- function(x, inc_warmup = FALSE, ...) {
   .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_list
+#' @export
 as_draws_list.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   .as_draws_list(x, inc_warmup = inc_warmup, ...)
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_array
+#' @export
 as_draws_array.stanemax <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_array(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_array
+#' @export
 as_draws_array.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_array(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_df
+#' @export
 as_draws_df.stanemax <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_df(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_df
+#' @export
 as_draws_df.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_df(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_matrix
+#' @export
 as_draws_matrix.stanemax <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_matrix(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_matrix
+#' @export
 as_draws_matrix.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_matrix(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_rvars
+#' @export
 as_draws_rvars.stanemax <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_rvars(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }
 
 #' @rdname as_draws
-#' @exportS3Method posterior::as_draws_rvars
+#' @export
 as_draws_rvars.stanemaxbin <- function(x, inc_warmup = FALSE, ...) {
   posterior::as_draws_rvars(.as_draws_list(x, inc_warmup = inc_warmup, ...))
 }

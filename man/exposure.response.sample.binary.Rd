@@ -11,9 +11,9 @@ A data frame with columns:
 \item{y_logit}{Simulated logit(p)}
 \item{y_prob}{Simulated p}
 \item{y}{Simulated event (1 or 0)}
-\item{y_logit}{Simulated logit(p) for model with covariate}
-\item{y_prob}{Simulated p for model with covariate}
-\item{y}{Simulated event (1 or 0) for model with covariate}
+\item{y_cov_logit}{Simulated logit(p) for model with covariate}
+\item{y_cov_prob}{Simulated p for model with covariate}
+\item{y_cov}{Simulated event (1 or 0) for model with covariate}
 \item{sex_num}{1 or 0}
 \item{sex}{female or male}
 }

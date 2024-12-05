@@ -2,6 +2,11 @@
 % Please edit documentation in R/as_draws.R
 \name{as_draws}
 \alias{as_draws}
+\alias{as_draws_list}
+\alias{as_draws_array}
+\alias{as_draws_df}
+\alias{as_draws_matrix}
+\alias{as_draws_rvars}
 \alias{as_draws.stanemax}
 \alias{as_draws.stanemaxbin}
 \alias{as_draws_list.stanemax}
@@ -16,6 +21,18 @@
 \alias{as_draws_rvars.stanemaxbin}
 \title{Convert stanemax object to a posterior draws object}
 \usage{
+as_draws(x, ...)
+
+as_draws_list(x, ...)
+
+as_draws_array(x, ...)
+
+as_draws_df(x, ...)
+
+as_draws_matrix(x, ...)
+
+as_draws_rvars(x, ...)
+
 \method{as_draws}{stanemax}(x, inc_warmup = FALSE, ...)
 
 \method{as_draws}{stanemaxbin}(x, inc_warmup = FALSE, ...)
@@ -43,9 +60,9 @@
 \arguments{
 \item{x}{An object of class stanemax.}
 
-\item{inc_warmup}{Should warmup draws be included? Defaults to \code{FALSE}.}
-
 \item{...}{Arguments passed to individual methods (if applicable).'}
+
+\item{inc_warmup}{Should warmup draws be included? Defaults to \code{FALSE}.}
 }
 \value{
 A draws object of the appropriate subclass
