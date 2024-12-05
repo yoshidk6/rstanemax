@@ -6,8 +6,6 @@
 #' Run \code{vignette("emaxmodel", package = "rstanemax")} to see
 #' how you can use the posterior prediction for plotting estimated Emax curve.
 #'
-#' @export
-#' @exportS3Method rstantools::posterior_predict
 #' @name posterior_predict
 #' @param object A `stanemax` class object
 #' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
@@ -38,7 +36,11 @@
 #' - `.epred`: predicted probability on probability scale
 #'
 #' The return object also contains exposure and parameter values used for calculation.
-#'
+NULL
+
+
+#' @rdname posterior_predict
+#' @export
 posterior_predict.stanemax <- function(
     object, newdata = NULL,
     returnType = c("matrix", "dataframe", "tibble"),
@@ -108,8 +110,8 @@ posterior_predict.stanemax <- function(
 }
 
 
-#' @exportS3Method rstantools::posterior_predict
 #' @rdname posterior_predict
+#' @export
 posterior_predict.stanemaxbin <- function(
     object, newdata = NULL,
     returnType = c("matrix", "dataframe", "tibble"),
