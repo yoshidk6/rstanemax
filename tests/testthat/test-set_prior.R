@@ -32,7 +32,7 @@ test.standata.noprior <-
 ##########
 context("test-set_prior.R")
 
-t.sdata.autoprior <- set_prior_auto(test.standata.noprior)
+t.sdata.autoprior <- set_prior_auto(test.standata.noprior, endpoint_type = "continuous")
 
 test_that("auto prior set", {
   expect_equal(t.sdata.autoprior$prior_ec50_mu,  156.0748, tolerance = 0.1)

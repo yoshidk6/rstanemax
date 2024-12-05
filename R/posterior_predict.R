@@ -7,7 +7,7 @@
 #' how you can use the posterior prediction for plotting estimated Emax curve.
 #'
 #' @export
-#' @export posterior_predict
+#' @exportS3Method rstantools::posterior_predict
 #' @name posterior_predict
 #' @param object A `stanemax` class object
 #' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
@@ -18,7 +18,8 @@
 #' Mostly used for internal purposes and users can usually leave at default.
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution of parameters.
-#' The default is a matrix containing predicted response.
+#' The default is a matrix containing predicted `response` for [stan_emax()] and
+#' `.epred` for [stan_emaxbin()].
 #' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 #'
 #' If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
@@ -100,20 +101,49 @@ posterior_predict.stanemax <- function(
 }
 
 
-#' @export
+#' @exportS3Method rstantools::posterior_predict
 #' @rdname posterior_predict
 posterior_predict.stanemaxbin <- function(
     object, newdata = NULL,
     returnType = c("matrix", "dataframe", "tibble"),
     newDataType = c("raw", "modelframe"),
     ...){
+  returnType <- match.arg(returnType)
 
-  posterior_predict.stanemax(
+  if(is.null(newdata)) {
+    df.model <- object$prminput$df.model
+  } else {
+    if(newDataType == "modelframe"){
+      df.model <- newdata
+    } else {
+      if(is.vector(newdata)) {
+        newdata <- data.frame(newdata)
+        names(newdata) <- as.character(object$prminput$formula[[3]])
+      }
+
+      df.model <- create_model_frame(formula = object$prminput$formula,
+        data = newdata,
+        param.cov = object$prminput$param.cov,
+        cov.levels = object$prminput$cov.levels,
+        is.model.fit = FALSE)
+    }
+  }
+
+  pred.response <-
+    posterior_predict.stanemax(
     object = object,
     newdata = newdata,
-    returnType = returnType,
+    returnType = "dataframe",
     newDataType = newDataType,
     ...)
+
+  if(returnType == "matrix") {
+    return(matrix(pred.response$.epred, ncol = nrow(df.model), byrow = TRUE))
+  } else if(returnType == "dataframe") {
+    return(as.data.frame(pred.response))
+  } else if(returnType == "tibble") {
+    return(dplyr::as_tibble(pred.response))
+  }
 }
 
 # Calculate posterior prediction from stanfit object and exposure data

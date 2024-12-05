@@ -51,7 +51,8 @@ Mostly used for internal purposes and users can usually leave at default.}
 }
 \value{
 An object that contain predicted response with posterior distribution of parameters.
-The default is a matrix containing predicted response.
+The default is a matrix containing predicted \code{response} for \code{\link[=stan_emax]{stan_emax()}} and
+\code{.epred} for \code{\link[=stan_emaxbin]{stan_emaxbin()}}.
 Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
 
 If either \code{dataframe} or \code{tibble} is specified, the function returns a data frame or tibble object in a long format -
