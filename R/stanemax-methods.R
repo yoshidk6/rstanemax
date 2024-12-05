@@ -169,6 +169,51 @@ plot.stanemax <- function(x, show.ci = TRUE, show.pi = FALSE,
 
 }
 
+#' @rdname stanemax-methods
+#' @export
+plot.stanemaxbin <- function(x, show.ci = TRUE, show.pi = FALSE,
+                          ci = 0.9, pi = 0.9, ...) {
+
+  obs <- x$prminput$df.model
+
+  exposure.range <- create_exposure_range(x$standata)
+
+  cov.list <-
+    obs %>%
+    dplyr::select(covemax, covec50, cove0) %>%
+    dplyr::distinct()
+
+  cov.list.2 <- create_cov_groups(cov.list, x$prminput$param.cov)
+
+  newdata <- tidyr::crossing(exposure.range, cov.list.2)
+
+  pred.quantile <- posterior_predict_quantile(
+    x, newdata = newdata, newDataType = "modelframe",ci = ci)
+
+  if(is.null(x$prminput$param.cov)){
+    g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med))
+  } else {
+    g <- ggplot2::ggplot(pred.quantile, ggplot2::aes(exposure, ci_med,
+                                                     group = Covariates,
+                                                     color = Covariates,
+                                                     fill = Covariates))
+  }
+
+  g <-
+    g +
+    ggplot2::geom_jitter(data = obs, ggplot2::aes(y = response),
+                         width = 0, height = 0.05, alpha = 0.5) +
+    ggplot2::coord_cartesian(ylim = c(-0.05, 1.05)) +
+    ggplot2::labs(y = "response")
+
+  if(show.ci) g <- g + ggplot2::geom_ribbon(ggplot2::aes(ymin=ci_low, ymax=ci_high), alpha = .5, color = NA)
+
+  g <- g + ggplot2::geom_line()
+
+  g
+
+}
+
 
 create_exposure_range <- function(standata, length.out = 50){
 

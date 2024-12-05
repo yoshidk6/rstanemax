@@ -24,11 +24,18 @@
 #' If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
 #' each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
 #'
-#' Two types of predictions are generated with this function.
-#' `respHat` corresponds to the prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-#' `response` include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+#' Several types of predictions are generated with this function.
 #'
-#TODO explain output type for binary
+#' For continuous endpoint model ([stan_emax()]),
+#'
+#' - `respHat`: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+#' - `response`: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+#'
+#' For binary endpoint model ([stan_emaxbin()]),
+#'
+#' - `.linpred`: predicted probability on logit scale
+#' - `.epred`: predicted probability on probability scale
+#'
 #' The return object also contains exposure and parameter values used for calculation.
 #'
 posterior_predict.stanemax <- function(
@@ -90,9 +97,24 @@ posterior_predict.stanemax <- function(
   } else if(returnType == "tibble") {
     return(dplyr::as_tibble(pred.response))
   }
-
 }
 
+
+#' @export
+#' @rdname posterior_predict
+posterior_predict.stanemaxbin <- function(
+    object, newdata = NULL,
+    returnType = c("matrix", "dataframe", "tibble"),
+    newDataType = c("raw", "modelframe"),
+    ...){
+
+  posterior_predict.stanemax(
+    object = object,
+    newdata = newdata,
+    returnType = returnType,
+    newDataType = newDataType,
+    ...)
+}
 
 # Calculate posterior prediction from stanfit object and exposure data
 ## data.pp is a data frame with column named `exposure`
@@ -178,9 +200,10 @@ extract_param_fit <- function(stanfit,
 #' @return With [posterior_predict_quantile()] function, you can obtain quantiles
 #' of `respHat` and `response` as specified by `ci` and `pi`.
 #'
-posterior_predict_quantile <-
-  function(object, newdata = NULL, ci = 0.9, pi = 0.9,
-                                       newDataType = c("raw", "modelframe")){
+posterior_predict_quantile <- function(
+    object, newdata = NULL, ci = 0.9, pi = 0.9,
+    newDataType = c("raw", "modelframe")){
+  mod_type <- class(object)
 
   pp.raw <-
     posterior_predict.stanemax(
@@ -194,16 +217,30 @@ posterior_predict_quantile <-
     pp.raw %>%
     dplyr::mutate(dataid = rep(1:ndata, length.out = nrow(.)))
 
-  pp.quantile <-
-    pp.raw.2 %>%
-    dplyr::group_by(exposure, covemax, covec50, cove0, Covariates, dataid) %>%
-    dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
-                     ci_med = stats::quantile(respHat, probs = 0.5),
-                     ci_high= stats::quantile(respHat, probs = 0.5 + ci/2),
-                     pi_low = stats::quantile(response, probs = 0.5 - pi/2),
-                     pi_med = stats::quantile(response, probs = 0.5),
-                     pi_high= stats::quantile(response, probs = 0.5 + pi/2)) %>%
-    dplyr::arrange(dataid) %>%
-    dplyr::ungroup() %>%
-    dplyr::select(-dataid)
+  if (mod_type == "stanemax"){
+    pp.quantile <-
+      pp.raw.2 %>%
+      dplyr::group_by(exposure, covemax, covec50, cove0, Covariates, dataid) %>%
+      dplyr::summarize(ci_low = stats::quantile(respHat, probs = 0.5 - ci/2),
+                       ci_med = stats::quantile(respHat, probs = 0.5),
+                       ci_high= stats::quantile(respHat, probs = 0.5 + ci/2),
+                       pi_low = stats::quantile(response, probs = 0.5 - pi/2),
+                       pi_med = stats::quantile(response, probs = 0.5),
+                       pi_high= stats::quantile(response, probs = 0.5 + pi/2)) %>%
+      dplyr::arrange(dataid) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(-dataid)
+  } else if (mod_type == "stanemaxbin") {
+    pp.quantile <-
+      pp.raw.2 %>%
+      dplyr::group_by(exposure, covemax, covec50, cove0, Covariates, dataid) %>%
+      dplyr::summarize(ci_low = stats::quantile(.epred, probs = 0.5 - ci/2),
+                       ci_med = stats::quantile(.epred, probs = 0.5),
+                       ci_high= stats::quantile(.epred, probs = 0.5 + ci/2)) %>%
+      dplyr::arrange(dataid) %>%
+      dplyr::ungroup() %>%
+      dplyr::select(-dataid)
+  }
+
+  return(pp.quantile)
 }
