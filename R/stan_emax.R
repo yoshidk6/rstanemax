@@ -71,6 +71,48 @@ stan_emax <- function(formula, data,
   return(out)
 }
 
+#' Bayesian Emax model fit with Stan for binary endpoint
+#'
+#' @export
+#' @inheritParams stan_emax
+#' @examples
+#' \dontrun{
+#' data(exposure.response.sample.binary)
+#' fit1 <- stan_emax(response ~ exposure, data = exposure.response.sample,
+#'                   # the next line is only to make the example go fast enough
+#'                   chains = 1, iter = 500, seed = 12345)
+#' print(fit1)
+#'
+#' # Set priors manually, also estimate gamma instead of the default of fix to 1
+#' fit2 <- stan_emax(response ~ exposure, data = exposure.response.sample, gamma.fix = NULL,
+#'                   priors = list(ec50  = c(100, 30), emax  = c(100, 30), e0 = c(10, 5),
+#'                                 gamma = c(0, 3), sigma = c(0, 30)),
+#'                   # the next line is only to make the example go fast enough
+#'                   chains = 1, iter = 500, seed = 12345)
+#' print(fit2)
+#'
+#' data(exposure.response.sample.with.cov)
+#' # Specify covariates
+#' fit3 <- stan_emax(formula = resp ~ conc, data = exposure.response.sample.with.cov,
+#'                   param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+#'                   # the next line is only to make the example go fast enough
+#'                   chains = 1, iter = 500, seed = 12345)
+#' print(fit3)
+#'}
+stan_emax_binary <- function(formula, data,
+  gamma.fix = 1, e0.fix = NULL, emax.fix = NULL,
+  priors = NULL, param.cov = NULL, ...){
+
+  out.prep <- stan_emax_prep(formula, data, gamma.fix, e0.fix, emax.fix, param.cov)
+
+  standata <- set_prior(out.prep$standata, priors, endpoint_type = "binary")
+
+  out <- stan_emax_run(stanmodels$emax_binary, standata = standata, ...)
+
+  out$prminput <- out.prep$prminput
+
+  return(out)
+}
 
 
 # Parse formula and put together stan data object

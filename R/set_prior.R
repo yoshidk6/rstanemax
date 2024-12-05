@@ -1,7 +1,10 @@
 
-set_prior <- function(standata, priors = NULL){
+set_prior <- function(standata, priors = NULL,
+  endpoint_type = c("continuous", "binary")){
+  endpoint_type <- match.arg(endpoint_type)
+
   # First assign prior automatically
-  standata <- set_prior_auto(standata)
+  standata <- set_prior_auto(standata, endpoint_type)
 
   # Replace with manual priors if provided
   if(!is.null(priors$ec50)){
@@ -40,12 +43,27 @@ check_prior <- function(x){
 }
 
 
-set_prior_auto <- function(standata){
+set_prior_auto <- function(standata, endpoint_type){
 
   # EC50
   standata$prior_ec50_mu  <- stats::median(standata$exposure)
   standata$prior_ec50_sig <- stats::median(standata$exposure) * 2
 
+  # Gamma
+  standata$prior_gamma_mu  <- 0
+  standata$prior_gamma_sig <- 5
+
+  # Binary case ----------------------------------------------
+  if(endpoint_type == "binary"){
+    standata$prior_emax_mu  <- 0
+    standata$prior_emax_sig <- 2
+    standata$prior_e0_mu  <- 0
+    standata$prior_e0_sig <- 2
+
+    return(standata)
+  }
+
+  # Continuous case ----------------------------------------------
   # Emax
   delta <- max(standata$response) - min(standata$response)
   coeflm <- stats::lm(response ~ exposure, data = standata) %>% stats::coef()
@@ -62,10 +80,6 @@ set_prior_auto <- function(standata){
   resp.low.exp <- standata$response[standata$exposure <= stats::quantile(standata$exposure, 0.25)]
   standata$prior_e0_mu <- stats::median(resp.low.exp)
   standata$prior_e0_sig <- abs(stats::median(resp.low.exp)) * 2
-
-  # Gamma
-  standata$prior_gamma_mu  <- 0
-  standata$prior_gamma_sig <- 5
 
   # Sigma
   standata$prior_sigma_mu  <- 0

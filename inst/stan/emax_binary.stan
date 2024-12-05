@@ -1,7 +1,7 @@
 data{
   int<lower = 1> N;
   vector<lower = 0>[N] exposure;
-  vector[N] response;
+  array[N] int<lower=0, upper=1> response;
 
   // Covariates
   array[N] int<lower = 1> covemax;
@@ -25,13 +25,11 @@ data{
   real<lower=0> prior_ec50_mu;
   real<lower=0> prior_gamma_mu;
   real prior_e0_mu;
-  real<lower=0> prior_sigma_mu;
   //// sigma
   real<lower=0> prior_emax_sig;
   real<lower=0> prior_ec50_sig;
   real<lower=0> prior_gamma_sig;
   real<lower=0> prior_e0_sig;
-  real<lower=0> prior_sigma_sig;
 }
 
 parameters{
@@ -41,12 +39,10 @@ parameters{
   array[n_covlev_e0, 1-e0_fix_flg] real e0_par;
   array[n_covlev_emax, 1-emax_fix_flg] real emax_par;
   array[1-gamma_fix_flg] real<lower = 0> gamma_par;
-
-  real<lower = 0> sigma;
 }
 
 transformed parameters{
-  vector[N] respHat;
+  vector[N] mu_logit;
   vector[N] exposure_exp;
 
   real gamma;
@@ -73,16 +69,15 @@ transformed parameters{
     ec50vec_exp[i]  = ec50vec[i]^gamma;
   }
 
-  respHat = e0vec + emaxvec .* exposure_exp ./ (ec50vec_exp + exposure_exp);
+  mu_logit = e0vec + emaxvec .* exposure_exp ./ (ec50vec_exp + exposure_exp);
 }
 
 model{
-  response ~ normal(respHat, sigma);
+  response ~ bernoulli_logit(mu_logit);
 
   // emax       ~ normal(prior_emax_mu,  prior_emax_sig);
   ec50       ~ normal(prior_ec50_mu,  prior_ec50_sig);
   gamma_par  ~ normal(prior_gamma_mu, prior_gamma_sig);
-  sigma      ~ normal(prior_sigma_mu, prior_sigma_sig);
   for(i in 1:n_covlev_e0) {
     e0_par[i] ~ normal(prior_e0_mu,    prior_e0_sig);
   }
@@ -93,5 +88,7 @@ model{
 
 generated quantities {
   vector[N] log_lik;
-  for (n in 1:N) log_lik[n] = normal_lpdf(response[n]| respHat[n], sigma);
+  for (n in 1:N) {
+    log_lik[n] = bernoulli_logit_lpmf(response[n] | mu_logit[n]);
+  }
 }
