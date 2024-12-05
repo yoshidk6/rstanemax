@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">rstanemax</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.5.900</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
 
       <dl><dt>
 
-          <code><a href="as_draws.html">as_draws(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="as_draws.html">as_draws_list(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="as_draws.html">as_draws_array(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="as_draws.html">as_draws_df(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="as_draws.html">as_draws_matrix(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="as_draws.html">as_draws_rvars(<i>&lt;stanemax&gt;</i>)</a></code>
+          <code><a href="as_draws.html">as_draws()</a></code> <code><a href="as_draws.html">as_draws_list()</a></code> <code><a href="as_draws.html">as_draws_array()</a></code> <code><a href="as_draws.html">as_draws_df()</a></code> <code><a href="as_draws.html">as_draws_matrix()</a></code> <code><a href="as_draws.html">as_draws_rvars()</a></code>
 
         </dt>
         <dd>Convert stanemax object to a posterior draws object</dd>
@@ -58,6 +58,12 @@
 
         </dt>
         <dd>Sample simulated data for exposure-response.</dd>
+      </dl><dl><dt>
+
+          <code><a href="exposure.response.sample.binary.html">exposure.response.sample.binary</a></code>
+
+        </dt>
+        <dd>Sample simulated data for exposure-response for binary endpoint</dd>
       </dl><dl><dt>
 
           <code><a href="exposure.response.sample.with.cov.html">exposure.response.sample.with.cov</a></code>
@@ -72,7 +78,7 @@
         <dd>Extract posterior draws of key parameters</dd>
       </dl><dl><dt>
 
-          <code><a href="posterior_predict.html">posterior_predict(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="posterior_predict.html">posterior_predict_quantile()</a></code>
+          <code><a href="posterior_predict.html">posterior_predict()</a></code> <code><a href="posterior_predict.html">posterior_predict_quantile()</a></code>
 
         </dt>
         <dd>Outcome prediction from posterior distribution of parameters</dd>
@@ -90,7 +96,13 @@
         <dd>Bayesian Emax model fit with Stan</dd>
       </dl><dl><dt>
 
-          <code><a href="stanemax-methods.html">print(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="stanemax-methods.html">extract_stanfit()</a></code> <code><a href="stanemax-methods.html">extract_obs_mod_frame()</a></code> <code><a href="stanemax-methods.html">plot(<i>&lt;stanemax&gt;</i>)</a></code>
+          <code><a href="stan_emax_binary.html">stan_emax_binary()</a></code>
+
+        </dt>
+        <dd>Bayesian Emax model fit with Stan for binary endpoint</dd>
+      </dl><dl><dt>
+
+          <code><a href="stanemax-methods.html">print(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="stanemax-methods.html">print(<i>&lt;stanemaxbin&gt;</i>)</a></code> <code><a href="stanemax-methods.html">extract_stanfit()</a></code> <code><a href="stanemax-methods.html">extract_obs_mod_frame()</a></code> <code><a href="stanemax-methods.html">plot(<i>&lt;stanemax&gt;</i>)</a></code> <code><a href="stanemax-methods.html">plot(<i>&lt;stanemaxbin&gt;</i>)</a></code>
 
         </dt>
         <dd>Methods for stanemax objects</dd>
