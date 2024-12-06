@@ -9,7 +9,7 @@ Exposure data for prediction can be either original data used for model fit or n
 
     <a class="navbar-brand me-2" href="../index.html">rstanemax</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.6.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,7 +35,7 @@ Exposure data for prediction can be either original data used for model fit or n
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Outcome prediction from posterior distribution of parameters</h1>
-      <small class="dont-index">Source: <a href="https://github.com/yoshidk6/rstanemax/blob/v0.1.6/R/posterior_predict.R" class="external-link"><code>R/posterior_predict.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/yoshidk6/rstanemax/blob/master/R/posterior_predict.R" class="external-link"><code>R/posterior_predict.R</code></a></small>
       <div class="d-none name"><code>posterior_predict.Rd</code></div>
     </div>
 
@@ -119,10 +119,13 @@ Each row of the matrix is a vector of predictions generated using a single draw 
 <p>If either <code>dataframe</code> or <code>tibble</code> is specified, the function returns a data frame or tibble object in a long format -
 each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.</p>
 <p>Several types of predictions are generated with this function.</p>
-<p>For continuous endpoint model (<code><a href="stan_emax.html">stan_emax()</a></code>),</p><ul><li><p><code>respHat</code>: prediction without considering residual variability and is intended to provide credible interval of "mean" response.</p></li>
-<li><p><code>response</code>: include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p></li>
+<p>For continuous endpoint model (<code><a href="stan_emax.html">stan_emax()</a></code>),</p><ul><li><p><code>.linpred</code> &amp; <code>.epred</code>: prediction without considering residual variability and is intended to provide credible interval of "mean" response.</p></li>
+<li><p><code>.prediction</code>: include residual variability in its calculation, therefore the range represents prediction interval of observed response.</p></li>
+<li><p>(deprecated) <code>respHat</code>: replaced by <code>.linpred</code> &amp; <code>.epred</code></p></li>
+<li><p>(deprecated) <code>response</code>: replaced by <code>.prediction</code></p></li>
 </ul><p>For binary endpoint model (<code><a href="stan_emax_binary.html">stan_emax_binary()</a></code>),</p><ul><li><p><code>.linpred</code>: predicted probability on logit scale</p></li>
 <li><p><code>.epred</code>: predicted probability on probability scale</p></li>
+<li><p><code>.prediction</code>: predicted event (1) or non-event (0)</p></li>
 </ul><p>The return object also contains exposure and parameter values used for calculation.</p>
 <p>With <code>posterior_predict_quantile()</code> function, you can obtain quantiles
 of <code>respHat</code> and <code>response</code> as specified by <code>ci</code> and <code>pi</code>.</p>
