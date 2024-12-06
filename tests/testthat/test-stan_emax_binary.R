@@ -31,6 +31,7 @@ test_that("emax model run", {
 
 
 test_that("posterior prediction with original data", {
+  set.seed(1234)
   test.pp.matrix <- posterior_predict(test.fit2)
   test.pp.df <- posterior_predict(test.fit2, returnType = "dataframe")
 

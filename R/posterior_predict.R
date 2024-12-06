@@ -33,13 +33,16 @@ rstantools::posterior_predict
 #'
 #' For continuous endpoint model ([stan_emax()]),
 #'
-#' - `respHat`: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-#' - `response`: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+#' - `.linpred` & `.epred`: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+#' - `.prediction`: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+#' - (deprecated) `respHat`: replaced by `.linpred` & `.epred`
+#' - (deprecated) `response`: replaced by `.prediction`
 #'
 #' For binary endpoint model ([stan_emax_binary()]),
 #'
 #' - `.linpred`: predicted probability on logit scale
 #' - `.epred`: predicted probability on probability scale
+#' - `.prediction`: predicted event (1) or non-event (0)
 #'
 #' The return object also contains exposure and parameter values used for calculation.
 NULL
@@ -126,6 +129,7 @@ posterior_predict.stanemaxbin <- function(
     newDataType = c("raw", "modelframe"),
     ...) {
   returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
 
   if (is.null(newdata)) {
     df.model <- object$prminput$df.model
@@ -158,7 +162,7 @@ posterior_predict.stanemaxbin <- function(
     )
 
   if (returnType == "matrix") {
-    return(matrix(pred.response$.epred, ncol = nrow(df.model), byrow = TRUE))
+    return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
   } else if (returnType == "dataframe") {
     return(as.data.frame(pred.response))
   } else if (returnType == "tibble") {
@@ -191,13 +195,19 @@ pp_calc <- function(stanfit, df.model,
         respHat = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
         response = stats::rnorm(respHat, respHat, sigma)
       ) %>%
+      dplyr::mutate(
+        .linpred = respHat,
+        .epred = respHat,
+        .prediction = response
+      ) %>%
       dplyr::select(mcmcid, exposure, dplyr::everything())
   } else if (mod_type == "stanemaxbin") {
     out <-
       df %>%
       dplyr::mutate(
         .linpred = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
-        .epred = 1 / (1 + exp(-.linpred))
+        .epred = 1 / (1 + exp(-.linpred)),
+        .prediction = stats::rbinom(.epred, 1, .epred)
       ) %>%
       dplyr::select(mcmcid, exposure, dplyr::everything())
   }

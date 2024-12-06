@@ -64,14 +64,17 @@ Several types of predictions are generated with this function.
 
 For continuous endpoint model (\code{\link[=stan_emax]{stan_emax()}}),
 \itemize{
-\item \code{respHat}: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-\item \code{response}: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+\item \code{.linpred} & \code{.epred}: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
+\item \code{.prediction}: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
+\item (deprecated) \code{respHat}: replaced by \code{.linpred} & \code{.epred}
+\item (deprecated) \code{response}: replaced by \code{.prediction}
 }
 
 For binary endpoint model (\code{\link[=stan_emax_binary]{stan_emax_binary()}}),
 \itemize{
 \item \code{.linpred}: predicted probability on logit scale
 \item \code{.epred}: predicted probability on probability scale
+\item \code{.prediction}: predicted event (1) or non-event (0)
 }
 
 The return object also contains exposure and parameter values used for calculation.
