@@ -1,5 +1,5 @@
 
-# rstanemax 0.1.6.1
+# rstanemax 0.1.7
 
 ## Patch release
 
