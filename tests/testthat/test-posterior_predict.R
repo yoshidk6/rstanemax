@@ -76,7 +76,7 @@ test_that("posterior prediction with new data with covariates", {
 
   # Make sure posterior_predict works with covariates
   test.pp.tibble <- posterior_predict.stanemax(test.fit.2cov, newdata = test.data.short, returnType = "tibble")
-  expect_equal(dim(test.pp.tibble), c(30000, 13))
+  expect_equal(dim(test.pp.tibble), c(30000, 16))
 
   # Make sure data is not re-sorted
   expect_equal(

@@ -1,4 +1,11 @@
 
+# rstanemax 0.1.7
+
+## Patch release
+
+* Fix match.arg(newDataType) for posterior_predict.stanemaxbin 
+* Correctly return prediction for posterior_predict.stanemaxbin
+
 # rstanemax 0.1.6
 
 ## Major changes
