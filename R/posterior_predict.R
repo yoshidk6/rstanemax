@@ -3,7 +3,6 @@
 #' @export
 rstantools::posterior_predict
 
-
 #' Outcome prediction from posterior distribution of parameters
 #'
 #' Compute outcome predictions using posterior samples.
@@ -14,6 +13,7 @@ rstantools::posterior_predict
 #'
 #' @name posterior_predict
 #' @param object A `stanemax` class object
+#' @param transform (For `posterior_linpred()`) Should the linear predictor be transformed to response scale?
 #' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
 #' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType An optional string specifying the type of return object.
@@ -47,135 +47,129 @@ rstantools::posterior_predict
 #' The return object also contains exposure and parameter values used for calculation.
 NULL
 
+# S3 methods --------------------------------------------------------------
 
 #' @rdname posterior_predict
 #' @importFrom rstantools posterior_predict
 #' @export
-posterior_predict.stanemax <- function(
-    object, newdata = NULL,
-    returnType = c("matrix", "dataframe", "tibble"),
-    newDataType = c("raw", "modelframe"),
-    ...) {
+posterior_predict.stanemax <- function(object,
+                                       newdata = NULL,
+                                       returnType = c("matrix", "dataframe", "tibble"),
+                                       newDataType = c("raw", "modelframe"),
+                                       ...) {
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".prediction", newdata, returnType, newDataType, ...)
+}
 
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_predict
+#' @export
+posterior_predict.stanemaxbin <- function(object,
+                                          newdata = NULL,
+                                          returnType = c("matrix", "dataframe", "tibble"),
+                                          newDataType = c("raw", "modelframe"),
+                                          ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".prediction", newdata, returnType, newDataType, ...)
+}
 
-  if (is.null(newdata)) {
-    df.model <- object$prminput$df.model
-  } else {
-    if (newDataType == "modelframe") {
-      df.model <- newdata
-    } else {
-      if (is.vector(newdata)) {
-        newdata <- data.frame(newdata)
-        names(newdata) <- as.character(object$prminput$formula[[3]])
-      }
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_epred
+#' @export
+posterior_epred.stanemax <- function(object,
+                                     newdata = NULL,
+                                     returnType = c("matrix", "dataframe", "tibble"),
+                                     newDataType = c("raw", "modelframe"),
+                                     ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".epred", newdata, returnType, newDataType, ...)
+}
 
-      df.model <- create_model_frame(
-        formula = object$prminput$formula,
-        data = newdata,
-        param.cov = object$prminput$param.cov,
-        cov.levels = object$prminput$cov.levels,
-        is.model.fit = FALSE
-      )
-    }
-  }
-
-
-  pred.response.raw <- pp_calc(object$stanfit, df.model,
-    mod_type = class(object)
-  )
-
-  cov.fct.numeric <-
-    df.model %>%
-    dplyr::select(
-      covemaxfct = covemax,
-      covec50fct = covec50,
-      cove0fct = cove0
-    ) %>%
-    dplyr::distinct() %>%
-    dplyr::mutate(
-      covemax = as.numeric(covemaxfct),
-      covec50 = as.numeric(covec50fct),
-      cove0 = as.numeric(cove0fct)
-    )
-
-  pred.response <-
-    dplyr::left_join(pred.response.raw, cov.fct.numeric, by = c("covemax", "covec50", "cove0")) %>%
-    dplyr::select(-(covemax:cove0)) %>%
-    dplyr::select(mcmcid, exposure,
-      covemax = covemaxfct,
-      covec50 = covec50fct,
-      cove0   = cove0fct,
-      dplyr::everything()
-    )
-
-  if (returnType == "matrix") {
-    return(matrix(pred.response$response, ncol = nrow(df.model), byrow = TRUE))
-  } else if (returnType == "dataframe") {
-    return(as.data.frame(pred.response))
-  } else if (returnType == "tibble") {
-    return(dplyr::as_tibble(pred.response))
-  }
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_epred
+#' @export
+posterior_epred.stanemaxbin <- function(object,
+                                        newdata = NULL,
+                                        returnType = c("matrix", "dataframe", "tibble"),
+                                        newDataType = c("raw", "modelframe"),
+                                        ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".epred", newdata, returnType, newDataType, ...)
 }
 
 
 #' @rdname posterior_predict
-#' @importFrom rstantools posterior_predict
+#' @importFrom rstantools posterior_linpred
 #' @export
-posterior_predict.stanemaxbin <- function(
-    object, newdata = NULL,
-    returnType = c("matrix", "dataframe", "tibble"),
-    newDataType = c("raw", "modelframe"),
-    ...) {
+posterior_linpred.stanemax <- function(object,
+                                       transform = FALSE,
+                                       newdata = NULL,
+                                       returnType = c("matrix", "dataframe", "tibble"),
+                                       newDataType = c("raw", "modelframe"),
+                                       ...) {
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".linpred", newdata, returnType, newDataType, transform, ...)
+}
 
-  if (is.null(newdata)) {
-    df.model <- object$prminput$df.model
-  } else {
-    if (newDataType == "modelframe") {
-      df.model <- newdata
-    } else {
-      if (is.vector(newdata)) {
-        newdata <- data.frame(newdata)
-        names(newdata) <- as.character(object$prminput$formula[[3]])
-      }
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_linpred
+#' @export
+posterior_linpred.stanemaxbin <- function(object,
+                                          transform = FALSE,
+                                          newdata = NULL,
+                                          returnType = c("matrix", "dataframe", "tibble"),
+                                          newDataType = c("raw", "modelframe"),
+                                          ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".linpred", newdata, returnType, newDataType, transform, ...)
+}
 
-      df.model <- create_model_frame(
-        formula = object$prminput$formula,
-        data = newdata,
-        param.cov = object$prminput$param.cov,
-        cov.levels = object$prminput$cov.levels,
-        is.model.fit = FALSE
-      )
-    }
-  }
+# helper functions --------------------------------------------------------
 
-  pred.response <-
-    posterior_predict.stanemax(
-      object = object,
-      newdata = newdata,
-      returnType = "dataframe",
-      newDataType = newDataType,
-      ...
-    )
-
+# Wrapper function to handle posterior_predict, posterior_epred, etc
+pp_wrapper <- function(object, column, newdata, returnType, newDataType, ...) {
+  df.model <- pp_model_frame(object, newdata, newDataType)
+  pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
+  pred.response <- pp_tidy(pred.response.raw, df.model)
   if (returnType == "matrix") {
-    return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
-  } else if (returnType == "dataframe") {
-    return(as.data.frame(pred.response))
-  } else if (returnType == "tibble") {
-    return(dplyr::as_tibble(pred.response))
+    output <- pred.response[[column]]
+    return(matrix(output, ncol = nrow(df.model), byrow = TRUE))
   }
+  if (returnType == "dataframe") return(as.data.frame(pred.response))
+  if (returnType == "tibble") return(dplyr::as_tibble(pred.response))
+}
+
+# Construct model frame as needed for posterior_predict and similar
+pp_model_frame <- function(object, newdata, newDataType) {
+  if (is.null(newdata)) return(object$prminput$df.model)
+  if (newDataType == "modelframe") return(newdata)
+  if (is.vector(newdata)) {
+    newdata <- data.frame(newdata)
+    names(newdata) <- as.character(object$prminput$formula[[3]])
+  }
+  create_model_frame(
+    formula = object$prminput$formula,
+    data = newdata,
+    param.cov = object$prminput$param.cov,
+    cov.levels = object$prminput$cov.levels,
+    is.model.fit = FALSE
+  )
 }
 
 # Calculate posterior prediction from stanfit object and exposure data
-## data.pp is a data frame with column named `exposure`
-pp_calc <- function(stanfit, df.model,
-                    mod_type = c("stanemax", "stanemaxbin")) {
-  mod_type <- match.arg(mod_type)
+# data.pp is a data frame with column named `exposure`
+pp_calc <- function(stanfit,
+                    df.model,
+                    mod_type = c("stanemax", "stanemaxbin"),
+                    transform = FALSE) {
 
+  mod_type <- match.arg(mod_type)
   param.fit <- extract_param_fit(stanfit, mod_type)
 
   df <-
@@ -210,16 +204,53 @@ pp_calc <- function(stanfit, df.model,
         .prediction = stats::rbinom(.epred, 1, .epred)
       ) %>%
       dplyr::select(mcmcid, exposure, dplyr::everything())
+
+    # transform arg supported for consistency with posterior_linpred generic
+    if (transform == TRUE) out$.linpred <- out$.epred
   }
 
   return(out)
 }
 
+# Convert the posterior prediction output to tidied data frame
+pp_tidy <- function(pred.response.raw, df.model) {
 
+  cov.fct.numeric <-
+    df.model %>%
+    dplyr::select(
+      covemaxfct = covemax,
+      covec50fct = covec50,
+      cove0fct = cove0
+    ) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(
+      covemax = as.numeric(covemaxfct),
+      covec50 = as.numeric(covec50fct),
+      cove0 = as.numeric(cove0fct)
+    )
+
+  pred.response <-
+    dplyr::left_join(pred.response.raw,
+                     cov.fct.numeric,
+                     by = c("covemax", "covec50", "cove0")
+    ) %>%
+    dplyr::select(-(covemax:cove0)) %>%
+    dplyr::select(mcmcid,
+                  exposure,
+                  covemax = covemaxfct,
+                  covec50 = covec50fct,
+                  cove0   = cove0fct,
+                  dplyr::everything()
+    )
+
+  return(pred.response)
+}
+
+# required by pp_calc
 extract_param_fit <- function(stanfit,
                               mod_type = c("stanemax", "stanemaxbin")) {
-  mod_type <- match.arg(mod_type)
 
+  mod_type <- match.arg(mod_type)
   param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
   if (mod_type == "stanemax") {
     pars2 <- c("gamma", "sigma")
@@ -236,9 +267,9 @@ extract_param_fit <- function(stanfit,
       dplyr::as_tibble(vec.param, .name_repair = "unique") %>%
       dplyr::mutate(mcmcid = dplyr::row_number()) %>%
       tidyr::pivot_longer(-mcmcid,
-        names_to = paste0("cov", k),
-        values_to = k,
-        names_prefix = "V"
+                          names_to = paste0("cov", k),
+                          values_to = k,
+                          names_prefix = "V"
       )
 
     return(out)
@@ -246,13 +277,13 @@ extract_param_fit <- function(stanfit,
 
   param.fit.withcov <-
     dplyr::full_join(extract_params_covs("emax"),
-      extract_params_covs("e0"),
-      by = "mcmcid",
-      relationship = "many-to-many"
+                     extract_params_covs("e0"),
+                     by = "mcmcid",
+                     relationship = "many-to-many"
     ) %>%
     dplyr::full_join(extract_params_covs("ec50"),
-      by = "mcmcid",
-      relationship = "many-to-many"
+                     by = "mcmcid",
+                     relationship = "many-to-many"
     ) %>%
     dplyr::mutate(
       covemax = as.numeric(covemax),
@@ -269,6 +300,8 @@ extract_param_fit <- function(stanfit,
   return(param.fit)
 }
 
+
+# additional rstanemax functions ------------------------------------------
 
 #' @rdname posterior_predict
 #' @export

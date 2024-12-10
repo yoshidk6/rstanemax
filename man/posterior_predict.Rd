@@ -4,6 +4,10 @@
 \alias{posterior_predict}
 \alias{posterior_predict.stanemax}
 \alias{posterior_predict.stanemaxbin}
+\alias{posterior_epred.stanemax}
+\alias{posterior_epred.stanemaxbin}
+\alias{posterior_linpred.stanemax}
+\alias{posterior_linpred.stanemaxbin}
 \alias{posterior_predict_quantile}
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
@@ -19,6 +23,40 @@ posterior_predict(object, ...)
 
 \method{posterior_predict}{stanemaxbin}(
   object,
+  newdata = NULL,
+  returnType = c("matrix", "dataframe", "tibble"),
+  newDataType = c("raw", "modelframe"),
+  ...
+)
+
+\method{posterior_epred}{stanemax}(
+  object,
+  newdata = NULL,
+  returnType = c("matrix", "dataframe", "tibble"),
+  newDataType = c("raw", "modelframe"),
+  ...
+)
+
+\method{posterior_epred}{stanemaxbin}(
+  object,
+  newdata = NULL,
+  returnType = c("matrix", "dataframe", "tibble"),
+  newDataType = c("raw", "modelframe"),
+  ...
+)
+
+\method{posterior_linpred}{stanemax}(
+  object,
+  transform = FALSE,
+  newdata = NULL,
+  returnType = c("matrix", "dataframe", "tibble"),
+  newDataType = c("raw", "modelframe"),
+  ...
+)
+
+\method{posterior_linpred}{stanemaxbin}(
+  object,
+  transform = FALSE,
   newdata = NULL,
   returnType = c("matrix", "dataframe", "tibble"),
   newDataType = c("raw", "modelframe"),
@@ -46,6 +84,8 @@ If the model does not have any covariate, this can be a numeric vector correspon
 \item{newDataType}{An optional string specifying the type of newdata input,
 whether in the format of an original data frame or a processed model frame.
 Mostly used for internal purposes and users can usually leave at default.}
+
+\item{transform}{(For \code{posterior_linpred()}) Should the linear predictor be transformed to response scale?}
 
 \item{ci}{Credible interval of the response without residual variability.}
 
