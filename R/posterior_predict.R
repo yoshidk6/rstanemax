@@ -51,131 +51,63 @@ NULL
 #' @rdname posterior_predict
 #' @importFrom rstantools posterior_predict
 #' @export
-posterior_predict.stanemax <- function(
-    object, newdata = NULL,
-    returnType = c("matrix", "dataframe", "tibble"),
-    newDataType = c("raw", "modelframe"),
-    ...) {
+posterior_predict.stanemax <- function(object,
+                                       newdata = NULL,
+                                       returnType = c("matrix", "dataframe", "tibble"),
+                                       newDataType = c("raw", "modelframe"),
+                                       ...) {
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
-
-
-  if (is.null(newdata)) {
-    df.model <- object$prminput$df.model
-  } else {
-    if (newDataType == "modelframe") {
-      df.model <- newdata
-    } else {
-      if (is.vector(newdata)) {
-        newdata <- data.frame(newdata)
-        names(newdata) <- as.character(object$prminput$formula[[3]])
-      }
-
-      df.model <- create_model_frame(
-        formula = object$prminput$formula,
-        data = newdata,
-        param.cov = object$prminput$param.cov,
-        cov.levels = object$prminput$cov.levels,
-        is.model.fit = FALSE
-      )
-    }
-  }
-
-
-  pred.response.raw <- pp_calc(object$stanfit, df.model,
-    mod_type = class(object)
-  )
-
-  cov.fct.numeric <-
-    df.model %>%
-    dplyr::select(
-      covemaxfct = covemax,
-      covec50fct = covec50,
-      cove0fct = cove0
-    ) %>%
-    dplyr::distinct() %>%
-    dplyr::mutate(
-      covemax = as.numeric(covemaxfct),
-      covec50 = as.numeric(covec50fct),
-      cove0 = as.numeric(cove0fct)
-    )
-
-  pred.response <-
-    dplyr::left_join(pred.response.raw, cov.fct.numeric, by = c("covemax", "covec50", "cove0")) %>%
-    dplyr::select(-(covemax:cove0)) %>%
-    dplyr::select(mcmcid, exposure,
-      covemax = covemaxfct,
-      covec50 = covec50fct,
-      cove0   = cove0fct,
-      dplyr::everything()
-    )
-
-  if (returnType == "matrix") {
-    return(matrix(pred.response$response, ncol = nrow(df.model), byrow = TRUE))
-  } else if (returnType == "dataframe") {
-    return(as.data.frame(pred.response))
-  } else if (returnType == "tibble") {
-    return(dplyr::as_tibble(pred.response))
-  }
+  df.model <- pp_model_frame(object, newdata, newDataType)
+  pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
+  pred.response <- pp_tidy(pred.response.raw, df.model)
+  if (returnType == "matrix") return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
+  if (returnType == "dataframe") return(as.data.frame(pred.response))
+  if (returnType == "tibble") return(dplyr::as_tibble(pred.response))
 }
 
 
 #' @rdname posterior_predict
 #' @importFrom rstantools posterior_predict
 #' @export
-posterior_predict.stanemaxbin <- function(
-    object, newdata = NULL,
-    returnType = c("matrix", "dataframe", "tibble"),
-    newDataType = c("raw", "modelframe"),
-    ...) {
+posterior_predict.stanemaxbin <- function(object,
+                                          newdata = NULL,
+                                          returnType = c("matrix", "dataframe", "tibble"),
+                                          newDataType = c("raw", "modelframe"),
+                                          ...) {
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
+  df.model <- pp_model_frame(object, newdata, newDataType)
+  pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
+  pred.response <- pp_tidy(pred.response.raw, df.model)
+  if (returnType == "matrix") return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
+  if (returnType == "dataframe") return(as.data.frame(pred.response))
+  if (returnType == "tibble") return(dplyr::as_tibble(pred.response))
+}
 
-  if (is.null(newdata)) {
-    df.model <- object$prminput$df.model
-  } else {
-    if (newDataType == "modelframe") {
-      df.model <- newdata
-    } else {
-      if (is.vector(newdata)) {
-        newdata <- data.frame(newdata)
-        names(newdata) <- as.character(object$prminput$formula[[3]])
-      }
-
-      df.model <- create_model_frame(
-        formula = object$prminput$formula,
-        data = newdata,
-        param.cov = object$prminput$param.cov,
-        cov.levels = object$prminput$cov.levels,
-        is.model.fit = FALSE
-      )
-    }
+# Construct model frame as needed for posterior_predict and similar
+pp_model_frame <- function(object, newdata, newDataType) {
+  if (is.null(newdata)) return(object$prminput$df.model)
+  if (newDataType == "modelframe") return(newdata)
+  if (is.vector(newdata)) {
+    newdata <- data.frame(newdata)
+    names(newdata) <- as.character(object$prminput$formula[[3]])
   }
-
-  pred.response <-
-    posterior_predict.stanemax(
-      object = object,
-      newdata = newdata,
-      returnType = "dataframe",
-      newDataType = newDataType,
-      ...
-    )
-
-  if (returnType == "matrix") {
-    return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
-  } else if (returnType == "dataframe") {
-    return(as.data.frame(pred.response))
-  } else if (returnType == "tibble") {
-    return(dplyr::as_tibble(pred.response))
-  }
+  create_model_frame(
+    formula = object$prminput$formula,
+    data = newdata,
+    param.cov = object$prminput$param.cov,
+    cov.levels = object$prminput$cov.levels,
+    is.model.fit = FALSE
+  )
 }
 
 # Calculate posterior prediction from stanfit object and exposure data
-## data.pp is a data frame with column named `exposure`
+# data.pp is a data frame with column named `exposure`
 pp_calc <- function(stanfit, df.model,
                     mod_type = c("stanemax", "stanemaxbin")) {
-  mod_type <- match.arg(mod_type)
 
+  mod_type <- match.arg(mod_type)
   param.fit <- extract_param_fit(stanfit, mod_type)
 
   df <-
@@ -215,6 +147,40 @@ pp_calc <- function(stanfit, df.model,
   return(out)
 }
 
+# Convert the posterior prediction output to tidied data frame
+pp_tidy <- function(pred.response.raw, df.model) {
+
+  cov.fct.numeric <-
+    df.model %>%
+    dplyr::select(
+      covemaxfct = covemax,
+      covec50fct = covec50,
+      cove0fct = cove0
+    ) %>%
+    dplyr::distinct() %>%
+    dplyr::mutate(
+      covemax = as.numeric(covemaxfct),
+      covec50 = as.numeric(covec50fct),
+      cove0 = as.numeric(cove0fct)
+    )
+
+  pred.response <-
+    dplyr::left_join(pred.response.raw,
+                     cov.fct.numeric,
+                     by = c("covemax", "covec50", "cove0")
+    ) %>%
+    dplyr::select(-(covemax:cove0)) %>%
+    dplyr::select(mcmcid,
+                  exposure,
+                  covemax = covemaxfct,
+                  covec50 = covec50fct,
+                  cove0   = cove0fct,
+                  dplyr::everything()
+    )
+
+  return(pred.response)
+}
+
 
 extract_param_fit <- function(stanfit,
                               mod_type = c("stanemax", "stanemaxbin")) {
@@ -236,9 +202,9 @@ extract_param_fit <- function(stanfit,
       dplyr::as_tibble(vec.param, .name_repair = "unique") %>%
       dplyr::mutate(mcmcid = dplyr::row_number()) %>%
       tidyr::pivot_longer(-mcmcid,
-        names_to = paste0("cov", k),
-        values_to = k,
-        names_prefix = "V"
+                          names_to = paste0("cov", k),
+                          values_to = k,
+                          names_prefix = "V"
       )
 
     return(out)
@@ -246,13 +212,13 @@ extract_param_fit <- function(stanfit,
 
   param.fit.withcov <-
     dplyr::full_join(extract_params_covs("emax"),
-      extract_params_covs("e0"),
-      by = "mcmcid",
-      relationship = "many-to-many"
+                     extract_params_covs("e0"),
+                     by = "mcmcid",
+                     relationship = "many-to-many"
     ) %>%
     dplyr::full_join(extract_params_covs("ec50"),
-      by = "mcmcid",
-      relationship = "many-to-many"
+                     by = "mcmcid",
+                     relationship = "many-to-many"
     ) %>%
     dplyr::mutate(
       covemax = as.numeric(covemax),
