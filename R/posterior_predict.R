@@ -3,7 +3,6 @@
 #' @export
 rstantools::posterior_predict
 
-
 #' Outcome prediction from posterior distribution of parameters
 #'
 #' Compute outcome predictions using posterior samples.
@@ -14,6 +13,7 @@ rstantools::posterior_predict
 #'
 #' @name posterior_predict
 #' @param object A `stanemax` class object
+#' @param transform (For `posterior_linpred()`) Should the linear predictor be transformed to response scale?
 #' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
 #' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType An optional string specifying the type of return object.
@@ -47,6 +47,7 @@ rstantools::posterior_predict
 #' The return object also contains exposure and parameter values used for calculation.
 NULL
 
+# S3 methods --------------------------------------------------------------
 
 #' @rdname posterior_predict
 #' @importFrom rstantools posterior_predict
@@ -58,14 +59,8 @@ posterior_predict.stanemax <- function(object,
                                        ...) {
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
-  df.model <- pp_model_frame(object, newdata, newDataType)
-  pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
-  pred.response <- pp_tidy(pred.response.raw, df.model)
-  if (returnType == "matrix") return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
-  if (returnType == "dataframe") return(as.data.frame(pred.response))
-  if (returnType == "tibble") return(dplyr::as_tibble(pred.response))
+  pp_wrapper(object, column = ".prediction", newdata, returnType, newDataType, ...)
 }
-
 
 #' @rdname posterior_predict
 #' @importFrom rstantools posterior_predict
@@ -77,10 +72,75 @@ posterior_predict.stanemaxbin <- function(object,
                                           ...) {
   returnType <- match.arg(returnType)
   newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".prediction", newdata, returnType, newDataType, ...)
+}
+
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_epred
+#' @export
+posterior_epred.stanemax <- function(object,
+                                     newdata = NULL,
+                                     returnType = c("matrix", "dataframe", "tibble"),
+                                     newDataType = c("raw", "modelframe"),
+                                     ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".epred", newdata, returnType, newDataType, ...)
+}
+
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_epred
+#' @export
+posterior_epred.stanemaxbin <- function(object,
+                                        newdata = NULL,
+                                        returnType = c("matrix", "dataframe", "tibble"),
+                                        newDataType = c("raw", "modelframe"),
+                                        ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".epred", newdata, returnType, newDataType, ...)
+}
+
+
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_linpred
+#' @export
+posterior_linpred.stanemax <- function(object,
+                                       transform = FALSE,
+                                       newdata = NULL,
+                                       returnType = c("matrix", "dataframe", "tibble"),
+                                       newDataType = c("raw", "modelframe"),
+                                       ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".linpred", newdata, returnType, newDataType, transform, ...)
+}
+
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_linpred
+#' @export
+posterior_linpred.stanemaxbin <- function(object,
+                                          transform = FALSE,
+                                          newdata = NULL,
+                                          returnType = c("matrix", "dataframe", "tibble"),
+                                          newDataType = c("raw", "modelframe"),
+                                          ...) {
+  returnType <- match.arg(returnType)
+  newDataType <- match.arg(newDataType)
+  pp_wrapper(object, column = ".linpred", newdata, returnType, newDataType, transform, ...)
+}
+
+# helper functions --------------------------------------------------------
+
+# Wrapper function to handle posterior_predict, posterior_epred, etc
+pp_wrapper <- function(object, column, newdata, returnType, newDataType, ...) {
   df.model <- pp_model_frame(object, newdata, newDataType)
   pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
   pred.response <- pp_tidy(pred.response.raw, df.model)
-  if (returnType == "matrix") return(matrix(pred.response$.prediction, ncol = nrow(df.model), byrow = TRUE))
+  if (returnType == "matrix") {
+    output <- pred.response[[column]]
+    return(matrix(output, ncol = nrow(df.model), byrow = TRUE))
+  }
   if (returnType == "dataframe") return(as.data.frame(pred.response))
   if (returnType == "tibble") return(dplyr::as_tibble(pred.response))
 }
@@ -104,8 +164,10 @@ pp_model_frame <- function(object, newdata, newDataType) {
 
 # Calculate posterior prediction from stanfit object and exposure data
 # data.pp is a data frame with column named `exposure`
-pp_calc <- function(stanfit, df.model,
-                    mod_type = c("stanemax", "stanemaxbin")) {
+pp_calc <- function(stanfit,
+                    df.model,
+                    mod_type = c("stanemax", "stanemaxbin"),
+                    transform = FALSE) {
 
   mod_type <- match.arg(mod_type)
   param.fit <- extract_param_fit(stanfit, mod_type)
@@ -142,6 +204,9 @@ pp_calc <- function(stanfit, df.model,
         .prediction = stats::rbinom(.epred, 1, .epred)
       ) %>%
       dplyr::select(mcmcid, exposure, dplyr::everything())
+
+    # transform arg supported for consistency with posterior_linpred generic
+    if (transform == TRUE) out$.linpred <- out$.epred
   }
 
   return(out)
@@ -181,11 +246,11 @@ pp_tidy <- function(pred.response.raw, df.model) {
   return(pred.response)
 }
 
-
+# required by pp_calc
 extract_param_fit <- function(stanfit,
                               mod_type = c("stanemax", "stanemaxbin")) {
-  mod_type <- match.arg(mod_type)
 
+  mod_type <- match.arg(mod_type)
   param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
   if (mod_type == "stanemax") {
     pars2 <- c("gamma", "sigma")
@@ -235,6 +300,8 @@ extract_param_fit <- function(stanfit,
   return(param.fit)
 }
 
+
+# additional rstanemax functions ------------------------------------------
 
 #' @rdname posterior_predict
 #' @export
