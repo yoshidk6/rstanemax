@@ -57,9 +57,15 @@ posterior_predict.stanemax <- function(object,
                                        returnType = c("matrix", "dataframe", "tibble"),
                                        newDataType = c("raw", "modelframe"),
                                        ...) {
-  returnType <- match.arg(returnType)
-  newDataType <- match.arg(newDataType)
-  pp_wrapper(object, column = ".prediction", newdata, returnType, newDataType, ...)
+  .posterior_predict(
+    object = object,
+    transform = FALSE,
+    column = ".prediction",
+    newdata = newdata,
+    returnType = match.arg(returnType),
+    newDataType = match.arg(newDataType),
+    ...
+  )
 }
 
 #' @rdname posterior_predict
@@ -70,9 +76,15 @@ posterior_predict.stanemaxbin <- function(object,
                                           returnType = c("matrix", "dataframe", "tibble"),
                                           newDataType = c("raw", "modelframe"),
                                           ...) {
-  returnType <- match.arg(returnType)
-  newDataType <- match.arg(newDataType)
-  pp_wrapper(object, column = ".prediction", newdata, returnType, newDataType, ...)
+  .posterior_predict(
+    object = object,
+    transform = FALSE,
+    column = ".prediction",
+    newdata = newdata,
+    returnType = match.arg(returnType),
+    newDataType = match.arg(newDataType),
+    ...
+  )
 }
 
 #' @rdname posterior_predict
@@ -83,9 +95,15 @@ posterior_epred.stanemax <- function(object,
                                      returnType = c("matrix", "dataframe", "tibble"),
                                      newDataType = c("raw", "modelframe"),
                                      ...) {
-  returnType <- match.arg(returnType)
-  newDataType <- match.arg(newDataType)
-  pp_wrapper(object, column = ".epred", newdata, returnType, newDataType, ...)
+  .posterior_predict(
+    object = object,
+    transform = FALSE,
+    column = ".epred",
+    newdata = newdata,
+    returnType = match.arg(returnType),
+    newDataType = match.arg(newDataType),
+    ...
+  )
 }
 
 #' @rdname posterior_predict
@@ -96,9 +114,15 @@ posterior_epred.stanemaxbin <- function(object,
                                         returnType = c("matrix", "dataframe", "tibble"),
                                         newDataType = c("raw", "modelframe"),
                                         ...) {
-  returnType <- match.arg(returnType)
-  newDataType <- match.arg(newDataType)
-  pp_wrapper(object, column = ".epred", newdata, returnType, newDataType, ...)
+  .posterior_predict(
+    object = object,
+    transform = FALSE,
+    column = ".epred",
+    newdata = newdata,
+    returnType = match.arg(returnType),
+    newDataType = match.arg(newDataType),
+    ...
+  )
 }
 
 
@@ -111,9 +135,15 @@ posterior_linpred.stanemax <- function(object,
                                        returnType = c("matrix", "dataframe", "tibble"),
                                        newDataType = c("raw", "modelframe"),
                                        ...) {
-  returnType <- match.arg(returnType)
-  newDataType <- match.arg(newDataType)
-  pp_wrapper(object, column = ".linpred", newdata, returnType, newDataType, transform, ...)
+  .posterior_predict(
+    object = object,
+    transform = transform,
+    column = ".linpred",
+    newdata = newdata,
+    returnType = match.arg(returnType),
+    newDataType = match.arg(newDataType),
+    ...
+  )
 }
 
 #' @rdname posterior_predict
@@ -125,15 +155,26 @@ posterior_linpred.stanemaxbin <- function(object,
                                           returnType = c("matrix", "dataframe", "tibble"),
                                           newDataType = c("raw", "modelframe"),
                                           ...) {
-  returnType <- match.arg(returnType)
-  newDataType <- match.arg(newDataType)
-  pp_wrapper(object, column = ".linpred", newdata, returnType, newDataType, transform, ...)
+  .posterior_predict(
+    object = object,
+    transform = transform,
+    column = ".linpred",
+    newdata = newdata,
+    returnType = match.arg(returnType),
+    newDataType = match.arg(newDataType),
+    ...
+  )
 }
 
 # helper functions --------------------------------------------------------
 
-# Wrapper function to handle posterior_predict, posterior_epred, etc
-pp_wrapper <- function(object, column, newdata, returnType, newDataType, ...) {
+.posterior_predict <- function(object,
+                               transform,
+                               column,
+                               newdata,
+                               returnType,
+                               newDataType,
+                               ...) {
   df.model <- pp_model_frame(object, newdata, newDataType)
   pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
   pred.response <- pp_tidy(pred.response.raw, df.model)
