@@ -177,7 +177,7 @@ posterior_linpred.stanemaxbin <- function(object,
                                ...) {
   df.model <- pp_model_frame(object, newdata, newDataType)
   pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
-  pred.response <- pp_tidy(pred.response.raw, df.model)
+  pred.response <- pp_update_cov_levels(pred.response.raw, df.model)
   if (returnType == "matrix") {
     output <- pred.response[[column]]
     return(matrix(output, ncol = nrow(df.model), byrow = TRUE))
@@ -254,7 +254,7 @@ pp_calc <- function(stanfit,
 }
 
 # Convert the posterior prediction output to tidied data frame
-pp_tidy <- function(pred.response.raw, df.model) {
+pp_update_cov_levels <- function(pred.response.raw, df.model) {
 
   cov.fct.numeric <-
     df.model %>%
