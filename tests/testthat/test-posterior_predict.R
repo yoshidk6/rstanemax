@@ -5,7 +5,6 @@ set.seed(123)
 test.data <- exposure.response.sample.with.cov
 test.data.short <- sample_n(test.data, 30)
 
-
 test.fit <- stan_emax(resp ~ conc,
   data = test.data,
   chains = 2, iter = 1000, refresh = 0
@@ -24,14 +23,6 @@ test_that("returnType specification", {
     posterior_predict.stanemax(test.fit, returnType = "tabble"),
     "'arg' should be one of*"
   )
-  expect_error(
-    posterior_epred.stanemax(test.fit, returnType = "tabble"),
-    "'arg' should be one of*"
-  )
-  expect_error(
-    posterior_linpred.stanemax(test.fit, returnType = "tabble"),
-    "'arg' should be one of*"
-  )
 })
 
 
@@ -41,24 +32,18 @@ test_that("posterior prediction with original data", {
   test.pl.matrix <- posterior_linpred.stanemax(test.fit)
 
   test.pp.df <- posterior_predict.stanemax(test.fit, returnType = "dataframe")
-  test.pe.df <- posterior_epred.stanemax(test.fit, returnType = "dataframe")
-  test.pl.df <- posterior_linpred.stanemax(test.fit, returnType = "dataframe")
 
   expect_is(test.pp.matrix, "matrix")
   expect_is(test.pe.matrix, "matrix")
   expect_is(test.pl.matrix, "matrix")
 
   expect_is(test.pp.df, "data.frame")
-  expect_is(test.pe.df, "data.frame")
-  expect_is(test.pl.df, "data.frame")
 
   expect_equal(dim(test.pp.matrix), c(1000, 60))
   expect_equal(dim(test.pe.matrix), c(1000, 60))
   expect_equal(dim(test.pl.matrix), c(1000, 60))
 
   expect_equal(nrow(test.pp.df), 60000)
-  expect_equal(nrow(test.pe.df), 60000)
-  expect_equal(nrow(test.pl.df), 60000)
 
   expect_equal(mean(test.pp.matrix[, 1]), 15, tolerance = 2, scale = 1)
   expect_equal(mean(test.pl.matrix[, 1]), 15.2, tolerance = 1, scale = 1) # expect higher tolerance for expectations
@@ -113,11 +98,7 @@ test_that("posterior prediction with new data with covariates", {
 
   # Make sure posterior_predict works with covariates
   test.pp.tibble <- posterior_predict.stanemax(test.fit.2cov, newdata = test.data.short, returnType = "tibble")
-  test.pe.tibble <- posterior_epred.stanemax(test.fit.2cov, newdata = test.data.short, returnType = "tibble")
-  test.pl.tibble <- posterior_linpred.stanemax(test.fit.2cov, newdata = test.data.short, returnType = "tibble")
   expect_equal(dim(test.pp.tibble), c(30000, 16))
-  expect_equal(dim(test.pe.tibble), c(30000, 16))
-  expect_equal(dim(test.pl.tibble), c(30000, 16))
 
   # Make sure data is not re-sorted
   expect_equal(

@@ -32,7 +32,6 @@ posterior_predict(object, ...)
 \method{posterior_epred}{stanemax}(
   object,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
   newDataType = c("raw", "modelframe"),
   ...
 )
@@ -40,7 +39,6 @@ posterior_predict(object, ...)
 \method{posterior_epred}{stanemaxbin}(
   object,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
   newDataType = c("raw", "modelframe"),
   ...
 )
@@ -49,7 +47,6 @@ posterior_predict(object, ...)
   object,
   transform = FALSE,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
   newDataType = c("raw", "modelframe"),
   ...
 )
@@ -58,7 +55,6 @@ posterior_predict(object, ...)
   object,
   transform = FALSE,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
   newDataType = c("raw", "modelframe"),
   ...
 )
@@ -79,7 +75,7 @@ posterior_predict_quantile(
 \item{newdata}{An optional data frame that contains columns needed for model to run (exposure and covariates).
 If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.}
 
-\item{returnType}{An optional string specifying the type of return object.}
+\item{returnType}{(deprecated) An optional string specifying the type of return object.}
 
 \item{newDataType}{An optional string specifying the type of newdata input,
 whether in the format of an original data frame or a processed model frame.

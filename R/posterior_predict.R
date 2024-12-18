@@ -16,7 +16,7 @@ rstantools::posterior_predict
 #' @param transform (For `posterior_linpred()`) Should the linear predictor be transformed to response scale?
 #' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
 #' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
-#' @param returnType An optional string specifying the type of return object.
+#' @param returnType (deprecated) An optional string specifying the type of return object.
 #' @param newDataType An optional string specifying the type of newdata input,
 #' whether in the format of an original data frame or a processed model frame.
 #' Mostly used for internal purposes and users can usually leave at default.
@@ -92,7 +92,6 @@ posterior_predict.stanemaxbin <- function(object,
 #' @export
 posterior_epred.stanemax <- function(object,
                                      newdata = NULL,
-                                     returnType = c("matrix", "dataframe", "tibble"),
                                      newDataType = c("raw", "modelframe"),
                                      ...) {
   .posterior_predict(
@@ -100,7 +99,7 @@ posterior_epred.stanemax <- function(object,
     transform = FALSE,
     column = ".epred",
     newdata = newdata,
-    returnType = match.arg(returnType),
+    returnType = "matrix",
     newDataType = match.arg(newDataType),
     ...
   )
@@ -111,7 +110,6 @@ posterior_epred.stanemax <- function(object,
 #' @export
 posterior_epred.stanemaxbin <- function(object,
                                         newdata = NULL,
-                                        returnType = c("matrix", "dataframe", "tibble"),
                                         newDataType = c("raw", "modelframe"),
                                         ...) {
   .posterior_predict(
@@ -119,7 +117,7 @@ posterior_epred.stanemaxbin <- function(object,
     transform = FALSE,
     column = ".epred",
     newdata = newdata,
-    returnType = match.arg(returnType),
+    returnType = "matrix",
     newDataType = match.arg(newDataType),
     ...
   )
@@ -132,7 +130,6 @@ posterior_epred.stanemaxbin <- function(object,
 posterior_linpred.stanemax <- function(object,
                                        transform = FALSE,
                                        newdata = NULL,
-                                       returnType = c("matrix", "dataframe", "tibble"),
                                        newDataType = c("raw", "modelframe"),
                                        ...) {
   .posterior_predict(
@@ -140,7 +137,7 @@ posterior_linpred.stanemax <- function(object,
     transform = transform,
     column = ".linpred",
     newdata = newdata,
-    returnType = match.arg(returnType),
+    returnType = "matrix",
     newDataType = match.arg(newDataType),
     ...
   )
@@ -152,7 +149,6 @@ posterior_linpred.stanemax <- function(object,
 posterior_linpred.stanemaxbin <- function(object,
                                           transform = FALSE,
                                           newdata = NULL,
-                                          returnType = c("matrix", "dataframe", "tibble"),
                                           newDataType = c("raw", "modelframe"),
                                           ...) {
   .posterior_predict(
@@ -160,7 +156,7 @@ posterior_linpred.stanemaxbin <- function(object,
     transform = transform,
     column = ".linpred",
     newdata = newdata,
-    returnType = match.arg(returnType),
+    returnType = "matrix",
     newDataType = match.arg(newDataType),
     ...
   )
