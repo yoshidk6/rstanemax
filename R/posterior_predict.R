@@ -5,46 +5,57 @@ rstantools::posterior_predict
 
 #' Outcome prediction from posterior distribution of parameters
 #'
-#' Compute outcome predictions using posterior samples.
-#' Exposure data for prediction can be either original data used for model fit or new data.
+#' Compute outcome predictions using posterior samples. Exposure data for
+#' prediction can be either original data used for model fit or new data.
 #'
-#' Run \code{vignette("emaxmodel", package = "rstanemax")} to see
-#' how you can use the posterior prediction for plotting estimated Emax curve.
+#' Run \code{vignette("emaxmodel", package = "rstanemax")} to see how you can
+#' use the posterior prediction for plotting estimated Emax curve.
 #'
 #' @name posterior_predict
-#' @param object A `stanemax` class object
-#' @param transform (For `posterior_linpred()`) Should the linear predictor be transformed to response scale?
-#' @param newdata An optional data frame that contains columns needed for model to run (exposure and covariates).
-#' If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.
-#' @param returnType (deprecated) An optional string specifying the type of return object.
+#' @param object A `stanemax` or `stanemaxbin` object
+#' @param transform Should the linear predictor be transformed to response
+#'   scale?
+#' @param newdata An optional data frame that contains columns needed for model
+#'   to run (exposure and covariates). If the model does not have any covariate,
+#'   this can be a numeric vector corresponding to the exposure metric.
+#' @param returnType `r lifecycle::badge("deprecated")` An optional string
+#'   specifying the type of return object.
 #' @param newDataType An optional string specifying the type of newdata input,
-#' whether in the format of an original data frame or a processed model frame.
-#' Mostly used for internal purposes and users can usually leave at default.
+#'   whether in the format of an original data frame or a processed model frame.
+#'   Mostly used for internal purposes and users can usually leave at default.
 #' @param ... Additional arguments passed to methods.
-#' @return An object that contain predicted response with posterior distribution of parameters.
-#' The default is a matrix containing predicted `response` for [stan_emax()] and
-#' `.epred` for [stan_emax_binary()].
-#' Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
+#' @return An object that contain predicted response with posterior distribution
+#'   of parameters. The default is a matrix containing predicted `response` for
+#'   [stan_emax()] and `.epred` for [stan_emax_binary()]. Each row of the matrix
+#'   is a vector of predictions generated using a single draw of the model
+#'   parameters from the posterior distribution.
 #'
-#' If either `dataframe` or `tibble` is specified, the function returns a data frame or tibble object in a long format -
-#' each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
+#'   If either `dataframe` or `tibble` is specified, the function returns a data
+#'   frame or tibble object in a long format - each row is a prediction
+#'   generated using a single draw of the model parameters and a corresponding
+#'   exposure.
 #'
-#' Several types of predictions are generated with this function.
+#'   Several types of predictions are generated with this function.
 #'
-#' For continuous endpoint model ([stan_emax()]),
+#'   For continuous endpoint model ([stan_emax()]),
 #'
-#' - `.linpred` & `.epred`: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-#' - `.prediction`: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
-#' - (deprecated) `respHat`: replaced by `.linpred` & `.epred`
-#' - (deprecated) `response`: replaced by `.prediction`
+#'   - `.linpred` & `.epred`: prediction without considering residual
+#'   variability and is intended to provide credible interval of "mean"
+#'   response.
+#'   - `.prediction`: include residual variability in its calculation,
+#'   therefore the range represents prediction interval of observed response.
+#'   - `r lifecycle::badge("deprecated")` `respHat`: replaced by `.linpred`
+#'   and `.epred`
+#'   - `r lifecycle::badge("deprecated")` `response`: replaced by `.prediction`
 #'
-#' For binary endpoint model ([stan_emax_binary()]),
+#'   For binary endpoint model ([stan_emax_binary()]),
 #'
 #' - `.linpred`: predicted probability on logit scale
 #' - `.epred`: predicted probability on probability scale
 #' - `.prediction`: predicted event (1) or non-event (0)
 #'
-#' The return object also contains exposure and parameter values used for calculation.
+#'   The return object also contains exposure and parameter values used for
+#'   calculation.
 NULL
 
 # S3 methods --------------------------------------------------------------
@@ -57,6 +68,12 @@ posterior_predict.stanemax <- function(object,
                                        returnType = c("matrix", "dataframe", "tibble"),
                                        newDataType = c("raw", "modelframe"),
                                        ...) {
+  if (returnType != "matrix") {
+    lifecycle::deprecate_warn(
+      when = "0.1.7",
+      what = "posterior_predict(returnType)"
+    )
+  }
   .posterior_predict(
     object = object,
     transform = FALSE,
@@ -76,6 +93,12 @@ posterior_predict.stanemaxbin <- function(object,
                                           returnType = c("matrix", "dataframe", "tibble"),
                                           newDataType = c("raw", "modelframe"),
                                           ...) {
+  if (returnType != "matrix") {
+    lifecycle::deprecate_warn(
+      when = "0.1.7",
+      what = "posterior_predict(returnType)"
+    )
+  }
   .posterior_predict(
     object = object,
     transform = FALSE,
