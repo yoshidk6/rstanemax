@@ -68,7 +68,7 @@ posterior_predict_quantile(
 )
 }
 \arguments{
-\item{object}{A \code{stanemax} class object}
+\item{object}{A \code{stanemax} or \code{stanemaxbin} object}
 
 \item{...}{Additional arguments passed to methods.}
 
@@ -83,8 +83,8 @@ specifying the type of return object.}
 whether in the format of an original data frame or a processed model frame.
 Mostly used for internal purposes and users can usually leave at default.}
 
-\item{transform}{(For \code{posterior_linpred()}) Should the linear predictor be
-transformed to response scale?}
+\item{transform}{Should the linear predictor be transformed to response
+scale?}
 
 \item{ci}{Credible interval of the response without residual variability.}
 

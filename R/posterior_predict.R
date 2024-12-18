@@ -19,10 +19,12 @@ rstantools::posterior_predict
 #'   to run (exposure and covariates). If the model does not have any covariate,
 #'   this can be a numeric vector corresponding to the exposure metric.
 #' @param returnType `r lifecycle::badge("deprecated")` An optional string
-#'   specifying the type of return object.
+#'   specifying the type of return object (one of "matrix", "dataframe", or
+#'   "tibble")
 #' @param newDataType An optional string specifying the type of newdata input,
-#'   whether in the format of an original data frame or a processed model frame.
-#'   Mostly used for internal purposes and users can usually leave at default.
+#'   whether in the format of an original data frame ("raw", the default) or a
+#'   processed model frame ("modelframe"). Mostly used for internal purposes and
+#'   users can usually leave at default.
 #' @param ... Additional arguments passed to methods.
 #' @return An object that contain predicted response with posterior distribution
 #'   of parameters. The default is a matrix containing predicted `response` for
@@ -65,8 +67,8 @@ NULL
 #' @export
 posterior_predict.stanemax <- function(object,
                                        newdata = NULL,
-                                       returnType = c("matrix", "dataframe", "tibble"),
-                                       newDataType = c("raw", "modelframe"),
+                                       returnType = "matrix",
+                                       newDataType = "raw",
                                        ...) {
   if (returnType != "matrix") {
     lifecycle::deprecate_warn(
@@ -79,8 +81,8 @@ posterior_predict.stanemax <- function(object,
     transform = FALSE,
     column = ".prediction",
     newdata = newdata,
-    returnType = match.arg(returnType),
-    newDataType = match.arg(newDataType),
+    returnType = returnType,
+    newDataType = newDataType,
     ...
   )
 }
@@ -90,8 +92,8 @@ posterior_predict.stanemax <- function(object,
 #' @export
 posterior_predict.stanemaxbin <- function(object,
                                           newdata = NULL,
-                                          returnType = c("matrix", "dataframe", "tibble"),
-                                          newDataType = c("raw", "modelframe"),
+                                          returnType = "matrix",
+                                          newDataType = "raw",
                                           ...) {
   if (returnType != "matrix") {
     lifecycle::deprecate_warn(
@@ -104,8 +106,8 @@ posterior_predict.stanemaxbin <- function(object,
     transform = FALSE,
     column = ".prediction",
     newdata = newdata,
-    returnType = match.arg(returnType),
-    newDataType = match.arg(newDataType),
+    returnType = returnType,
+    newDataType = newDataType,
     ...
   )
 }
@@ -115,7 +117,7 @@ posterior_predict.stanemaxbin <- function(object,
 #' @export
 posterior_epred.stanemax <- function(object,
                                      newdata = NULL,
-                                     newDataType = c("raw", "modelframe"),
+                                     newDataType = "raw",
                                      ...) {
   .posterior_predict(
     object = object,
@@ -123,7 +125,7 @@ posterior_epred.stanemax <- function(object,
     column = ".epred",
     newdata = newdata,
     returnType = "matrix",
-    newDataType = match.arg(newDataType),
+    newDataType = newDataType,
     ...
   )
 }
@@ -133,7 +135,7 @@ posterior_epred.stanemax <- function(object,
 #' @export
 posterior_epred.stanemaxbin <- function(object,
                                         newdata = NULL,
-                                        newDataType = c("raw", "modelframe"),
+                                        newDataType = "raw",
                                         ...) {
   .posterior_predict(
     object = object,
@@ -141,7 +143,7 @@ posterior_epred.stanemaxbin <- function(object,
     column = ".epred",
     newdata = newdata,
     returnType = "matrix",
-    newDataType = match.arg(newDataType),
+    newDataType = newDataType,
     ...
   )
 }
@@ -153,7 +155,7 @@ posterior_epred.stanemaxbin <- function(object,
 posterior_linpred.stanemax <- function(object,
                                        transform = FALSE,
                                        newdata = NULL,
-                                       newDataType = c("raw", "modelframe"),
+                                       newDataType = "raw",
                                        ...) {
   .posterior_predict(
     object = object,
@@ -161,7 +163,7 @@ posterior_linpred.stanemax <- function(object,
     column = ".linpred",
     newdata = newdata,
     returnType = "matrix",
-    newDataType = match.arg(newDataType),
+    newDataType = newDataType,
     ...
   )
 }
@@ -172,7 +174,7 @@ posterior_linpred.stanemax <- function(object,
 posterior_linpred.stanemaxbin <- function(object,
                                           transform = FALSE,
                                           newdata = NULL,
-                                          newDataType = c("raw", "modelframe"),
+                                          newDataType = "raw",
                                           ...) {
   .posterior_predict(
     object = object,
@@ -180,7 +182,7 @@ posterior_linpred.stanemaxbin <- function(object,
     column = ".linpred",
     newdata = newdata,
     returnType = "matrix",
-    newDataType = match.arg(newDataType),
+    newDataType = newDataType,
     ...
   )
 }
@@ -194,6 +196,8 @@ posterior_linpred.stanemaxbin <- function(object,
                                returnType,
                                newDataType,
                                ...) {
+  returnType <- match.arg(returnType, c("matrix", "dataframe", "tibble"))
+  newDataType <- match.arg(newDataType, c("raw", "modelframe"))
   df.model <- pp_model_frame(object, newdata, newDataType)
   pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
   pred.response <- pp_update_cov_levels(pred.response.raw, df.model)
