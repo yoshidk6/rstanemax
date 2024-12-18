@@ -16,38 +16,28 @@ posterior_predict(object, ...)
 \method{posterior_predict}{stanemax}(
   object,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
-  newDataType = c("raw", "modelframe"),
+  returnType = "matrix",
+  newDataType = "raw",
   ...
 )
 
 \method{posterior_predict}{stanemaxbin}(
   object,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
-  newDataType = c("raw", "modelframe"),
+  returnType = "matrix",
+  newDataType = "raw",
   ...
 )
 
-\method{posterior_epred}{stanemax}(
-  object,
-  newdata = NULL,
-  newDataType = c("raw", "modelframe"),
-  ...
-)
+\method{posterior_epred}{stanemax}(object, newdata = NULL, newDataType = "raw", ...)
 
-\method{posterior_epred}{stanemaxbin}(
-  object,
-  newdata = NULL,
-  newDataType = c("raw", "modelframe"),
-  ...
-)
+\method{posterior_epred}{stanemaxbin}(object, newdata = NULL, newDataType = "raw", ...)
 
 \method{posterior_linpred}{stanemax}(
   object,
   transform = FALSE,
   newdata = NULL,
-  newDataType = c("raw", "modelframe"),
+  newDataType = "raw",
   ...
 )
 
@@ -55,7 +45,7 @@ posterior_predict(object, ...)
   object,
   transform = FALSE,
   newdata = NULL,
-  newDataType = c("raw", "modelframe"),
+  newDataType = "raw",
   ...
 )
 
@@ -77,11 +67,13 @@ to run (exposure and covariates). If the model does not have any covariate,
 this can be a numeric vector corresponding to the exposure metric.}
 
 \item{returnType}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} An optional string
-specifying the type of return object.}
+specifying the type of return object (one of "matrix", "dataframe", or
+"tibble")}
 
 \item{newDataType}{An optional string specifying the type of newdata input,
-whether in the format of an original data frame or a processed model frame.
-Mostly used for internal purposes and users can usually leave at default.}
+whether in the format of an original data frame ("raw", the default) or a
+processed model frame ("modelframe"). Mostly used for internal purposes and
+users can usually leave at default.}
 
 \item{transform}{Should the linear predictor be transformed to response
 scale?}
