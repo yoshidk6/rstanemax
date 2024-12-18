@@ -5,33 +5,39 @@ set.seed(123)
 test.data <- exposure.response.sample.with.cov
 test.data.short <- sample_n(test.data, 30)
 
-test.fit <- stan_emax(resp ~ conc,
+test.fit <- stan_emax(
+  formula = resp ~ conc,
   data = test.data,
-  chains = 2, iter = 1000, refresh = 0
+  chains = 2,
+  iter = 1000,
+  refresh = 0
 )
 
 test.fit.2cov <- stan_emax(
-  formula = resp ~ conc, data = test.data,
+  formula = resp ~ conc,
+  data = test.data,
   param.cov = list(emax = "cov2", ec50 = "cov3"),
-  chains = 2, iter = 1000, refresh = 0
+  chains = 2,
+  iter = 1000,
+  refresh = 0
 )
 
 context("test-posterior_predict")
 
 test_that("returnType specification", {
   expect_error(
-    posterior_predict.stanemax(test.fit, returnType = "tabble"),
+    suppressWarnings(posterior_predict(test.fit, returnType = "tabble")),
     "'arg' should be one of*"
   )
 })
 
 
 test_that("posterior prediction with original data", {
-  test.pp.matrix <- posterior_predict.stanemax(test.fit)
-  test.pe.matrix <- posterior_epred.stanemax(test.fit)
-  test.pl.matrix <- posterior_linpred.stanemax(test.fit)
+  test.pp.matrix <- posterior_predict(test.fit)
+  test.pe.matrix <- posterior_epred(test.fit)
+  test.pl.matrix <- posterior_linpred(test.fit)
 
-  test.pp.df <- posterior_predict.stanemax(test.fit, returnType = "dataframe")
+  test.pp.df <- posterior_predict(test.fit, returnType = "dataframe")
 
   expect_is(test.pp.matrix, "matrix")
   expect_is(test.pe.matrix, "matrix")
