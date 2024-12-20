@@ -25,7 +25,7 @@ Useful links:
 
 Authors:
 \itemize{
-  \item Danielle Navarro \email{djnavarro@protonmail.com}
+  \item Danielle Navarro \email{djnavarro@protonmail.com} (\href{https://orcid.org/0000-0001-7648-6578}{ORCID})
 }
 
 Other contributors:

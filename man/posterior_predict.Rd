@@ -4,6 +4,10 @@
 \alias{posterior_predict}
 \alias{posterior_predict.stanemax}
 \alias{posterior_predict.stanemaxbin}
+\alias{posterior_epred.stanemax}
+\alias{posterior_epred.stanemaxbin}
+\alias{posterior_linpred.stanemax}
+\alias{posterior_linpred.stanemaxbin}
 \alias{posterior_predict_quantile}
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
@@ -12,16 +16,36 @@ posterior_predict(object, ...)
 \method{posterior_predict}{stanemax}(
   object,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
-  newDataType = c("raw", "modelframe"),
+  returnType = "matrix",
+  newDataType = "raw",
   ...
 )
 
 \method{posterior_predict}{stanemaxbin}(
   object,
   newdata = NULL,
-  returnType = c("matrix", "dataframe", "tibble"),
-  newDataType = c("raw", "modelframe"),
+  returnType = "matrix",
+  newDataType = "raw",
+  ...
+)
+
+\method{posterior_epred}{stanemax}(object, newdata = NULL, newDataType = "raw", ...)
+
+\method{posterior_epred}{stanemaxbin}(object, newdata = NULL, newDataType = "raw", ...)
+
+\method{posterior_linpred}{stanemax}(
+  object,
+  transform = FALSE,
+  newdata = NULL,
+  newDataType = "raw",
+  ...
+)
+
+\method{posterior_linpred}{stanemaxbin}(
+  object,
+  transform = FALSE,
+  newdata = NULL,
+  newDataType = "raw",
   ...
 )
 
@@ -34,40 +58,54 @@ posterior_predict_quantile(
 )
 }
 \arguments{
-\item{object}{A \code{stanemax} class object}
+\item{object}{A \code{stanemax} or \code{stanemaxbin} object}
 
 \item{...}{Additional arguments passed to methods.}
 
-\item{newdata}{An optional data frame that contains columns needed for model to run (exposure and covariates).
-If the model does not have any covariate, this can be a numeric vector corresponding to the exposure metric.}
+\item{newdata}{An optional data frame that contains columns needed for model
+to run (exposure and covariates). If the model does not have any covariate,
+this can be a numeric vector corresponding to the exposure metric.}
 
-\item{returnType}{An optional string specifying the type of return object.}
+\item{returnType}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} An optional string
+specifying the type of return object (one of "matrix", "dataframe", or
+"tibble")}
 
 \item{newDataType}{An optional string specifying the type of newdata input,
-whether in the format of an original data frame or a processed model frame.
-Mostly used for internal purposes and users can usually leave at default.}
+whether in the format of an original data frame ("raw", the default) or a
+processed model frame ("modelframe"). Mostly used for internal purposes and
+users can usually leave at default.}
+
+\item{transform}{Should the linear predictor be transformed to response
+scale?}
 
 \item{ci}{Credible interval of the response without residual variability.}
 
 \item{pi}{Prediction interval of the response with residual variability.}
 }
 \value{
-An object that contain predicted response with posterior distribution of parameters.
-The default is a matrix containing predicted \code{response} for \code{\link[=stan_emax]{stan_emax()}} and
-\code{.epred} for \code{\link[=stan_emax_binary]{stan_emax_binary()}}.
-Each row of the matrix is a vector of predictions generated using a single draw of the model parameters from the posterior distribution.
+An object that contain predicted response with posterior distribution
+of parameters. The default is a matrix containing predicted \code{response} for
+\code{\link[=stan_emax]{stan_emax()}} and \code{.epred} for \code{\link[=stan_emax_binary]{stan_emax_binary()}}. Each row of the matrix
+is a vector of predictions generated using a single draw of the model
+parameters from the posterior distribution.
 
-If either \code{dataframe} or \code{tibble} is specified, the function returns a data frame or tibble object in a long format -
-each row is a prediction generated using a single draw of the model parameters and a corresponding exposure.
+If either \code{dataframe} or \code{tibble} is specified, the function returns a data
+frame or tibble object in a long format - each row is a prediction
+generated using a single draw of the model parameters and a corresponding
+exposure.
 
 Several types of predictions are generated with this function.
 
 For continuous endpoint model (\code{\link[=stan_emax]{stan_emax()}}),
 \itemize{
-\item \code{.linpred} & \code{.epred}: prediction without considering residual variability and is intended to provide credible interval of "mean" response.
-\item \code{.prediction}: include residual variability in its calculation, therefore the range represents prediction interval of observed response.
-\item (deprecated) \code{respHat}: replaced by \code{.linpred} & \code{.epred}
-\item (deprecated) \code{response}: replaced by \code{.prediction}
+\item \code{.linpred} & \code{.epred}: prediction without considering residual
+variability and is intended to provide credible interval of "mean"
+response.
+\item \code{.prediction}: include residual variability in its calculation,
+therefore the range represents prediction interval of observed response.
+\item \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{respHat}: replaced by \code{.linpred}
+and \code{.epred}
+\item \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} \code{response}: replaced by \code{.prediction}
 }
 
 For binary endpoint model (\code{\link[=stan_emax_binary]{stan_emax_binary()}}),
@@ -75,18 +113,19 @@ For binary endpoint model (\code{\link[=stan_emax_binary]{stan_emax_binary()}}),
 \item \code{.linpred}: predicted probability on logit scale
 \item \code{.epred}: predicted probability on probability scale
 \item \code{.prediction}: predicted event (1) or non-event (0)
-}
 
-The return object also contains exposure and parameter values used for calculation.
+The return object also contains exposure and parameter values used for
+calculation.
+}
 
 With \code{\link[=posterior_predict_quantile]{posterior_predict_quantile()}} function, you can obtain quantiles
 of \code{respHat} and \code{response} as specified by \code{ci} and \code{pi}.
 }
 \description{
-Compute outcome predictions using posterior samples.
-Exposure data for prediction can be either original data used for model fit or new data.
+Compute outcome predictions using posterior samples. Exposure data for
+prediction can be either original data used for model fit or new data.
 }
 \details{
-Run \code{vignette("emaxmodel", package = "rstanemax")} to see
-how you can use the posterior prediction for plotting estimated Emax curve.
+Run \code{vignette("emaxmodel", package = "rstanemax")} to see how you can
+use the posterior prediction for plotting estimated Emax curve.
 }
