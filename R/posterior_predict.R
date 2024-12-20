@@ -199,7 +199,12 @@ posterior_linpred.stanemaxbin <- function(object,
   returnType <- match.arg(returnType, c("matrix", "dataframe", "tibble"))
   newDataType <- match.arg(newDataType, c("raw", "modelframe"))
   df.model <- pp_model_frame(object, newdata, newDataType)
-  pred.response.raw <- pp_calc(object$stanfit, df.model, mod_type = class(object))
+  pred.response.raw <- pp_calc(
+    stanfit = object$stanfit,
+    df.model = df.model,
+    mod_type = class(object),
+    transform = transform
+  )
   pred.response <- pp_update_cov_levels(pred.response.raw, df.model)
   if (returnType == "matrix") {
     output <- pred.response[[column]]
