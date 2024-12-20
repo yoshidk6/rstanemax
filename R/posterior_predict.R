@@ -379,16 +379,21 @@ extract_param_fit <- function(stanfit,
 #' @return With [posterior_predict_quantile()] function, you can obtain quantiles
 #' of `respHat` and `response` as specified by `ci` and `pi`.
 #'
-posterior_predict_quantile <- function(
-    object, newdata = NULL, ci = 0.9, pi = 0.9,
-    newDataType = c("raw", "modelframe")) {
+posterior_predict_quantile <- function(object,
+                                       newdata = NULL,
+                                       ci = 0.9,
+                                       pi = 0.9,
+                                       newDataType = c("raw", "modelframe")) {
   mod_type <- class(object)
 
-  pp.raw <-
-    posterior_predict.stanemax(
-      object, newdata,
-      returnType = c("tibble"), newDataType = newDataType
-    )
+  pp.raw <- .posterior_predict(
+    object = object,
+    transform = FALSE,
+    column = ".prediction",
+    newdata = newdata,
+    returnType = "tibble",
+    newDataType = newDataType
+  )
 
   ndata <-
     dplyr::filter(pp.raw, mcmcid == 1) %>%
