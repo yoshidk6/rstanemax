@@ -71,8 +71,8 @@ posterior_predict.stanemax <- function(object,
                                        newDataType = "raw",
                                        ...) {
   if (returnType != "matrix") {
-    lifecycle::deprecate_warn(
-      when = "0.1.7",
+    lifecycle::deprecate_soft(
+      when = "0.1.8",
       what = "posterior_predict(returnType)"
     )
   }
@@ -96,8 +96,8 @@ posterior_predict.stanemaxbin <- function(object,
                                           newDataType = "raw",
                                           ...) {
   if (returnType != "matrix") {
-    lifecycle::deprecate_warn(
-      when = "0.1.7",
+    lifecycle::deprecate_soft(
+      when = "0.1.8",
       what = "posterior_predict(returnType)"
     )
   }
