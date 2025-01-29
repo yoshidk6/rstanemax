@@ -236,10 +236,21 @@ pp_model_frame <- function(object, newdata, newDataType) {
 pp_calc <- function(stanfit,
                     df.model,
                     mod_type = c("stanemax", "stanemaxbin"),
-                    transform = FALSE) {
+                    transform = FALSE,
+                    ndraws = NULL) {
 
   mod_type <- match.arg(mod_type)
   param.fit <- extract_param_fit(stanfit, mod_type)
+
+  if (is.null(ndraws)) {
+    draw_inds <- 1:max(param.fit$mcmcid)
+  } else {
+    draw_inds <- sample(
+      x = max(param.fit$mcmcid),
+      size = ndraws,
+      replace = FALSE
+    )
+  }
 
   df <-
     df.model %>%
@@ -248,7 +259,7 @@ pp_calc <- function(stanfit,
       covec50 = as.numeric(covec50),
       cove0 = as.numeric(cove0)
     ) %>%
-    tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
+    tidyr::expand_grid(mcmcid = draw_inds, .) %>%
     dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
 
   if (mod_type == "stanemax") {
