@@ -25,7 +25,9 @@ rstantools::posterior_predict
 #'   whether in the format of an original data frame ("raw", the default) or a
 #'   processed model frame ("modelframe"). Mostly used for internal purposes and
 #'   users can usually leave at default.
-#' @param ... Additional arguments passed to methods.
+#' @param ... Additional arguments passed to methods. Arguments that can be
+#'   passed via the dots include `ndraws`, for compatibility with functions in
+#'   the tidybayes package
 #' @return An object that contain predicted response with posterior distribution
 #'   of parameters. The default is a matrix containing predicted `response` for
 #'   [stan_emax()] and `.epred` for [stan_emax_binary()]. Each row of the matrix

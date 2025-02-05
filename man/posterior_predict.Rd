@@ -60,7 +60,9 @@ posterior_predict_quantile(
 \arguments{
 \item{object}{A \code{stanemax} or \code{stanemaxbin} object}
 
-\item{...}{Additional arguments passed to methods.}
+\item{...}{Additional arguments passed to methods. Arguments that can be
+passed via the dots include \code{ndraws}, for compatibility with functions in
+the tidybayes package}
 
 \item{newdata}{An optional data frame that contains columns needed for model
 to run (exposure and covariates). If the model does not have any covariate,
