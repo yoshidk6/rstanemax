@@ -24,8 +24,7 @@ Imports:
     ggplot2 (>= 2.2.1),
     posterior,
     boot,
-    lifecycle,
-    tidybayes
+    lifecycle
 LinkingTo: 
     StanHeaders (>= 2.26.0), 
     rstan (>= 2.26.0), 
@@ -41,7 +40,10 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    spelling
+    spelling,
+    tibble,
+    withr,
+    tidybayes
 VignetteBuilder: knitr
 Language: en-US
 URL: https://github.com/yoshidk6/rstanemax, https://yoshidk6.github.io/rstanemax/

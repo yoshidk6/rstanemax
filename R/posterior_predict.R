@@ -25,7 +25,9 @@ rstantools::posterior_predict
 #'   whether in the format of an original data frame ("raw", the default) or a
 #'   processed model frame ("modelframe"). Mostly used for internal purposes and
 #'   users can usually leave at default.
-#' @param ... Additional arguments passed to methods.
+#' @param ... Additional arguments passed to methods. Arguments that can be
+#'   passed via the dots include `ndraws`, for compatibility with functions in
+#'   the tidybayes package
 #' @return An object that contain predicted response with posterior distribution
 #'   of parameters. The default is a matrix containing predicted `response` for
 #'   [stan_emax()] and `.epred` for [stan_emax_binary()]. Each row of the matrix
@@ -195,6 +197,7 @@ posterior_linpred.stanemaxbin <- function(object,
                                newdata,
                                returnType,
                                newDataType,
+                               ndraws = NULL,
                                ...) {
   returnType <- match.arg(returnType, c("matrix", "dataframe", "tibble"))
   newDataType <- match.arg(newDataType, c("raw", "modelframe"))
@@ -203,7 +206,8 @@ posterior_linpred.stanemaxbin <- function(object,
     stanfit = object$stanfit,
     df.model = df.model,
     mod_type = class(object),
-    transform = transform
+    transform = transform,
+    ndraws = ndraws
   )
   pred.response <- pp_update_cov_levels(pred.response.raw, df.model)
   if (returnType == "matrix") {
@@ -236,10 +240,21 @@ pp_model_frame <- function(object, newdata, newDataType) {
 pp_calc <- function(stanfit,
                     df.model,
                     mod_type = c("stanemax", "stanemaxbin"),
-                    transform = FALSE) {
+                    transform = FALSE,
+                    ndraws = NULL) {
 
   mod_type <- match.arg(mod_type)
   param.fit <- extract_param_fit(stanfit, mod_type)
+
+  if (is.null(ndraws)) {
+    draw_inds <- 1:max(param.fit$mcmcid)
+  } else {
+    draw_inds <- sample(
+      x = max(param.fit$mcmcid),
+      size = ndraws,
+      replace = FALSE
+    )
+  }
 
   df <-
     df.model %>%
@@ -248,7 +263,7 @@ pp_calc <- function(stanfit,
       covec50 = as.numeric(covec50),
       cove0 = as.numeric(cove0)
     ) %>%
-    tidyr::expand_grid(mcmcid = 1:max(param.fit$mcmcid), .) %>%
+    tidyr::expand_grid(mcmcid = draw_inds, .) %>%
     dplyr::left_join(param.fit, by = c("mcmcid", "covemax", "covec50", "cove0"))
 
   if (mod_type == "stanemax") {
