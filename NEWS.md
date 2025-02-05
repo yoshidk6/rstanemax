@@ -1,3 +1,12 @@
+# rstanemax 0.1.8
+
+## Major changes
+
+* Supporting `tidybayes` package integration such as `tidybayes::add_epred_draws()` (@djnavarro)
+
+## Minor changes
+
+* Deprecate `returnType` argument for `posterior_predict()` in favor of `tidybayes` package integration (@djnavarro)
 
 # rstanemax 0.1.7
 
