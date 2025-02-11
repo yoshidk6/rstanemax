@@ -46,3 +46,12 @@ test_that("posterior prediction with original data", {
   expect_equal(mean(test.pp.matrix[, 1]), 0.23, tolerance = 0.1)
   expect_equal(mean(test.pp.matrix[, 90]), 0.86, tolerance = 0.1)
 })
+
+test_that("print.stanemaxbin works correctly", {
+  expect_output(print.stanemaxbin(test.fit2), "---- Binary Emax model fit with rstanemax ----")
+})
+
+test_that("plot.stanemaxbin works correctly", {
+  plot_output <- plot.stanemaxbin(test.fit2)
+  expect_is(plot_output, "ggplot")
+})

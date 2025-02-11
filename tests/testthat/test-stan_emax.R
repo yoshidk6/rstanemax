@@ -99,3 +99,7 @@ test_that("emax model run with Emax and E0 fixed", {
   coef.stan <- rstan::summary(test.fit.fix.emax$stanfit, pars = c("e0", "emax", "ec50"))$summary[, 6]
   expect_equal(coef.stan[1:2], c(`e0[1]` = 0, `emax[1]` = 80))
 })
+
+test_that("print.stanemax works correctly", {
+  expect_output(print.stanemax(test.fit.cov2), "---- Emax model fit with rstanemax ----")
+})
