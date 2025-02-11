@@ -8,6 +8,8 @@ status](https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg)](
 [![CRAN
 status](https://www.r-pkg.org/badges/version/rstanemax)](https://cran.r-project.org/package=rstanemax)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/rstanemax)](https://CRAN.R-project.org/package=rstanemax)
+[![Codecov test
+coverage](https://codecov.io/gh/yoshidk6/rstanemax/branch/master/graph/badge.svg)](https://app.codecov.io/gh/yoshidk6/rstanemax?branch=master)
 
 This small package performs simple sigmoidal Emax model fit using Stan,
 without the need of (1) writing Stan model code and (2) setting up an
@@ -82,20 +84,25 @@ function references and
 # Load rstanemax
 library(rstanemax)
 #> Loading required package: Rcpp
+```
+
+``` r
 
 # Run model with a sample dataset
 set.seed(12345)
 
 data(exposure.response.sample)
 
-fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
-                      # the next line is only to make the output short
-                      chains = 1, iter = 500, seed = 12345)
+fit.emax <- stan_emax(response ~ exposure,
+  data = exposure.response.sample,
+  # the next line is only to make the output short
+  chains = 1, iter = 500, seed = 12345
+)
 #> 
 #> SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).
 #> Chain 1: 
-#> Chain 1: Gradient evaluation took 8.1e-05 seconds
-#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.
+#> Chain 1: Gradient evaluation took 2.2e-05 seconds
+#> Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.22 seconds.
 #> Chain 1: Adjust your expectations accordingly!
 #> Chain 1: 
 #> Chain 1: 
@@ -112,13 +119,13 @@ fit.emax <- stan_emax(response ~ exposure, data = exposure.response.sample,
 #> Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)
 #> Chain 1: Iteration: 500 / 500 [100%]  (Sampling)
 #> Chain 1: 
-#> Chain 1:  Elapsed Time: 0.158951 seconds (Warm-up)
-#> Chain 1:                0.065293 seconds (Sampling)
-#> Chain 1:                0.224244 seconds (Total)
+#> Chain 1:  Elapsed Time: 0.08 seconds (Warm-up)
+#> Chain 1:                0.022 seconds (Sampling)
+#> Chain 1:                0.102 seconds (Total)
 #> Chain 1:
 #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
 #> Running the chains for more iterations may help. See
-#> http://mc-stan.org/misc/warnings.html#tail-ess
+#> https://mc-stan.org/misc/warnings.html#tail-ess
 ```
 
 ``` r
@@ -126,11 +133,11 @@ fit.emax
 #> ---- Emax model fit with rstanemax ----
 #> 
 #>        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat
-#> emax  92.01    0.47  6.49 79.08 87.94 92.11 96.35 103.43 188.95    1
-#> e0     5.69    0.35  4.92 -2.87  2.13  5.90  9.07  15.00 192.44    1
-#> ec50  75.78    1.23 19.37 44.51 62.88 72.26 85.34 124.31 246.47    1
+#> emax  92.35    0.49  5.55 80.87 88.86 92.64 95.58 103.70 129.11    1
+#> e0     5.57    0.41  4.58 -2.27  2.16  5.42  9.01  14.68 126.27    1
+#> ec50  75.12    1.50 18.68 47.39 62.48 71.87 84.50 117.56 154.92    1
 #> gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN
-#> sigma 16.65    0.13  1.66 13.77 15.47 16.55 17.55  20.20 157.45    1
+#> sigma 16.44    0.09  1.41 13.94 15.49 16.43 17.37  19.49 261.63    1
 #> 
 #> * Use `extract_stanfit()` function to extract raw stanfit object
 #> * Use `extract_param()` function to extract posterior draws of key parameters

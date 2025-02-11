@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 [![R build status](https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg)](https://github.com/yoshidk6/rstanemax/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/rstanemax)](https://cran.r-project.org/package=rstanemax)
 [![downloads](https://cranlogs.r-pkg.org/badges/grand-total/rstanemax)](https://CRAN.R-project.org/package=rstanemax)
-
+[![Codecov test coverage](https://codecov.io/gh/yoshidk6/rstanemax/branch/master/graph/badge.svg)](https://app.codecov.io/gh/yoshidk6/rstanemax?branch=master)
 
 This small package performs simple sigmoidal Emax model fit using Stan, without the need of (1) writing Stan model code and (2) setting up an environment to compile Stan model, inspired by __rstanarm__ package.
 
