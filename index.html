@@ -55,7 +55,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rstanemax">rstanemax<a class="anchor" aria-label="anchor" href="#rstanemax"></a>
 </h1></div>
-<p><a href="https://github.com/yoshidk6/rstanemax/actions" class="external-link"><img src="https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://cran.r-project.org/package=rstanemax" class="external-link"><img src="https://www.r-pkg.org/badges/version/rstanemax" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=rstanemax" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rstanemax" alt="downloads"></a></p>
+<p><a href="https://github.com/yoshidk6/rstanemax/actions" class="external-link"><img src="https://github.com/yoshidk6/rstanemax/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <a href="https://cran.r-project.org/package=rstanemax" class="external-link"><img src="https://www.r-pkg.org/badges/version/rstanemax" alt="CRAN status"></a> <a href="https://CRAN.R-project.org/package=rstanemax" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/rstanemax" alt="downloads"></a> <a href="https://app.codecov.io/gh/yoshidk6/rstanemax?branch=master" class="external-link"><img src="https://codecov.io/gh/yoshidk6/rstanemax/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></p>
 <p>This small package performs simple sigmoidal Emax model fit using Stan, without the need of (1) writing Stan model code and (2) setting up an environment to compile Stan model, inspired by <strong>rstanarm</strong> package.</p>
 <p><strong>rstanarm</strong> package (<a href="https://mc-stan.org/users/interfaces/rstanarm" class="external-link">link</a>) is a very flexible, general purpose tool to perform various Bayesian modeling with formula notations, such as generalized mixed effect models or joint models. One small gap it has is in nonlinear model fitting, where it only accepts nonlinear functions defined in stats package with <code>SS</code> prefixes (<a href="http://mc-stan.org/rstanarm/articles/glmer.html#relationship-to-nlmer" class="external-link">link</a>). Unfortunately the (sigmoidal) Emax model, one of the most commonly used nonlinear functions in the field of pharmacometrics, is not among the available functions. The <strong>rstanarm</strong> package also seems to be assuming that we fit nonlinear mixed effect models, but not simple nonlinear models without mixed effects. <strong>brms</strong> is another great general purpose package that allows formula notation, but it requires users to compile generated Stan models. The need for setting up an environment for compiling Stan code can be daunting for beginners, especially with Windows.</p>
 <p>I hope this <strong>rstanemax</strong> package will fill the niche gap, allow for easier implementation of Emax model in Bayesian framework, and enable routine uses in the pharmacokinetic/pharmacodynamic field.</p>
@@ -90,21 +90,24 @@ Also, you have to follow the instruction below if you are using Windows PC.<br><
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load rstanemax</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yoshidk6/rstanemax" class="external-link">rstanemax</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Loading required package: Rcpp</span></span>
-<span></span>
+<span><span class="co">#&gt; Loading required package: Rcpp</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="co"># Run model with a sample dataset</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">exposure.response.sample</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">fit.emax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stan_emax.html">stan_emax</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">exposure</span>, data <span class="op">=</span> <span class="va">exposure.response.sample</span>,</span>
-<span>                      <span class="co"># the next line is only to make the output short</span></span>
-<span>                      chains <span class="op">=</span> <span class="fl">1</span>, iter <span class="op">=</span> <span class="fl">500</span>, seed <span class="op">=</span> <span class="fl">12345</span><span class="op">)</span></span>
+<span><span class="va">fit.emax</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stan_emax.html">stan_emax</a></span><span class="op">(</span><span class="va">response</span> <span class="op">~</span> <span class="va">exposure</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">exposure.response.sample</span>,</span>
+<span>  <span class="co"># the next line is only to make the output short</span></span>
+<span>  chains <span class="op">=</span> <span class="fl">1</span>, iter <span class="op">=</span> <span class="fl">500</span>, seed <span class="op">=</span> <span class="fl">12345</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; SAMPLING FOR MODEL 'emax' NOW (CHAIN 1).</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1: Gradient evaluation took 8.1e-05 seconds</span></span>
-<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.81 seconds.</span></span>
+<span><span class="co">#&gt; Chain 1: Gradient evaluation took 2.2e-05 seconds</span></span>
+<span><span class="co">#&gt; Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.22 seconds.</span></span>
 <span><span class="co">#&gt; Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
@@ -121,23 +124,23 @@ Also, you have to follow the instruction below if you are using Windows PC.<br><
 <span><span class="co">#&gt; Chain 1: Iteration: 450 / 500 [ 90%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: Iteration: 500 / 500 [100%]  (Sampling)</span></span>
 <span><span class="co">#&gt; Chain 1: </span></span>
-<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.158951 seconds (Warm-up)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.065293 seconds (Sampling)</span></span>
-<span><span class="co">#&gt; Chain 1:                0.224244 seconds (Total)</span></span>
+<span><span class="co">#&gt; Chain 1:  Elapsed Time: 0.08 seconds (Warm-up)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.022 seconds (Sampling)</span></span>
+<span><span class="co">#&gt; Chain 1:                0.102 seconds (Total)</span></span>
 <span><span class="co">#&gt; Chain 1:</span></span>
 <span><span class="co">#&gt; Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span></span>
 <span><span class="co">#&gt; Running the chains for more iterations may help. See</span></span>
-<span><span class="co">#&gt; http://mc-stan.org/misc/warnings.html#tail-ess</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<span><span class="co">#&gt; https://mc-stan.org/misc/warnings.html#tail-ess</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fit.emax</span></span>
 <span><span class="co">#&gt; ---- Emax model fit with rstanemax ----</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;        mean se_mean    sd  2.5%   25%   50%   75%  97.5%  n_eff Rhat</span></span>
-<span><span class="co">#&gt; emax  92.01    0.47  6.49 79.08 87.94 92.11 96.35 103.43 188.95    1</span></span>
-<span><span class="co">#&gt; e0     5.69    0.35  4.92 -2.87  2.13  5.90  9.07  15.00 192.44    1</span></span>
-<span><span class="co">#&gt; ec50  75.78    1.23 19.37 44.51 62.88 72.26 85.34 124.31 246.47    1</span></span>
+<span><span class="co">#&gt; emax  92.35    0.49  5.55 80.87 88.86 92.64 95.58 103.70 129.11    1</span></span>
+<span><span class="co">#&gt; e0     5.57    0.41  4.58 -2.27  2.16  5.42  9.01  14.68 126.27    1</span></span>
+<span><span class="co">#&gt; ec50  75.12    1.50 18.68 47.39 62.48 71.87 84.50 117.56 154.92    1</span></span>
 <span><span class="co">#&gt; gamma  1.00     NaN  0.00  1.00  1.00  1.00  1.00   1.00    NaN  NaN</span></span>
-<span><span class="co">#&gt; sigma 16.65    0.13  1.66 13.77 15.47 16.55 17.55  20.20 157.45    1</span></span>
+<span><span class="co">#&gt; sigma 16.44    0.09  1.41 13.94 15.49 16.43 17.37  19.49 261.63    1</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; * Use `extract_stanfit()` function to extract raw stanfit object</span></span>
 <span><span class="co">#&gt; * Use `extract_param()` function to extract posterior draws of key parameters</span></span>
@@ -146,7 +149,7 @@ Also, you have to follow the instruction below if you are using Windows PC.<br><
 <span><span class="co">#&gt;   raw predictions or make predictions on new data</span></span>
 <span><span class="co">#&gt; * Use `extract_obs_mod_frame()` function to extract raw data </span></span>
 <span><span class="co">#&gt;   in a processed format (useful for plotting)</span></span></code></pre></div>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">fit.emax</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
 </div>
