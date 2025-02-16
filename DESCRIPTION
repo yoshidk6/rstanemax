@@ -23,7 +23,6 @@ Imports:
     purrr (>= 0.3.0),
     ggplot2 (>= 2.2.1),
     posterior,
-    boot,
     lifecycle
 LinkingTo: 
     StanHeaders (>= 2.26.0), 

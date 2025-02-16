@@ -1,8 +1,3 @@
-#' @rdname posterior_predict
-#' @importFrom rstantools posterior_predict
-#' @export
-rstantools::posterior_predict
-
 #' Outcome prediction from posterior distribution of parameters
 #'
 #' Compute outcome predictions using posterior samples. Exposure data for
@@ -12,6 +7,7 @@ rstantools::posterior_predict
 #' use the posterior prediction for plotting estimated Emax curve.
 #'
 #' @name posterior_predict
+#' @importFrom rstantools posterior_predict
 #' @param object A `stanemax` or `stanemaxbin` object
 #' @param transform Should the linear predictor be transformed to response
 #'   scale?
@@ -284,7 +280,7 @@ pp_calc <- function(stanfit,
       df %>%
       dplyr::mutate(
         .linpred = e0 + emax * exposure^gamma / (ec50^gamma + exposure^gamma),
-        .epred = 1 / (1 + exp(-.linpred)),
+        .epred = stats::plogis(.linpred),
         .prediction = stats::rbinom(.epred, 1, .epred)
       ) %>%
       dplyr::select(mcmcid, exposure, dplyr::everything())
