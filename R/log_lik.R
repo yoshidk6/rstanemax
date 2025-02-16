@@ -36,7 +36,7 @@ log_lik.stanemax <- function(object, newdata = NULL, ...) {
   log_lik_matrix <- matrix(nrow = nrow(pred.response), ncol = ncol(pred.response))
 
   for (i in seq_len(nrow(pred.response))) {
-    log_lik_matrix[i, ] <- dnorm(
+    log_lik_matrix[i, ] <- stats::dnorm(
       x = df.model$response,
       mean = pred.response[i, ],
       sd = param.fit$sigma[i],
@@ -63,13 +63,13 @@ log_lik.stanemaxbin <- function(object, newdata = NULL, ...) {
   )
 
   # Transform logit predictions to probabilities
-  pred.prob <- plogis(pred.logit)
+  pred.prob <- stats::plogis(pred.logit)
 
   # Compute log-likelihood
   log_lik_matrix <- matrix(nrow = nrow(pred.prob), ncol = ncol(pred.prob))
 
   for (i in seq_len(nrow(pred.prob))) {
-    log_lik_matrix[i, ] <- dbinom(
+    log_lik_matrix[i, ] <- stats::dbinom(
       x = df.model$response,
       size = 1,
       prob = pred.prob[i, ],

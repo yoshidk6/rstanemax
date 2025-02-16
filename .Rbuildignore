@@ -13,3 +13,4 @@
 ^CRAN-SUBMISSION$
 ^pkgdown$
 ^codecov\.yml$
+^.lintr$
