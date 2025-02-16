@@ -1,3 +1,9 @@
+# rstanemax 0.1.9
+
+## Minor changes
+
+* Define `log_lik()` to calculate log likelihood for new data
+
 # rstanemax 0.1.8
 
 ## Major changes
