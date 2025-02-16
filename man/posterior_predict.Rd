@@ -2,6 +2,8 @@
 % Please edit documentation in R/posterior_predict.R
 \name{posterior_predict}
 \alias{posterior_predict}
+\alias{posterior_epred}
+\alias{posterior_linpred}
 \alias{posterior_predict.stanemax}
 \alias{posterior_predict.stanemaxbin}
 \alias{posterior_epred.stanemax}
@@ -11,6 +13,12 @@
 \alias{posterior_predict_quantile}
 \title{Outcome prediction from posterior distribution of parameters}
 \usage{
+posterior_predict(object, ...)
+
+posterior_epred(object, ...)
+
+posterior_linpred(object, transform = FALSE, ...)
+
 \method{posterior_predict}{stanemax}(
   object,
   newdata = NULL,
@@ -58,6 +66,13 @@ posterior_predict_quantile(
 \arguments{
 \item{object}{A \code{stanemax} or \code{stanemaxbin} object}
 
+\item{...}{Additional arguments passed to methods. Arguments that can be
+passed via the dots include \code{ndraws}, for compatibility with functions in
+the tidybayes package}
+
+\item{transform}{Should the linear predictor be transformed to response
+scale?}
+
 \item{newdata}{An optional data frame that contains columns needed for model
 to run (exposure and covariates). If the model does not have any covariate,
 this can be a numeric vector corresponding to the exposure metric.}
@@ -70,13 +85,6 @@ specifying the type of return object (one of "matrix", "dataframe", or
 whether in the format of an original data frame ("raw", the default) or a
 processed model frame ("modelframe"). Mostly used for internal purposes and
 users can usually leave at default.}
-
-\item{...}{Additional arguments passed to methods. Arguments that can be
-passed via the dots include \code{ndraws}, for compatibility with functions in
-the tidybayes package}
-
-\item{transform}{Should the linear predictor be transformed to response
-scale?}
 
 \item{ci}{Credible interval of the response without residual variability.}
 

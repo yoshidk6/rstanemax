@@ -7,6 +7,8 @@
 \title{Calculate log-likelihoods from posterior samples. Data can be either
 original data used for model fit or new data.}
 \usage{
+log_lik(object, ...)
+
 \method{log_lik}{stanemax}(object, newdata = NULL, ...)
 
 \method{log_lik}{stanemaxbin}(object, newdata = NULL, ...)
@@ -14,9 +16,9 @@ original data used for model fit or new data.}
 \arguments{
 \item{object}{A \code{stanemax} or \code{stanemaxbin} object}
 
-\item{newdata}{New data used for prediction. If NULL, original data is used.}
-
 \item{...}{Currently unused arguments}
+
+\item{newdata}{New data used for prediction. If NULL, original data is used.}
 }
 \value{
 \eqn{S} by \eqn{N} matrix of log-likelihoods, where each row

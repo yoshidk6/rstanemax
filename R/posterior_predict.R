@@ -1,3 +1,18 @@
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_predict
+#' @export
+rstantools::posterior_predict
+
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_epred
+#' @export
+rstantools::posterior_epred
+
+#' @rdname posterior_predict
+#' @importFrom rstantools posterior_linpred
+#' @export
+rstantools::posterior_linpred
+
 #' Outcome prediction from posterior distribution of parameters
 #'
 #' Compute outcome predictions using posterior samples. Exposure data for

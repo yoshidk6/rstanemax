@@ -1,3 +1,8 @@
+#' @rdname log_lik
+#' @importFrom rstantools log_lik
+#' @export
+rstantools::log_lik
+
 #' Calculate log-likelihoods from posterior samples. Data can be either
 #' original data used for model fit or new data.
 #'
