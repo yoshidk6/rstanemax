@@ -48,6 +48,10 @@ prediction can be either original data used for model fit or new data.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">posterior_predict</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">posterior_epred</span><span class="op">(</span><span class="va">object</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">posterior_linpred</span><span class="op">(</span><span class="va">object</span>, transform <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'stanemax'</span></span>
 <span><span class="fu">posterior_predict</span><span class="op">(</span></span>
 <span>  <span class="va">object</span>,</span>
@@ -113,6 +117,11 @@ passed via the dots include <code>ndraws</code>, for compatibility with function
 the tidybayes package</p></dd>
 
 
+<dt id="arg-transform">transform<a class="anchor" aria-label="anchor" href="#arg-transform"></a></dt>
+<dd><p>Should the linear predictor be transformed to response
+scale?</p></dd>
+
+
 <dt id="arg-newdata">newdata<a class="anchor" aria-label="anchor" href="#arg-newdata"></a></dt>
 <dd><p>An optional data frame that contains columns needed for model
 to run (exposure and covariates). If the model does not have any covariate,
@@ -130,11 +139,6 @@ specifying the type of return object (one of "matrix", "dataframe", or
 whether in the format of an original data frame ("raw", the default) or a
 processed model frame ("modelframe"). Mostly used for internal purposes and
 users can usually leave at default.</p></dd>
-
-
-<dt id="arg-transform">transform<a class="anchor" aria-label="anchor" href="#arg-transform"></a></dt>
-<dd><p>Should the linear predictor be transformed to response
-scale?</p></dd>
 
 
 <dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
