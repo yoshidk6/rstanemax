@@ -210,14 +210,22 @@ posterior_linpred.stanemaxbin <- function(object,
     output <- pred.response[[column]]
     return(matrix(output, ncol = nrow(df.model), byrow = TRUE))
   }
-  if (returnType == "dataframe") return(as.data.frame(pred.response))
-  if (returnType == "tibble") return(dplyr::as_tibble(pred.response))
+  if (returnType == "dataframe") {
+    return(as.data.frame(pred.response))
+  }
+  if (returnType == "tibble") {
+    return(dplyr::as_tibble(pred.response))
+  }
 }
 
 # Construct model frame as needed for posterior_predict and similar
 pp_model_frame <- function(object, newdata, newDataType) {
-  if (is.null(newdata)) return(object$prminput$df.model)
-  if (newDataType == "modelframe") return(newdata)
+  if (is.null(newdata)) {
+    return(object$prminput$df.model)
+  }
+  if (newDataType == "modelframe") {
+    return(newdata)
+  }
   if (is.vector(newdata)) {
     newdata <- data.frame(newdata)
     names(newdata) <- as.character(object$prminput$formula[[3]])
@@ -238,7 +246,6 @@ pp_calc <- function(stanfit,
                     mod_type = c("stanemax", "stanemaxbin"),
                     transform = FALSE,
                     ndraws = NULL) {
-
   mod_type <- match.arg(mod_type)
   param.fit <- extract_param_fit(stanfit, mod_type)
 
@@ -294,7 +301,6 @@ pp_calc <- function(stanfit,
 
 # Convert the posterior prediction output to tidied data frame
 pp_update_cov_levels <- function(pred.response.raw, df.model) {
-
   cov.fct.numeric <-
     df.model %>%
     dplyr::select(
@@ -311,16 +317,16 @@ pp_update_cov_levels <- function(pred.response.raw, df.model) {
 
   pred.response <-
     dplyr::left_join(pred.response.raw,
-                     cov.fct.numeric,
-                     by = c("covemax", "covec50", "cove0")
+      cov.fct.numeric,
+      by = c("covemax", "covec50", "cove0")
     ) %>%
     dplyr::select(-(covemax:cove0)) %>%
     dplyr::select(mcmcid,
-                  exposure,
-                  covemax = covemaxfct,
-                  covec50 = covec50fct,
-                  cove0   = cove0fct,
-                  dplyr::everything()
+      exposure,
+      covemax = covemaxfct,
+      covec50 = covec50fct,
+      cove0   = cove0fct,
+      dplyr::everything()
     )
 
   return(pred.response)
@@ -329,7 +335,6 @@ pp_update_cov_levels <- function(pred.response.raw, df.model) {
 # required by pp_calc
 extract_param_fit <- function(stanfit,
                               mod_type = c("stanemax", "stanemaxbin")) {
-
   mod_type <- match.arg(mod_type)
   param.extract.1 <- rstan::extract(stanfit, pars = c("emax", "e0", "ec50"))
   if (mod_type == "stanemax") {
@@ -347,9 +352,9 @@ extract_param_fit <- function(stanfit,
       dplyr::as_tibble(vec.param, .name_repair = "unique") %>%
       dplyr::mutate(mcmcid = dplyr::row_number()) %>%
       tidyr::pivot_longer(-mcmcid,
-                          names_to = paste0("cov", k),
-                          values_to = k,
-                          names_prefix = "V"
+        names_to = paste0("cov", k),
+        values_to = k,
+        names_prefix = "V"
       )
 
     return(out)
@@ -357,13 +362,13 @@ extract_param_fit <- function(stanfit,
 
   param.fit.withcov <-
     dplyr::full_join(extract_params_covs("emax"),
-                     extract_params_covs("e0"),
-                     by = "mcmcid",
-                     relationship = "many-to-many"
+      extract_params_covs("e0"),
+      by = "mcmcid",
+      relationship = "many-to-many"
     ) %>%
     dplyr::full_join(extract_params_covs("ec50"),
-                     by = "mcmcid",
-                     relationship = "many-to-many"
+      by = "mcmcid",
+      relationship = "many-to-many"
     ) %>%
     dplyr::mutate(
       covemax = as.numeric(covemax),

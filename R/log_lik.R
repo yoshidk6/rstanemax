@@ -1,19 +1,19 @@
-#' Calculate log-likelihoods from posterior samples. Data can be either 
+#' Calculate log-likelihoods from posterior samples. Data can be either
 #' original data used for model fit or new data.
-#' 
+#'
 #' See [rstantools::log_lik] for more details.
-#' 
+#'
 #' @name log_lik
 #' @importFrom rstantools log_lik
 #' @param object A `stanemax` or `stanemaxbin` object
 #' @param newdata New data used for prediction. If NULL, original data is used.
 #' @param ... Currently unused arguments
-#' @return \eqn{S} by \eqn{N} matrix of log-likelihoods, where each row 
+#' @return \eqn{S} by \eqn{N} matrix of log-likelihoods, where each row
 #' corresponds to a draw from the posterior distribution and each column corresponds to a data point.
 log_lik.stanemax <- function(object, newdata = NULL, ...) {
   # If no new data is provided, use the original data
   df.model <- pp_model_frame(object, newdata, newDataType = "raw")
-  
+
   # Extract posterior predictions
   pred.response <- .posterior_predict(
     object = object,
@@ -23,13 +23,13 @@ log_lik.stanemax <- function(object, newdata = NULL, ...) {
     returnType = "matrix",
     newDataType = "raw"
   )
-  
+
   # Extract relevant parameters from the stanfit object
   param.fit <- extract_param_fit(object$stanfit, mod_type = "stanemax")
-  
+
   # Compute log-likelihood
   log_lik_matrix <- matrix(nrow = nrow(pred.response), ncol = ncol(pred.response))
-  
+
   for (i in seq_len(nrow(pred.response))) {
     log_lik_matrix[i, ] <- dnorm(
       x = df.model$response,
@@ -38,7 +38,7 @@ log_lik.stanemax <- function(object, newdata = NULL, ...) {
       log = TRUE
     )
   }
-  
+
   return(log_lik_matrix)
 }
 
@@ -46,7 +46,7 @@ log_lik.stanemax <- function(object, newdata = NULL, ...) {
 log_lik.stanemaxbin <- function(object, newdata = NULL, ...) {
   # If no new data is provided, use the original data
   df.model <- pp_model_frame(object, newdata, newDataType = "raw")
-  
+
   # Extract posterior predictions (logit scale)
   pred.logit <- .posterior_predict(
     object = object,
@@ -56,16 +56,13 @@ log_lik.stanemaxbin <- function(object, newdata = NULL, ...) {
     returnType = "matrix",
     newDataType = "raw"
   )
-  
+
   # Transform logit predictions to probabilities
   pred.prob <- plogis(pred.logit)
-  
-  # Extract relevant parameters from the stanfit object
-  param.fit <- extract_param_fit(object$stanfit, mod_type = "stanemaxbin")
-  
+
   # Compute log-likelihood
   log_lik_matrix <- matrix(nrow = nrow(pred.prob), ncol = ncol(pred.prob))
-  
+
   for (i in seq_len(nrow(pred.prob))) {
     log_lik_matrix[i, ] <- dbinom(
       x = df.model$response,
@@ -74,6 +71,6 @@ log_lik.stanemaxbin <- function(object, newdata = NULL, ...) {
       log = TRUE
     )
   }
-  
+
   return(log_lik_matrix)
 }

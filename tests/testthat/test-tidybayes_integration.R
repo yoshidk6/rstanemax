@@ -1,4 +1,3 @@
-
 mod <- stan_emax(
   formula = resp ~ conc,
   data = exposure.response.sample.with.cov,
@@ -11,8 +10,10 @@ mod <- stan_emax(
 test_that("get_variables() works", {
   expect_equal(
     object = tidybayes::get_variables(mod),
-    expected = c("ec50[C1]", "ec50[C0]", "sigma", "gamma", "e0", "emax[B0]",
-                 "emax[B2]", "emax[B3]")
+    expected = c(
+      "ec50[C1]", "ec50[C0]", "sigma", "gamma", "e0", "emax[B0]",
+      "emax[B2]", "emax[B3]"
+    )
   )
 })
 
@@ -25,14 +26,12 @@ test_that("spread_draws() works", {
 })
 
 test_that("add_epred_draws() works", {
-
   for (ndraws in 1L:3L) {
     for (seed in 1L:3L) {
-
       # construct expected result manually
       draw_rows <- expand.grid(
         .draw = 1L:ndraws,
-        .row = 1L:nrow(exposure.response.sample.with.cov)
+        .row = seq_len(nrow(exposure.response.sample.with.cov))
       )
       d1 <- exposure.response.sample.with.cov |>
         dplyr::mutate(.row = dplyr::row_number()) |>
@@ -64,9 +63,4 @@ test_that("add_epred_draws() works", {
       expect_equal(d2, d1)
     }
   }
-
-
 })
-
-
-

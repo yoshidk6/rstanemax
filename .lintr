@@ -1,0 +1,20 @@
+linters: linters_with_defaults(
+    object_name_linter = NULL,
+    return_linter = NULL,
+    line_length_linter = line_length_linter(120L)
+  )
+exclusions: list(
+    "data-raw/exposure.response.sample.R",
+    "R/stan_emax.R" = list(
+      1, # global exclusions are unnamed
+      line_length_linter = 1:100
+    ),
+    "README.md" = list(
+      1, # global exclusions are unnamed
+      line_length_linter = 1:100
+    ),
+    "README.Rmd" = list(
+      1, # global exclusions are unnamed
+      line_length_linter = 1:200
+    )
+  )
