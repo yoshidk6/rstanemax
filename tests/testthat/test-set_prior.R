@@ -19,11 +19,7 @@ sd.response <- 10
 
 test.data <-
   dose.exposure %>%
-  mutate(
-    response =
-      e0 + emax * exposure / (ec50 + exposure) +
-        rnorm(exposure, 0, sd.response)
-  )
+  mutate(response = e0 + emax * exposure / (ec50 + exposure) + rnorm(exposure, 0, sd.response))
 
 
 df.model <- create_model_frame(response ~ exposure, test.data, cov.levels = covs_get_levels(test.data))

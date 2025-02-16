@@ -6,7 +6,10 @@ if (getRversion() >= "2.15.1") {
   utils::globalVariables(c("."))
 
   # posterior predict
-  utils::globalVariables(c("e0", "emax", "emax", "exposure", "ec50", "respHat", "sigma", "mcmcid", "dataid", ".linpred", ".epred"))
+  utils::globalVariables(c(
+    "e0", "emax", "emax", "exposure", "ec50", "respHat",
+    "sigma", "mcmcid", "dataid", ".linpred", ".epred"
+  ))
 
   # plot.stanemax
   utils::globalVariables(c("response", "ci_low", "ci_med", "ci_high", "pi_low", "pi_high"))
