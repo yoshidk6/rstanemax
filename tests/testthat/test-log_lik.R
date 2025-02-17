@@ -25,13 +25,17 @@ test.fit.bin <- stan_emax_binary(
 test_that("confirm log lik calculations", {
   log_lik_original <- rstan::extract(extract_stanfit(test.fit), pars = "log_lik")$log_lik
   dimnames(log_lik_original) <- NULL
-  log_lik_computed <- log_lik.stanemax(test.fit)
+  log_lik_computed1 <- log_lik(test.fit)
+  log_lik_computed2 <- log_lik(test.fit, newdata = test.data)
 
-  expect_equal(log_lik_original, log_lik_computed)
+  expect_equal(log_lik_original, log_lik_computed1)
+  expect_equal(log_lik_original, log_lik_computed2)
 
   log_lik_original <- rstan::extract(extract_stanfit(test.fit.bin), pars = "log_lik")$log_lik
   dimnames(log_lik_original) <- NULL
-  log_lik_computed <- log_lik.stanemaxbin(test.fit.bin)
+  log_lik_computed1 <- log_lik(test.fit.bin)
+  log_lik_computed2 <- log_lik(test.fit.bin, newdata = exposure.response.sample.binary)
 
-  expect_equal(log_lik_original, log_lik_computed)
+  expect_equal(log_lik_original, log_lik_computed1)
+  expect_equal(log_lik_original, log_lik_computed2)
 })
