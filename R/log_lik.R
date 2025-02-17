@@ -15,6 +15,7 @@ rstantools::log_lik
 #' @param ... Currently unused arguments
 #' @return \eqn{S} by \eqn{N} matrix of log-likelihoods, where each row
 #' corresponds to a draw from the posterior distribution and each column corresponds to a data point.
+#' @export
 log_lik.stanemax <- function(object, newdata = NULL, ...) {
   # If no new data is provided, use the original data
   df.model <- pp_model_frame(object, newdata, newDataType = "raw")
@@ -48,6 +49,7 @@ log_lik.stanemax <- function(object, newdata = NULL, ...) {
 }
 
 #' @rdname log_lik
+#' @export
 log_lik.stanemaxbin <- function(object, newdata = NULL, ...) {
   # If no new data is provided, use the original data
   df.model <- pp_model_frame(object, newdata, newDataType = "raw")
