@@ -17,13 +17,13 @@ Source:
 [`DESCRIPTION`](https://github.com/yoshidk6/rstanemax/blob/master/DESCRIPTION)
 
 Yoshida K, Navarro D (2026). *rstanemax: Emax Model Analysis with
-'Stan'*. R package version 0.1.9.1001,
+'Stan'*. R package version 0.1.10,
 <https://github.com/yoshidk6/rstanemax>.
 
     @Manual{,
       title = {rstanemax: Emax Model Analysis with 'Stan'},
       author = {Kenta Yoshida and Danielle Navarro},
       year = {2026},
-      note = {R package version 0.1.9.1001},
+      note = {R package version 0.1.10},
       url = {https://github.com/yoshidk6/rstanemax},
     }
