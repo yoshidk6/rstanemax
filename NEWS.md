@@ -1,4 +1,8 @@
-# rstanemax 0.1.10 (in progress)
+# rstanemax 0.1.10
+
+## Minor changes
+
+* Remove `tidybayes` from Suggests to avoid CRAN archival cascade from `arrayhelpers`
 
 
 # rstanemax 0.1.9
