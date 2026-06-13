@@ -67,8 +67,8 @@ posterior_predict_quantile(
 \item{object}{A \code{stanemax} or \code{stanemaxbin} object}
 
 \item{...}{Additional arguments passed to methods. Arguments that can be
-passed via the dots include \code{ndraws}, for compatibility with functions in
-the tidybayes package}
+passed via the dots include \code{ndraws}, for compatibility with
+\code{rstantools} conventions}
 
 \item{transform}{Should the linear predictor be transformed to response
 scale?}

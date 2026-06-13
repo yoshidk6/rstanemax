@@ -34,15 +34,14 @@ LinkingTo:
 SystemRequirements: GNU make
 NeedsCompilation: yes
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-Suggests: 
+RoxygenNote: 7.3.3
+Suggests:
     testthat,
     knitr,
     rmarkdown,
     spelling,
     tibble,
-    withr,
-    tidybayes
+    withr
 VignetteBuilder: knitr
 Language: en-US
 URL: https://github.com/yoshidk6/rstanemax, https://yoshidk6.github.io/rstanemax/
