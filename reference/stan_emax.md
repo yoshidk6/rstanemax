@@ -1,0 +1,110 @@
+# Bayesian Emax model fit with Stan
+
+Run sigmoidal Emax model fit with formula notation
+
+## Usage
+
+``` r
+stan_emax(
+  formula,
+  data,
+  gamma.fix = 1,
+  e0.fix = NULL,
+  emax.fix = NULL,
+  priors = NULL,
+  param.cov = NULL,
+  ...
+)
+```
+
+## Arguments
+
+- formula:
+
+  a symbolic description of variables for Emax model fit.
+
+- data:
+
+  an optional data frame containing the variables in the model.
+
+- gamma.fix:
+
+  a (positive) numeric or NULL to specify gamma (Hill coefficient) in
+  the sigmoidal Emax model. If NULL, gamma will be estimated from the
+  data. If numeric, gamma is fixed at the number provided. Default = 1
+  (normal Emax model).
+
+- e0.fix:
+
+  a numeric or NULL to specify E0 in the Emax model. If NULL, E0 will be
+  estimated from the data. If numeric, E0 is fixed at the number
+  provided. Default = NULL (estimate from the data).
+
+- emax.fix:
+
+  a numeric or NULL to specify Emax in the Emax model. If NULL, Emax
+  will be estimated from the data. If numeric, Emax is fixed at the
+  number provided. Default = NULL (estimate from the data).
+
+- priors:
+
+  a named list specifying priors of parameters (ec50, emax, e0, gamma,
+  sigma). Each list item should be length 2 numeric vector, one
+  corresponding to mean and another corresponding to standard deviation.
+  Currently only supports normal distribution for priors.
+
+- param.cov:
+
+  a named list specifying categorical covariates on parameters (ec50,
+  emax, e0). Convert a column into factor if specific order of
+  covariates are needed.
+
+- ...:
+
+  Arguments passed to rstan::sampling (e.g. iter, chains).
+
+## Value
+
+An object of class `stanemax`
+
+## Details
+
+The following structure is used for the Emax model: \$\$Response = e_0 +
+e\_{max} \times exposure ^{\gamma} / (ec50 ^{\gamma} + exposure ^
+{\gamma}) + \epsilon\$\$ \$\$\epsilon \sim N(0, \sigma^2)\$\$
+
+## Examples
+
+``` r
+if (FALSE) { # \dontrun{
+data(exposure.response.sample)
+fit1 <- stan_emax(response ~ exposure,
+  data = exposure.response.sample,
+  # the next line is only to make the example go fast enough
+  chains = 1, iter = 500, seed = 12345
+)
+print(fit1)
+
+# Set priors manually, also estimate gamma instead of the default of fix to 1
+fit2 <- stan_emax(response ~ exposure,
+  data = exposure.response.sample, gamma.fix = NULL,
+  priors = list(
+    ec50 = c(100, 30), emax = c(100, 30), e0 = c(10, 5),
+    gamma = c(0, 3), sigma = c(0, 30)
+  ),
+  # the next line is only to make the example go fast enough
+  chains = 1, iter = 500, seed = 12345
+)
+print(fit2)
+
+data(exposure.response.sample.with.cov)
+# Specify covariates
+fit3 <- stan_emax(
+  formula = resp ~ conc, data = exposure.response.sample.with.cov,
+  param.cov = list(emax = "cov2", ec50 = "cov3", e0 = "cov1"),
+  # the next line is only to make the example go fast enough
+  chains = 1, iter = 500, seed = 12345
+)
+print(fit3)
+} # }
+```
